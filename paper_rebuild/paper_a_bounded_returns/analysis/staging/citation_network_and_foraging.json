@@ -1,0 +1,583 @@
+{
+  "citation_network": {
+    "_purpose": "Citation-network / domain-concentration analysis of df_citations.parquet (22,903 rows). $0 CPU. Non-canonical staging (NOT merged into canonical_numbers.json).",
+    "_data": "data/analysis/df_citations.parquet (main, Bing backend) + df_citations_protocol_a.parquet (has backend col). Non-placeholder = category in {real_url,academic,suspicious}. Quality joins use mean over 3 judges {gpt52,opus,sonnet}.",
+    "n_citations_total": 22903,
+    "n_sourced_nonplaceholder": 16100,
+    "category_mix": {
+      "real_url": 12117,
+      "placeholder": 6803,
+      "academic": 3966,
+      "suspicious": 17
+    },
+    "concentration_per_architecture": {
+      "p0": {
+        "n_sourced_cites": 490,
+        "n_unique_domains": 300,
+        "unique_ratio": 0.612,
+        "hhi": 0.0151,
+        "gini": 0.3623,
+        "shannon": 5.168,
+        "top1_domain": "sciencedirect.com",
+        "top1_share": 0.069,
+        "top3_share": 0.18,
+        "academic_share": 0.32,
+        "placeholder_share": 0.0
+      },
+      "p1": {
+        "n_sourced_cites": 3847,
+        "n_unique_domains": 2018,
+        "unique_ratio": 0.525,
+        "hhi": 0.008,
+        "gini": 0.4492,
+        "shannon": 6.657,
+        "top1_domain": "arxiv.org",
+        "top1_share": 0.052,
+        "top3_share": 0.129,
+        "academic_share": 0.276,
+        "placeholder_share": 0.002
+      },
+      "p2": {
+        "n_sourced_cites": 929,
+        "n_unique_domains": 507,
+        "unique_ratio": 0.546,
+        "hhi": 0.0435,
+        "gini": 0.4364,
+        "shannon": 5.175,
+        "top1_domain": "arxiv.org",
+        "top1_share": 0.198,
+        "top3_share": 0.256,
+        "academic_share": 0.346,
+        "placeholder_share": 0.25
+      },
+      "p3": {
+        "n_sourced_cites": 458,
+        "n_unique_domains": 333,
+        "unique_ratio": 0.727,
+        "hhi": 0.007,
+        "gini": 0.2541,
+        "shannon": 5.525,
+        "top1_domain": "arxiv.org",
+        "top1_share": 0.035,
+        "top3_share": 0.094,
+        "academic_share": 0.251,
+        "placeholder_share": 0.591
+      },
+      "p4": {
+        "n_sourced_cites": 738,
+        "n_unique_domains": 490,
+        "unique_ratio": 0.664,
+        "hhi": 0.014,
+        "gini": 0.3198,
+        "shannon": 5.646,
+        "top1_domain": "arxiv.org",
+        "top1_share": 0.1,
+        "top3_share": 0.15,
+        "academic_share": 0.264,
+        "placeholder_share": 0.616
+      },
+      "p5": {
+        "n_sourced_cites": 2488,
+        "n_unique_domains": 1010,
+        "unique_ratio": 0.406,
+        "hhi": 0.0088,
+        "gini": 0.4807,
+        "shannon": 6.211,
+        "top1_domain": "arxiv.org",
+        "top1_share": 0.076,
+        "top3_share": 0.119,
+        "academic_share": 0.219,
+        "placeholder_share": 0.508
+      },
+      "p6": {
+        "n_sourced_cites": 2136,
+        "n_unique_domains": 1172,
+        "unique_ratio": 0.549,
+        "hhi": 0.0082,
+        "gini": 0.4231,
+        "shannon": 6.285,
+        "top1_domain": "arxiv.org",
+        "top1_share": 0.05,
+        "top3_share": 0.13,
+        "academic_share": 0.266,
+        "placeholder_share": 0.003
+      },
+      "p7": {
+        "n_sourced_cites": 2727,
+        "n_unique_domains": 1476,
+        "unique_ratio": 0.541,
+        "hhi": 0.0125,
+        "gini": 0.4332,
+        "shannon": 6.369,
+        "top1_domain": "arxiv.org",
+        "top1_share": 0.092,
+        "top3_share": 0.153,
+        "academic_share": 0.283,
+        "placeholder_share": 0.002
+      },
+      "p8": {
+        "n_sourced_cites": 1350,
+        "n_unique_domains": 755,
+        "unique_ratio": 0.559,
+        "hhi": 0.019,
+        "gini": 0.4234,
+        "shannon": 5.681,
+        "top1_domain": "arxiv.org",
+        "top1_share": 0.107,
+        "top3_share": 0.193,
+        "academic_share": 0.37,
+        "placeholder_share": 0.568
+      },
+      "p9": {
+        "n_sourced_cites": 215,
+        "n_unique_domains": 122,
+        "unique_ratio": 0.567,
+        "hhi": 0.0291,
+        "gini": 0.3977,
+        "shannon": 4.277,
+        "top1_domain": "sciencedirect.com",
+        "top1_share": 0.098,
+        "top3_share": 0.237,
+        "academic_share": 0.46,
+        "placeholder_share": 0.0
+      },
+      "p10": {
+        "n_sourced_cites": 413,
+        "n_unique_domains": 238,
+        "unique_ratio": 0.576,
+        "hhi": 0.0175,
+        "gini": 0.3929,
+        "shannon": 4.909,
+        "top1_domain": "link.springer.com",
+        "top1_share": 0.065,
+        "top3_share": 0.174,
+        "academic_share": 0.356,
+        "placeholder_share": 0.37
+      },
+      "p11": {
+        "n_sourced_cites": 309,
+        "n_unique_domains": 226,
+        "unique_ratio": 0.731,
+        "hhi": 0.0113,
+        "gini": 0.2472,
+        "shannon": 5.151,
+        "top1_domain": "arxiv.org",
+        "top1_share": 0.078,
+        "top3_share": 0.117,
+        "academic_share": 0.21,
+        "placeholder_share": 0.102
+      }
+    },
+    "concentration_findings": {
+      "echo_chamber_verdict": "NO severe echo chamber at architecture level: domain HHI is uniformly LOW (0.007-0.044) and Gini 0.25-0.48 across all 12 arms. Most concentrated arm is P2 (top-1 domain arxiv.org = 19.8% of cites, HHI 0.0435) - a mild arxiv over-reliance; every other arm's top domain is <11%.",
+      "most_diverse": "p3 (unique_ratio 0.727) and p11 (0.731) spread cites over the most distinct domains; p5 is least diverse (unique_ratio 0.406).",
+      "placeholder_flag": "Several 'strong' pipelines pad citations with fabricated/placeholder URLs: p4 61.6%, p3 59.1%, p8 56.8%, p5 50.8%, p10 37.0% of their citations are placeholders (vs p0/p6/p7/p1 <1%). Concentration/diversity above is computed on the NON-placeholder remainder."
+    },
+    "academic_vs_web": {
+      "per_architecture": {
+        "p0": 0.32,
+        "p1": 0.276,
+        "p2": 0.346,
+        "p3": 0.251,
+        "p4": 0.264,
+        "p5": 0.219,
+        "p6": 0.266,
+        "p7": 0.283,
+        "p8": 0.37,
+        "p9": 0.46,
+        "p10": 0.356,
+        "p11": 0.21
+      },
+      "finding": "Web sources dominate every arm (54-79% web). Academic share is highest for the local 7B P9 (0.46) and single-round P8 (0.37); lowest for verbose web-scrapers P11 (0.21) and P5 (0.22). No arm is majority-academic."
+    },
+    "most_cited_domains_overall": [
+      [
+        "arxiv.org",
+        1244,
+        0.0773
+      ],
+      [
+        "link.springer.com",
+        567,
+        0.0352
+      ],
+      [
+        "sciencedirect.com",
+        551,
+        0.0342
+      ],
+      [
+        "frontiersin.org",
+        316,
+        0.0196
+      ],
+      [
+        "mdpi.com",
+        301,
+        0.0187
+      ],
+      [
+        "nature.com",
+        239,
+        0.0148
+      ],
+      [
+        "en.wikipedia.org",
+        181,
+        0.0112
+      ],
+      [
+        "academic.oup.com",
+        161,
+        0.01
+      ],
+      [
+        "semanticscholar.org",
+        145,
+        0.009
+      ],
+      [
+        "learn.microsoft.com",
+        96,
+        0.006
+      ],
+      [
+        "cdc.gov",
+        95,
+        0.0059
+      ],
+      [
+        "legalclarity.org",
+        89,
+        0.0055
+      ]
+    ],
+    "diversity_vs_quality": {
+      "n_cells": 940,
+      "level": "per (pattern,query_id) cell; quality = mean over 3 judges",
+      "raw_pearson": {
+        "n_unique_domains_vs_overall": [
+          0.451,
+          2.27e-48
+        ],
+        "shannon_vs_overall": [
+          0.578,
+          6.47e-85
+        ],
+        "shannon_vs_factual": [
+          0.471,
+          4.55e-53
+        ],
+        "shannon_vs_citation_quality": [
+          0.62,
+          4.24e-101
+        ],
+        "acad_share_vs_overall": [
+          0.167,
+          2.59e-07
+        ],
+        "acad_share_vs_citation_quality": [
+          0.001,
+          0.964
+        ],
+        "n_cites_vs_overall": [
+          0.495,
+          3.66e-59
+        ]
+      },
+      "count_controlled_partial_pearson": {
+        "n_unique_domains_vs_overall|n_cites": [
+          -0.017,
+          0.604
+        ],
+        "n_unique_domains_vs_factual|n_cites": [
+          0.005,
+          0.867
+        ],
+        "shannon_vs_overall|n_cites": [
+          0.354,
+          3.94e-29
+        ],
+        "shannon_vs_factual|n_cites": [
+          0.267,
+          7.81e-17
+        ],
+        "shannon_vs_citation_quality|n_cites": [
+          0.444,
+          1.06e-46
+        ]
+      },
+      "finding": "Raw domain COUNT tracks quality only because it proxies citation volume: after controlling for n_cites, n_unique_domains->overall collapses to ~0 (partial -0.017, ns). But EVENNESS of sourcing (Shannon entropy) SURVIVES the volume control: shannon->citation_quality partial +0.444 (p=1e-46), ->overall +0.354, ->factual +0.267. Genuine source diversity predicts quality independent of citation count; citing more academic sources does NOT raise citation_quality (raw pearson +0.001, ns)."
+    },
+    "backend_confound": {
+      "per_backend": {
+        "bing": {
+          "n": 3185,
+          "n_unique_domains": 977,
+          "unique_ratio": 0.307,
+          "hhi": 0.0253,
+          "top1_domain": "arxiv.org",
+          "top1_share": 0.131,
+          "academic_share": 0.356
+        },
+        "tavily": {
+          "n": 446,
+          "n_unique_domains": 49,
+          "unique_ratio": 0.11,
+          "hhi": 0.5962,
+          "top1_domain": "arxiv.org",
+          "top1_share": 0.762,
+          "academic_share": 0.895
+        }
+      },
+      "finding": "DECISIVE search-backend confound (protocol-A subset): the Tavily backend produces an EXTREME echo chamber - 76.2% of ALL citations to arxiv.org, HHI 0.596 (near-monopoly), 89.5% academic - vs Bing 13.1% arxiv, HHI 0.025, 35.6% academic. Source concentration is driven far more by the retrieval backend than by the orchestration architecture; any cross-architecture diversity claim must hold backend fixed."
+    },
+    "verdict": "No architecture is an echo chamber (HHI<=0.044); P2's mild arxiv over-reliance (~20%) is the ceiling. Source diversity DOES help quality, but only as EVENNESS (Shannon, partial +0.44 on citation_quality), not raw domain count (a citation-volume proxy) and not academic share. The dominant driver of source concentration is the SEARCH BACKEND (Tavily 76% arxiv / HHI 0.60), a confound that swamps architecture."
+  },
+  "mvt_foraging": {
+    "_purpose": "Charnov Marginal Value Theorem (MVT) over-foraging test: do iterative/reactive pipelines search past the point of diminishing marginal evidence yield, and does over-foraging buy any citation/quality gain? $0 CPU.",
+    "_data_and_coverage": "Within-run marginal-yield curves from checkpoints/<pattern>/<ts>/trace.json tool_calls (ordered by step_idx, n_results per retrieval verb). Arm-level effort/yield/score from canonical search_robustness + compute_ledger + per_dimension. COVERAGE CAVEAT: traces cover ~30/90 canonical qids for most pipelines (p0=43, p9=83); P11/P12 have NO usable traces. Raw n_results is verb-name-specific (NOT cross-architecture comparable) and does NOT dedup within run, so it OVERSTATES late-search value (any decline found is conservative). Per-call unique-URL dedup is not logged.",
+    "mvt_threshold_env_avg_yield": {
+      "value_docs_per_search": 13.257,
+      "definition": "Cross-source (environment) average marginal yield = grand mean n_results per 'search' call pooled across all 8 traced pipelines (n=4048 calls). MVT-optimal stop = when a pipeline's marginal new-doc yield falls to this environment average."
+    },
+    "within_run_marginal_yield": {
+      "p1_iterative_rag": {
+        "n_runs": 551,
+        "yield_by_step": {
+          "1": 8.34,
+          "2": 1.34,
+          "3": 1.11,
+          "4": 0.97
+        },
+        "finding": "STEEP diminishing returns: search 1 yields 8.3 docs, search 2 = 1.3, search 4 = 1.0 (8.3x collapse). ~93% of P1's search calls are issued AFTER marginal yield has already dropped below the environment average - a fixed-iteration loop that keeps foraging in an exhausted patch."
+      },
+      "p6_reactive_interleaved": {
+        "n_runs": 44,
+        "yield_by_step": {
+          "1": 17.34,
+          "2": 19.09,
+          "3": 20.61,
+          "4": 21.25,
+          "5": 21.84,
+          "6": 22.91,
+          "7": 23.2,
+          "8": 23.77,
+          "9": 24.8,
+          "10": 25.34,
+          "11": 25.73,
+          "12": 25.8,
+          "13": 26.18
+        },
+        "finding": "Raw per-search yield does NOT decline (17.3 at step 1 -> 26.2 at step 13) because P6 targets a fresh subtopic each reactive step; raw n_results is not NEW-doc yield. MVT cannot be cleanly tested for P6 on raw counts (per-call dedup unlogged). P6 issues a FIXED 13 searches/run regardless of marginal value - no model-driven early stop."
+      },
+      "p10_deep_researcher": {
+        "n_runs": 195,
+        "yield_by_step": {
+          "1": 0.0,
+          "2": 0.0,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0,
+          "6": 0.0,
+          "7": 0.0,
+          "8": 0.0,
+          "9": 0.0,
+          "10": 0.0,
+          "11": 0.0,
+          "12": 0.0,
+          "13": 0.0,
+          "14": 0.0,
+          "15": 0.0
+        },
+        "finding": "PATHOLOGICAL over-forager: all 17.4 search actions/run return 0 retrieved docs via the search verb (its docs arrive through tool_call/source_extract). 100% of its searches sit below the MVT stop, yet it keeps issuing up to 24. Extreme effort, near-zero search harvest."
+      }
+    },
+    "p10_new_doc_saturation": {
+      "n_runs": 195,
+      "mean_searches": 17.37,
+      "mean_unique_urls": 29.65,
+      "marginal_unique_per_search_slope": 0.145,
+      "corr": 0.14,
+      "corr_p": 0.0511
+    },
+    "arm_level_effort_vs_outcome": {
+      "table": [
+        {
+          "arm": "p0",
+          "n_searches": 2.837,
+          "docs_per_attempt": 5.2213,
+          "docs_retrieved": 14.814,
+          "score": 0.4884,
+          "citation_quality": 0.5485,
+          "factual": 0.4644,
+          "citations_mean": 5.4444,
+          "cit_per_search": 1.919,
+          "elapsed_s": 161.2181
+        },
+        {
+          "arm": "p1",
+          "n_searches": 4.0,
+          "docs_per_attempt": 0.1,
+          "docs_retrieved": 0.4,
+          "score": 0.6734,
+          "citation_quality": 0.7817,
+          "factual": 0.6133,
+          "citations_mean": 42.8556,
+          "cit_per_search": 10.714,
+          "elapsed_s": 764.923
+        },
+        {
+          "arm": "p2",
+          "n_searches": 2.0,
+          "docs_per_attempt": 61.0,
+          "docs_retrieved": 122.0,
+          "score": 0.5853,
+          "citation_quality": 0.5167,
+          "factual": 0.537,
+          "citations_mean": 13.7556,
+          "cit_per_search": 6.878,
+          "elapsed_s": 343.0734
+        },
+        {
+          "arm": "p3",
+          "n_searches": 1.0,
+          "docs_per_attempt": 30.0,
+          "docs_retrieved": 30.0,
+          "score": 0.5697,
+          "citation_quality": 0.3906,
+          "factual": 0.4995,
+          "citations_mean": 12.5955,
+          "cit_per_search": 12.595,
+          "elapsed_s": 1641.4911
+        },
+        {
+          "arm": "p4",
+          "n_searches": 1.0,
+          "docs_per_attempt": 5.3,
+          "docs_retrieved": 5.3,
+          "score": 0.6397,
+          "citation_quality": 0.4926,
+          "factual": 0.5491,
+          "citations_mean": 21.2333,
+          "cit_per_search": 21.233,
+          "elapsed_s": 1349.4229
+        },
+        {
+          "arm": "p5",
+          "n_searches": 6.0,
+          "docs_per_attempt": 25.6667,
+          "docs_retrieved": 154.0,
+          "score": 0.6007,
+          "citation_quality": 0.4757,
+          "factual": 0.5272,
+          "citations_mean": 56.7978,
+          "cit_per_search": 9.466,
+          "elapsed_s": 901.6541
+        },
+        {
+          "arm": "p6",
+          "n_searches": 13.0,
+          "docs_per_attempt": 23.2361,
+          "docs_retrieved": 302.069,
+          "score": 0.634,
+          "citation_quality": 0.7193,
+          "factual": 0.5618,
+          "citations_mean": 24.5977,
+          "cit_per_search": 1.892,
+          "elapsed_s": 2938.2405
+        },
+        {
+          "arm": "p7",
+          "n_searches": 3.0,
+          "docs_per_attempt": 129.8556,
+          "docs_retrieved": 389.5667,
+          "score": 0.6301,
+          "citation_quality": 0.788,
+          "factual": 0.6093,
+          "citations_mean": 30.3667,
+          "cit_per_search": 10.122,
+          "elapsed_s": 3253.1943
+        },
+        {
+          "arm": "p8",
+          "n_searches": 1.0,
+          "docs_per_attempt": 141.3,
+          "docs_retrieved": 141.3,
+          "score": 0.625,
+          "citation_quality": 0.5898,
+          "factual": 0.5856,
+          "citations_mean": 34.7556,
+          "cit_per_search": 34.756,
+          "elapsed_s": 2221.7536
+        },
+        {
+          "arm": "p9",
+          "n_searches": 1.048,
+          "docs_per_attempt": 6.1034,
+          "docs_retrieved": 6.3976,
+          "score": 0.2577,
+          "citation_quality": 0.2528,
+          "factual": 0.2366,
+          "citations_mean": 2.3889,
+          "cit_per_search": 2.279,
+          "elapsed_s": 115.7339
+        },
+        {
+          "arm": "p10",
+          "n_searches": 24.412,
+          "docs_per_attempt": 0.0145,
+          "docs_retrieved": 0.3529,
+          "score": 0.3358,
+          "citation_quality": 0.2944,
+          "factual": 0.3153,
+          "citations_mean": 4.6629,
+          "cit_per_search": 0.191,
+          "elapsed_s": 653.0574
+        }
+      ],
+      "consequence_correlations_n_searches_vs": {
+        "score": {
+          "pearson": -0.336,
+          "pearson_p": 0.313,
+          "spearman": 0.028,
+          "spearman_p": 0.936,
+          "n": 11
+        },
+        "citation_quality": {
+          "pearson": -0.178,
+          "pearson_p": 0.6,
+          "spearman": 0.156,
+          "spearman_p": 0.647,
+          "n": 11
+        },
+        "factual": {
+          "pearson": -0.336,
+          "pearson_p": 0.313,
+          "spearman": 0.009,
+          "spearman_p": 0.979,
+          "n": 11
+        },
+        "citations_mean": {
+          "pearson": -0.155,
+          "pearson_p": 0.649,
+          "spearman": 0.147,
+          "spearman_p": 0.667,
+          "n": 11
+        },
+        "docs_retrieved": {
+          "pearson": 0.022,
+          "pearson_p": 0.949,
+          "spearman": 0.037,
+          "spearman_p": 0.915,
+          "n": 11
+        }
+      },
+      "finding": "DECISIVE consequence test (11 arms): searching MORE buys NOTHING. n_searches vs score pearson -0.336 (ns), vs citation_quality -0.178 (ns), vs factual -0.336 (ns), vs surviving citations -0.155 (ns), and vs docs actually retrieved +0.022 (ns). Every correlation is <=0 or null. The two heaviest foragers are the two worst outcomes-per-effort: P10 (24.4 searches -> score 0.336, LOWEST; 0.19 surviving citations/search) and P6 (13 searches -> 1.89 citations/search, same harvest efficiency as P0 which searches 4.6x less, at 18x P0's wall-clock)."
+    },
+    "mvt_optimal_stoppers": {
+      "finding": "The STRONG pipelines approximate the MVT stop: the top scorers forage little and quit early - P8 (1 search, 0.625, 34.8 citations/search), P4 (1 search, 0.640, 21.2/search), P7 (3 searches, 0.630), P1 (4 searches, 0.673). P0 reaches 0.488 in 2.8 searches, beating P10 (0.336) with 1/8th the foraging. Harvest efficiency (surviving citations per search) is INVERSELY related to search volume."
+    },
+    "verdict": "MVT holds as a diagnosis. (1) Where searches truly share a doc pool, marginal yield collapses fast (P1 8.3x over 4 searches; P5 widen->deepen 12.3x), and pipelines keep foraging past the environment-average stop (P1: 93% of searches). (2) The RL agent P10 is the extreme MVT violator: ~17 search actions/run, marginal new-unique-doc slope only +0.14 URLs per extra search (vs env avg 13.3), and it scores LOWEST. (3) Over-foraging correlates with ZERO quality/citation gain across 11 arms (all n_searches correlations <=0, ns). The strong architectures (P1/P4/P7/P8) implicitly obey MVT by stopping after 1-4 well-targeted searches. CAVEAT: raw-yield MVT cannot be tested per-call for P6 (fixed 13 searches, no dedup); trace coverage ~30/90 qids; P11/P12 untraced."
+  }
+}

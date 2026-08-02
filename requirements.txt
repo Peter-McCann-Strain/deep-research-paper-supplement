@@ -1,5 +1,5 @@
-# Public API reproduction profile.
+# Public API and paper artifact rebuild profile.
 # This repository is clone-oriented; install from the checkout so repo-relative
-# data/, repro/, docs/, and papers/ artifacts are available to the CLI.
-# GPU/local-model and scientific-analysis dependencies are intentionally omitted.
--e .[api]
+# data/, repro/, docs/, paper_rebuild/, and papers/ artifacts are available to the CLI.
+# GPU/local-model dependencies are intentionally omitted.
+-e .[api,paper]

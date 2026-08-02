@@ -6,11 +6,13 @@ Use this repo to:
 
 - run no-cost integrity checks for the shipped paper-reference files;
 - inspect the frozen 90-query, 13-pattern headline summaries;
+- rebuild the Paper A tables, figures, and manuscript PDF from the shipped derived data;
+- inspect the paper's reusable pattern, evaluation, benchmark, tool, and analysis code;
 - compare a compatible pattern-metric summary against the frozen reference;
 - run a current OpenAI or Azure OpenAI hosted-search demo; and
 - add Anthropic API credentials when you want the full Claude judge panel.
 
-It does not regenerate the exact submitted run. That would require archived raw reports, judge verdict trees, historical model/search snapshots, and local infrastructure that are not part of the GitHub release. Live API reruns are useful for checking the workflow and current-model drift, but they are not a bitwise reproduction claim.
+It rebuilds the public paper artifacts from the included canonical store and compact derived analysis tables. It does not bitwise replay the exact historical raw run because that would require raw generated report forests, raw judge-verdict packet directories, historical provider/search snapshots, and local infrastructure that are not part of the GitHub release. Live API reruns are useful for checking the workflow and current-model drift, but they are not a bitwise equality claim.
 
 License boundary: Apache-2.0 applies to code. Public data files are mixed-license by row/source; see `NOTICE` and `DATA_LICENSES.md` before redistributing data-derived material.
 
@@ -24,10 +26,11 @@ Requires Python `>=3.11,<3.13`.
 
 ```bash
 python3 -m venv venv
-source venv/bin/activate
-python -m pip install -c constraints-public.txt -e ".[api]"
+[ -f venv/bin/activate ] && source venv/bin/activate
+python -m pip install -c constraints-public.txt -e ".[api,paper]"
 cp .env.example .env
 deep-research quickstart-check
+deep-research paper rebuild paper-a --check-only
 deep-research doctor
 deep-research reproduce paper-a --mode smoke
 deep-research reproduce paper-a --mode reference
@@ -51,9 +54,21 @@ ruff check --no-cache deep_research tests
 | Integrity smoke test | `deep-research reproduce paper-a --mode smoke` | No | Verifies shipped public inputs only. |
 | Frozen headline reference | `deep-research reproduce paper-a --mode reference` | No | Shows the paper's 90-query, 13-pattern headline ordering. |
 | Compact metric audit | `deep-research compare paper-a --run-summary repro/reference/paper_a_pattern_metrics.csv` | No | Recomputes agreement against the shipped pattern-level metrics table. |
+| Paper artifact rebuild | `deep-research paper rebuild paper-a --skip-compile` | No | Rebuilds tables and figures from `data/analysis/` and `paper_rebuild/.../analysis/canonical_numbers.json`. |
+| Full manuscript compile | `deep-research paper rebuild paper-a` | No provider APIs | Also compiles `paper_rebuild/paper_a_bounded_returns/main.tex` and refreshes `papers/paper_a_bounded_returns/main.pdf` when `tectonic` is installed. |
 | Live API generation demo | `deep-research reproduce paper-a --mode api-best-effort --execute --limit N` | Yes | Best-effort current-API run; requires and verifies hosted web search; not the historical 13-pattern matrix. |
 | Live API judging | add `--judge` | Yes | Uses query rubrics and the OpenAI plus Anthropic API panel for current reports; not a historical equality claim. |
-| Historical exact rerun | Not shipped | N/A | Requires private/archival infrastructure, raw reports, judge verdict trees, and historical model/search snapshots. |
+| Historical raw replay | Not fully shipped | N/A | Requires private/archival raw reports, raw judge packet directories, and historical model/search snapshots. |
+
+Paper artifact rebuild:
+
+```bash
+deep-research paper rebuild paper-a --check-only
+deep-research paper rebuild paper-a --skip-compile
+deep-research paper rebuild paper-a
+```
+
+Use `--skip-compile` if you do not have `tectonic` installed. The command still regenerates the tables and figures consumed by the manuscript source.
 
 For the best-effort API path, fill in standard OpenAI credentials or the Azure OpenAI deployment settings from `.env.example`; add `ANTHROPIC_API_KEY` for the full judge panel.
 
@@ -126,11 +141,13 @@ Azure hosted search is backed by Bing grounding. Check your Azure region, compli
 
 | Path | Contents |
 |---|---|
-| `deep_research/` | CLI and reproduction code: API judges, comparison, export, audit, and settings |
+| `deep_research/` | Public package: CLI, API judges, reproduction, pattern implementations, evaluation code, tools, benchmarks, export, audit, and settings |
 | `tests/` | Offline tests for release hygiene, docs, comparison, judging, and API request shapes |
 | `repro/` | Reference tables, expected outputs, and paper-to-command mapping |
 | `docs/` | Method and human-evaluation documentation |
-| `data/` | Compact reusable inputs and dictionaries only |
+| `data/` | Compact reusable inputs, query/rubric manifests, and derived analysis tables |
+| `paper_rebuild/` | Paper A LaTeX source, bibliography, analysis scripts, generated figures/tables, and compact statistical summaries |
+| `scripts/` | Historical execution, analysis, data-preparation, and diagnostic scripts, documented by `scripts/README.md` |
 | `papers/paper_a_bounded_returns/main.pdf` | Final paper PDF only |
 | `artifacts/` | Local generated outputs only; not part of public GitHub |
 
@@ -138,7 +155,7 @@ Azure hosted search is backed by Bing grounding. Check your Azure region, compli
 
 Large or regenerable material is local-first and gitignored. The physical home is `artifacts/`; legacy paths such as `results/experiments`, `results/judge_gpt52`, `models`, `logs`, and `checkpoints` are local compatibility paths only.
 
-Do not commit raw caches, local model weights, checkpoints, logs, generated report forests, private notes, outreach messages, scratchpads, or submission bundles. Commit source, docs, compact canonical inputs, constraints, manifests, tests, and the final paper PDF.
+Do not commit raw caches, local model weights, checkpoints, logs, generated report forests, raw judge packet directories, private notes, outreach messages, scratchpads, drafts, or submission bundles. Commit source, docs, compact canonical inputs, derived public tables, constraints, manifests, tests, the paper rebuild package, and the final paper PDF.
 
 Build and audit a clean candidate tree before publishing:
 
@@ -153,10 +170,10 @@ rejected by the release audit.
 
 ## Reproducibility
 
-See `REPRODUCIBILITY.md` for the public no-model-download workflow. The default path is a best-effort API rerun. Historical exact reproduction requires frozen artifacts and model/search snapshots and is not the default GitHub path.
+See `REPRODUCIBILITY.md` for the public artifact rebuild and no-model-download API workflow. The default live path is a best-effort API rerun. Historical exact raw replay requires frozen raw artifacts and model/search snapshots and is not the default GitHub path.
 
 ## Scope Limits
 
 - The working research workspace may contain private artifacts; publish from `deep-research export-public`, not from the raw workspace.
 - Public reruns must record the exact OpenAI and Anthropic model identifiers used.
-- Local model/GPU experiments and historical implementation modules are intentionally omitted from the public export; the public workflow is API-only and no-model-download.
+- Local model/GPU experiment code is included for inspection and provenance, but the supported public reproduction workflow is API-only and no-model-download unless a user deliberately opts into optional local-model experiments.

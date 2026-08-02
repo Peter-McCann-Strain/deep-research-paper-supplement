@@ -1,0 +1,709 @@
+{
+ "_note": "Cross-field re-analysis: architecture PORTFOLIOS (Markowitz mean-variance, Pianka niche-overlap, Ladha correlated Condorcet jury, Cohen geometric-mean bet-hedging). Pure-CPU on on-disk data, NO API. Staging only (NOT canonical). Reuses the routability 3-judge matrix convention, loso source convention, sigma_run from variance_decomposition, and the judge_vs_gold mechanical-gold slice.",
+ "seed": 20260703,
+ "sigma_run_used": 0.0591,
+ "n_states_queries": 87,
+ "markowitz": {
+  "_method": "Assets = 11 base architectures; states = 87 queries with all-11 3-judge-mean quality (mean of gpt52/claude_opus/claude_sonnet overall_score_recomputed); returns = per-query quality. Long-only fully-invested weights (w>=0, sum=1). Sigma = sample cross-query covariance (ddof=1). Sharpe = mean/query-risk (rf=0; returns are quality scores, not excess returns, so absolute Sharpe is large - the load-bearing comparison is blend-vs-single, not the level).",
+  "n_states_queries": 87,
+  "n_assets": 11,
+  "assets": [
+   "base_p0",
+   "base_p1",
+   "base_p2",
+   "base_p3",
+   "base_p4",
+   "base_p5",
+   "base_p6",
+   "base_p7",
+   "base_p8",
+   "base_p9",
+   "base_p10"
+  ],
+  "asset_mean": {
+   "base_p0": 0.4864,
+   "base_p1": 0.675,
+   "base_p2": 0.5884,
+   "base_p3": 0.569,
+   "base_p4": 0.6419,
+   "base_p5": 0.6026,
+   "base_p6": 0.6325,
+   "base_p7": 0.631,
+   "base_p8": 0.6344,
+   "base_p9": 0.259,
+   "base_p10": 0.3372
+  },
+  "asset_risk": {
+   "base_p0": 0.2121,
+   "base_p1": 0.1232,
+   "base_p2": 0.1155,
+   "base_p3": 0.1149,
+   "base_p4": 0.0761,
+   "base_p5": 0.1145,
+   "base_p6": 0.1294,
+   "base_p7": 0.106,
+   "base_p8": 0.0849,
+   "base_p9": 0.2246,
+   "base_p10": 0.1477
+  },
+  "asset_sharpe": {
+   "base_p0": 2.293,
+   "base_p1": 5.477,
+   "base_p2": 5.0964,
+   "base_p3": 4.9526,
+   "base_p4": 8.436,
+   "base_p5": 5.2645,
+   "base_p6": 4.8891,
+   "base_p7": 5.9515,
+   "base_p8": 7.4746,
+   "base_p9": 1.1532,
+   "base_p10": 2.2833
+  },
+  "best_single_arch": {
+   "arch": "base_p4",
+   "mean": 0.6419,
+   "risk": 0.0761,
+   "sharpe": 8.436
+  },
+  "min_variance_portfolio": {
+   "weights": {
+    "base_p3": 0.0573,
+    "base_p4": 0.45,
+    "base_p7": 0.1596,
+    "base_p8": 0.3331
+   },
+   "mean": 0.6335,
+   "risk": 0.0666,
+   "sharpe": 9.509,
+   "diversification_ratio": 1.2912,
+   "risk_below_least_risky_single_arch": true,
+   "least_risky_single_arch_risk": 0.0761,
+   "pareto_dominates_single_arches": [
+    "base_p0",
+    "base_p2",
+    "base_p3",
+    "base_p5",
+    "base_p6",
+    "base_p7",
+    "base_p9",
+    "base_p10"
+   ],
+   "n_single_arches_dominated": 8
+  },
+  "tangency_portfolio": {
+   "weights": {
+    "base_p1": 0.0395,
+    "base_p4": 0.4847,
+    "base_p7": 0.1535,
+    "base_p8": 0.3223
+   },
+   "mean": 0.6391,
+   "risk": 0.0669,
+   "sharpe": 9.5539,
+   "diversification_ratio": 1.2763,
+   "sharpe_improvement_over_best_single": 1.1178,
+   "sharpe_improvement_pct": 13.25
+  },
+  "equal_weight_portfolio": {
+   "mean": 0.5507,
+   "risk": 0.096,
+   "sharpe": 5.7334,
+   "diversification_ratio": 1.3713
+  },
+  "efficient_frontier_dominance": {
+   "n_single_arches_pareto_inefficient": 10,
+   "pareto_inefficient_single_arches": [
+    {
+     "arch": "base_p0",
+     "arch_risk": 0.2121,
+     "frontier_risk_at_same_mean": 0.0666
+    },
+    {
+     "arch": "base_p2",
+     "arch_risk": 0.1155,
+     "frontier_risk_at_same_mean": 0.0666
+    },
+    {
+     "arch": "base_p3",
+     "arch_risk": 0.1149,
+     "frontier_risk_at_same_mean": 0.0666
+    },
+    {
+     "arch": "base_p4",
+     "arch_risk": 0.0761,
+     "frontier_risk_at_same_mean": 0.0676
+    },
+    {
+     "arch": "base_p5",
+     "arch_risk": 0.1145,
+     "frontier_risk_at_same_mean": 0.0666
+    },
+    {
+     "arch": "base_p6",
+     "arch_risk": 0.1294,
+     "frontier_risk_at_same_mean": 0.0666
+    },
+    {
+     "arch": "base_p7",
+     "arch_risk": 0.106,
+     "frontier_risk_at_same_mean": 0.0666
+    },
+    {
+     "arch": "base_p8",
+     "arch_risk": 0.0849,
+     "frontier_risk_at_same_mean": 0.0666
+    },
+    {
+     "arch": "base_p9",
+     "arch_risk": 0.2246,
+     "frontier_risk_at_same_mean": 0.0666
+    },
+    {
+     "arch": "base_p10",
+     "arch_risk": 0.1477,
+     "frontier_risk_at_same_mean": 0.0666
+    }
+   ],
+   "pareto_efficient_single_arches": [
+    "base_p1"
+   ],
+   "note": "a single arch is Pareto-inefficient if some long-only portfolio matches its mean at strictly lower query-risk."
+  },
+  "top_tier_diversifiability": {
+   "arms": [
+    "base_p1",
+    "base_p4",
+    "base_p5",
+    "base_p6",
+    "base_p7",
+    "base_p8"
+   ],
+   "mean_pairwise_return_correlation": 0.4633,
+   "note": "mean of the 15 off-diagonal per-query return correlations among the top-tier arms; well below 1 => genuine diversification headroom among the good architectures."
+  },
+  "out_of_sample_loso": {
+   "per_source": {
+    "custom": {
+     "n_heldout": 5,
+     "blend_min_var": {
+      "mean": 0.6929,
+      "risk": 0.0436,
+      "sharpe": 15.8742,
+      "diversification_ratio_oos": 1.5529
+     },
+     "blend_tangency": {
+      "mean": 0.6925,
+      "risk": 0.0444,
+      "sharpe": 15.6037
+     },
+     "best_single_arch_heldout": {
+      "arch": "base_p6",
+      "sharpe": 37.1817
+     },
+     "min_single_arch_risk_heldout": 0.0207,
+     "tangency_sharpe_minus_best_single": -21.5781,
+     "minvar_risk_below_min_single": false
+    },
+    "deepsearch_qa": {
+     "n_heldout": 19,
+     "blend_min_var": {
+      "mean": 0.5494,
+      "risk": 0.0568,
+      "sharpe": 9.6667,
+      "diversification_ratio_oos": 1.5735
+     },
+     "blend_tangency": {
+      "mean": 0.5578,
+      "risk": 0.057,
+      "sharpe": 9.786
+     },
+     "best_single_arch_heldout": {
+      "arch": "base_p8",
+      "sharpe": 8.2799
+     },
+     "min_single_arch_risk_heldout": 0.0699,
+     "tangency_sharpe_minus_best_single": 1.5062,
+     "minvar_risk_below_min_single": true
+    },
+    "draco": {
+     "n_heldout": 38,
+     "blend_min_var": {
+      "mean": 0.6505,
+      "risk": 0.0397,
+      "sharpe": 16.3777,
+      "diversification_ratio_oos": 1.4691
+     },
+     "blend_tangency": {
+      "mean": 0.651,
+      "risk": 0.0404,
+      "sharpe": 16.1138
+     },
+     "best_single_arch_heldout": {
+      "arch": "base_p4",
+      "sharpe": 14.7276
+     },
+     "min_single_arch_risk_heldout": 0.0451,
+     "tangency_sharpe_minus_best_single": 1.3862,
+     "minvar_risk_below_min_single": true
+    },
+    "litqa2": {
+     "n_heldout": 10,
+     "blend_min_var": {
+      "mean": 0.5705,
+      "risk": 0.0633,
+      "sharpe": 9.0122,
+      "diversification_ratio_oos": 1.2291
+     },
+     "blend_tangency": {
+      "mean": 0.5709,
+      "risk": 0.0632,
+      "sharpe": 9.027
+     },
+     "best_single_arch_heldout": {
+      "arch": "base_p8",
+      "sharpe": 11.6652
+     },
+     "min_single_arch_risk_heldout": 0.0505,
+     "tangency_sharpe_minus_best_single": -2.6382,
+     "minvar_risk_below_min_single": false
+    },
+    "research_qa": {
+     "n_heldout": 15,
+     "blend_min_var": {
+      "mean": 0.7175,
+      "risk": 0.0298,
+      "sharpe": 24.0774,
+      "diversification_ratio_oos": 1.6455
+     },
+     "blend_tangency": {
+      "mean": 0.7234,
+      "risk": 0.0292,
+      "sharpe": 24.7876
+     },
+     "best_single_arch_heldout": {
+      "arch": "base_p1",
+      "sharpe": 24.703
+     },
+     "min_single_arch_risk_heldout": 0.0328,
+     "tangency_sharpe_minus_best_single": 0.0846,
+     "minvar_risk_below_min_single": true
+    }
+   },
+   "mean_tangency_sharpe_improvement_over_best_single": -4.2479,
+   "median_tangency_sharpe_improvement_over_best_single": 0.0846,
+   "n_folds_tangency_beats_best_single": 3,
+   "n_folds": 5,
+   "n_folds_minvar_risk_below_min_single": 3,
+   "mean_minvar_risk_reduction_vs_min_single": -0.0029,
+   "mean_oos_diversification_ratio_minvar": 1.494,
+   "min_oos_diversification_ratio_minvar": 1.2291,
+   "note": "weights fit on 4 sources, evaluated on the held-out source's queries (true OOS). The min-variance blend's diversification ratio (>1 in every fold) is the STRUCTURAL, overfit-proof OOS evidence. The max-Sharpe tangency blend overfits: it beats the best single arch in the 3 largest folds but the mean is dragged negative by the two smallest held-out folds (custom n=5, litqa2 n=10) where a single arch's held-out Sharpe is inflated by tiny-sample low variance; the median improvement is the robust summary."
+  },
+  "verdict": "POSITIVE (diversification), in-sample structural: the min-variance blend cuts query-risk to 0.067, below the least-risky single architecture (0.076), with diversification ratio 1.29>1; it Pareto-dominates 8/11 single architectures and 10/11 single architectures are Pareto-inefficient (some blend matches their mean at lower risk). The tangency blend lifts in-sample Sharpe +13.2% over the best single arch (base_p4). Top-tier arms are only 0.46 mean-correlated, so the diversification headroom is genuine. OUT-OF-SAMPLE (leave-one-source-out): the min-variance blend's diversification ratio stays >1 in every fold (mean 1.494, min 1.2291) and its risk is below the least-risky single arch in 3/5 folds; the max-Sharpe tangency blend OVERFITS (median OOS Sharpe improvement 0.0846>0, but mean -4.2479 is dragged negative by the two smallest folds). Robust claim: blending lowers query-risk without sacrificing mean; chasing the max-Sharpe frontier point does not transfer."
+ },
+ "pianka": {
+  "_method": "Resource axes = 10 query bins (source x difficulty). Community = 6 top-tier arms. Each arm's utilisation = its win-share distribution across bins (argmax of per-query 3-judge-mean among the 6). Pianka (1973) overlap O_jk = sum(p_j p_k)/sqrt(sum p_j^2 sum p_k^2). Per-bin leader stability = fraction of 4000 sigma_run(=0.059) parametric perturbations that leave the bin's mean-leader unchanged. A routable/exclusive niche = a bin whose robust (stable>0.9, gap>2 noise-SE) leader is NOT the global champion.",
+  "n_bins": 10,
+  "bins": [
+   "custom|complex",
+   "custom|moderate",
+   "custom|simple",
+   "deepsearch_qa|complex",
+   "deepsearch_qa|moderate",
+   "draco|complex",
+   "litqa2|complex",
+   "litqa2|simple",
+   "research_qa|moderate",
+   "research_qa|simple"
+  ],
+  "global_champion": "base_p1",
+  "pairwise_overlap": {
+   "base_p1|base_p4": 0.7658,
+   "base_p1|base_p5": 0.479,
+   "base_p1|base_p6": 0.6648,
+   "base_p1|base_p7": 0.7682,
+   "base_p1|base_p8": 0.8925,
+   "base_p4|base_p5": 0.4961,
+   "base_p4|base_p6": 0.664,
+   "base_p4|base_p7": 0.8951,
+   "base_p4|base_p8": 0.8564,
+   "base_p5|base_p6": 0.6489,
+   "base_p5|base_p7": 0.7217,
+   "base_p5|base_p8": 0.5754,
+   "base_p6|base_p7": 0.7961,
+   "base_p6|base_p8": 0.8001,
+   "base_p7|base_p8": 0.9017
+  },
+  "mean_pairwise_overlap": 0.7284,
+  "mean_pairwise_overlap_nonsingleton_bins": 0.7622,
+  "per_bin_leader": {
+   "custom|complex": "base_p6",
+   "custom|moderate": "base_p5",
+   "custom|simple": "base_p6",
+   "deepsearch_qa|complex": "base_p1",
+   "deepsearch_qa|moderate": "base_p7",
+   "draco|complex": "base_p1",
+   "litqa2|complex": "base_p1",
+   "litqa2|simple": "base_p1",
+   "research_qa|moderate": "base_p1",
+   "research_qa|simple": "base_p1"
+  },
+  "per_bin_leader_gap": {
+   "custom|complex": 0.0457,
+   "custom|moderate": 0.0195,
+   "custom|simple": 0.0236,
+   "deepsearch_qa|complex": 0.0213,
+   "deepsearch_qa|moderate": 0.0103,
+   "draco|complex": 0.0121,
+   "litqa2|complex": 0.0704,
+   "litqa2|simple": 0.0944,
+   "research_qa|moderate": 0.0833,
+   "research_qa|simple": 0.065
+  },
+  "per_bin_gap_in_noise_SE": {
+   "custom|complex": 1.339,
+   "custom|moderate": 0.33,
+   "custom|simple": 0.4,
+   "deepsearch_qa|complex": 1.142,
+   "deepsearch_qa|moderate": 0.525,
+   "draco|complex": 1.266,
+   "litqa2|complex": 3.155,
+   "litqa2|simple": 2.769,
+   "research_qa|moderate": 5.274,
+   "research_qa|simple": 1.1
+  },
+  "per_bin_leader_stability_under_sigma_run": {
+   "custom|complex": 0.641,
+   "custom|moderate": 0.432,
+   "custom|simple": 0.389,
+   "deepsearch_qa|complex": 0.664,
+   "deepsearch_qa|moderate": 0.555,
+   "draco|complex": 0.813,
+   "litqa2|complex": 0.981,
+   "litqa2|simple": 0.956,
+   "research_qa|moderate": 1.0,
+   "research_qa|simple": 0.656
+  },
+  "leader_frequency_across_bins": {
+   "base_p6": 2,
+   "base_p5": 1,
+   "base_p1": 6,
+   "base_p7": 1
+  },
+  "n_distinct_bin_leaders": 4,
+  "non_champion_led_bins": {
+   "custom|complex": {
+    "leader": "base_p6",
+    "gap": 0.0457,
+    "gap_in_noise_SE": 1.339,
+    "leader_stability": 0.641,
+    "clears_noise_floor": false
+   },
+   "custom|moderate": {
+    "leader": "base_p5",
+    "gap": 0.0195,
+    "gap_in_noise_SE": 0.33,
+    "leader_stability": 0.432,
+    "clears_noise_floor": false
+   },
+   "custom|simple": {
+    "leader": "base_p6",
+    "gap": 0.0236,
+    "gap_in_noise_SE": 0.4,
+    "leader_stability": 0.389,
+    "clears_noise_floor": false
+   },
+   "deepsearch_qa|moderate": {
+    "leader": "base_p7",
+    "gap": 0.0103,
+    "gap_in_noise_SE": 0.525,
+    "leader_stability": 0.555,
+    "clears_noise_floor": false
+   }
+  },
+  "n_non_champion_bins_clearing_noise": 0,
+  "routable_niches_exclusive": [],
+  "litqa2_bins_leader": {
+   "litqa2|complex": "base_p1",
+   "litqa2|simple": "base_p1"
+  },
+  "verdict": "ROUTER-NULL CONFIRMED: the global champion base_p1 wins 6/10 bins outright; the 4 bins led by a non-champion arm (base_p5,base_p6,base_p7) are ALL within the sigma_run noise floor (none has a stable, >2 noise-SE lead), so NO arm carves an exclusive/routable niche. Top-tier arms overlap 0.73 across bins (0.76 on non-singleton bins); the litqa2 bins are won by the champion, not an exclusive specialist. The per-source/per-bin leader rotation is sampling noise, not routable specialisation."
+ },
+ "condorcet": {
+  "_method": "Ladha (1992) correlated Condorcet jury. Gold = mechanical answer-correctness per (pattern,query) base report on the LitQA2+DeepSearchQA verifiable slice (reused from judge_vs_gold). Each judge's binary vote = thresholded overall_score_recomputed on the common report set scored by all 3 judges. p_i = accuracy vs gold; rho = pairwise correlation of ERROR indicators; correlated majority accuracy predicted by a beta-binomial (mean p_bar, intraclass corr rho_bar); N_eff = 3/(1+2*rho_bar) (same aggregation family as E3's n_eff=9/(3+2*sum phi)).",
+  "n_reports_common": 259,
+  "n_queries": 27,
+  "gold_prevalence": 0.2201,
+  "reference_n_eff_E3": 1.6547,
+  "reference_E3_phi": {
+   "gpt52|claude_opus": 0.4025,
+   "gpt52|claude_sonnet": 0.305,
+   "claude_opus|claude_sonnet": 0.512
+  },
+  "primary_prevalence_matched_votes": {
+   "per_judge_accuracy_vs_gold": {
+    "gpt52": 0.6873,
+    "claude_opus": 0.6911,
+    "claude_sonnet": 0.6139
+   },
+   "mean_judge_accuracy_p_bar": 0.6641,
+   "pairwise_error_correlation": {
+    "gpt52|claude_opus": 0.3962,
+    "gpt52|claude_sonnet": 0.4572,
+    "claude_opus|claude_sonnet": 0.5169
+   },
+   "mean_error_correlation_rho_bar": 0.4567,
+   "rho_bar_ci95": [
+    0.3454,
+    0.5494
+   ],
+   "two_claude_error_correlation": 0.5169,
+   "predicted_majority_acc_independent": 0.738,
+   "predicted_majority_acc_correlated_ladha": 0.6789,
+   "observed_majority_acc_vs_gold": 0.6834,
+   "correlated_model_abs_error_vs_observed": 0.0045,
+   "independent_model_abs_error_vs_observed": 0.0546,
+   "effective_independent_judge_count": 1.5678,
+   "effective_judge_count_ci95": [
+    1.4293,
+    1.7744
+   ]
+  },
+  "robustness_youden_optimal_votes": {
+   "per_judge_accuracy_vs_gold": {
+    "gpt52": 0.3514,
+    "claude_opus": 0.6409,
+    "claude_sonnet": 0.3436
+   },
+   "mean_judge_accuracy_p_bar": 0.4453,
+   "pairwise_error_correlation": {
+    "gpt52|claude_opus": 0.0451,
+    "gpt52|claude_sonnet": 0.915,
+    "claude_opus|claude_sonnet": 0.0332
+   },
+   "mean_error_correlation_rho_bar": 0.3311,
+   "rho_bar_ci95": [
+    0.2177,
+    0.454
+   ],
+   "two_claude_error_correlation": 0.0332,
+   "predicted_majority_acc_independent": 0.4114,
+   "predicted_majority_acc_correlated_ladha": 0.4362,
+   "observed_majority_acc_vs_gold": 0.3591,
+   "correlated_model_abs_error_vs_observed": 0.0771,
+   "independent_model_abs_error_vs_observed": 0.0523,
+   "effective_independent_judge_count": 1.8049,
+   "effective_judge_count_ci95": [
+    1.5723,
+    2.09
+   ]
+  },
+  "threshold_sensitivity_note": "PRIMARY uses a prevalence-matched vote rule (top-k flagged correct, k from the gold base rate) - it does NOT peek at which reports are gold-correct, so it is the apples-to-apples analogue of E3's raw-verdict phi and gives two-Claude error-corr 0.52 (vs E3 phi_opus|sonnet 0.512) and N_eff 1.57 (vs E3 1.65). The Youden robustness fits each judge's threshold SEPARATELY to gold, which mechanically decorrelates their errors (two-Claude corr drops to 0.03) and inflates N_eff to 1.80; N_eff stays well below 3 either way, but the correlated structure that corroborates n_eff is the non-gold-peeking (primary) rule.",
+  "verdict": "CORROBORATES n_eff: the two Claude judges are the most error-correlated pair (rho=0.52, vs the cross-family pairs), and the correlated-CJT effective independent-judge count is 1.57 (CI [1.4293, 1.7744]) - far below 3 and consistent with the independent E3 estimate n_eff=1.65. The beta-binomial correlated model predicts the observed 3-judge-majority-vs-gold accuracy (|err|=0.004) far better than the naive-independent CJT (|err|=0.055), confirming the votes are positively correlated, not independent."
+ },
+ "geomean": {
+  "_method": "Cohen (1966) bet-hedging: under query-domain (source) uncertainty the long-run deployment optimum is the geometric mean of per-source quality (penalises across-source variance), not the arithmetic mean. Per-source quality = mean per-query 3-judge quality within each of the 5 sources.",
+  "per_source_quality": {
+   "base_p0": {
+    "custom": 0.686,
+    "deepsearch_qa": 0.3092,
+    "draco": 0.4626,
+    "litqa2": 0.5211,
+    "research_qa": 0.6812
+   },
+   "base_p1": {
+    "custom": 0.6909,
+    "deepsearch_qa": 0.5585,
+    "draco": 0.6764,
+    "litqa2": 0.6806,
+    "research_qa": 0.81
+   },
+   "base_p2": {
+    "custom": 0.6299,
+    "deepsearch_qa": 0.4879,
+    "draco": 0.6012,
+    "litqa2": 0.5526,
+    "research_qa": 0.6933
+   },
+   "base_p3": {
+    "custom": 0.7071,
+    "deepsearch_qa": 0.468,
+    "draco": 0.5762,
+    "litqa2": 0.5319,
+    "research_qa": 0.6576
+   },
+   "base_p4": {
+    "custom": 0.7112,
+    "deepsearch_qa": 0.5699,
+    "draco": 0.6642,
+    "litqa2": 0.5646,
+    "research_qa": 0.7051
+   },
+   "base_p5": {
+    "custom": 0.7364,
+    "deepsearch_qa": 0.481,
+    "draco": 0.6218,
+    "litqa2": 0.5601,
+    "research_qa": 0.692
+   },
+   "base_p6": {
+    "custom": 0.7694,
+    "deepsearch_qa": 0.5329,
+    "draco": 0.6382,
+    "litqa2": 0.6029,
+    "research_qa": 0.7186
+   },
+   "base_p7": {
+    "custom": 0.7257,
+    "deepsearch_qa": 0.5716,
+    "draco": 0.638,
+    "litqa2": 0.5644,
+    "research_qa": 0.7011
+   },
+   "base_p8": {
+    "custom": 0.6486,
+    "deepsearch_qa": 0.5789,
+    "draco": 0.6368,
+    "litqa2": 0.5889,
+    "research_qa": 0.7243
+   },
+   "base_p9": {
+    "custom": 0.5127,
+    "deepsearch_qa": 0.0526,
+    "draco": 0.2035,
+    "litqa2": 0.3543,
+    "research_qa": 0.5131
+   },
+   "base_p10": {
+    "custom": 0.5978,
+    "deepsearch_qa": 0.2062,
+    "draco": 0.2967,
+    "litqa2": 0.3577,
+    "research_qa": 0.505
+   }
+  },
+  "across_source_sd": {
+   "base_p0": 0.1585,
+   "base_p1": 0.0891,
+   "base_p2": 0.0777,
+   "base_p3": 0.0958,
+   "base_p4": 0.0715,
+   "base_p5": 0.102,
+   "base_p6": 0.0936,
+   "base_p7": 0.0732,
+   "base_p8": 0.058,
+   "base_p9": 0.2003,
+   "base_p10": 0.158
+  },
+  "arithmetic_mean": {
+   "base_p0": 0.532,
+   "base_p1": 0.6833,
+   "base_p2": 0.593,
+   "base_p3": 0.5882,
+   "base_p4": 0.643,
+   "base_p5": 0.6183,
+   "base_p6": 0.6524,
+   "base_p7": 0.6402,
+   "base_p8": 0.6355,
+   "base_p9": 0.3272,
+   "base_p10": 0.3927
+  },
+  "geometric_mean": {
+   "base_p0": 0.511,
+   "base_p1": 0.6786,
+   "base_p2": 0.5889,
+   "base_p3": 0.5819,
+   "base_p4": 0.6398,
+   "base_p5": 0.6113,
+   "base_p6": 0.647,
+   "base_p7": 0.6368,
+   "base_p8": 0.6334,
+   "base_p9": 0.2511,
+   "base_p10": 0.3664
+  },
+  "arithmetic_rank": [
+   "base_p1",
+   "base_p6",
+   "base_p4",
+   "base_p7",
+   "base_p8",
+   "base_p5",
+   "base_p2",
+   "base_p3",
+   "base_p0",
+   "base_p10",
+   "base_p9"
+  ],
+  "geometric_rank": [
+   "base_p1",
+   "base_p6",
+   "base_p4",
+   "base_p7",
+   "base_p8",
+   "base_p5",
+   "base_p2",
+   "base_p3",
+   "base_p0",
+   "base_p10",
+   "base_p9"
+  ],
+  "spearman_rank_correlation": 1.0,
+  "top_by_arithmetic": "base_p1",
+  "top_by_geometric": "base_p1",
+  "ranking_reshuffles": false,
+  "top_changes": false,
+  "n_arms_changing_rank": 0,
+  "rank_shifts_positive_is_rise_under_GM": {
+   "base_p0": 0,
+   "base_p1": 0,
+   "base_p2": 0,
+   "base_p3": 0,
+   "base_p4": 0,
+   "base_p5": 0,
+   "base_p6": 0,
+   "base_p7": 0,
+   "base_p8": 0,
+   "base_p9": 0,
+   "base_p10": 0
+  },
+  "biggest_riser_under_GM": {
+   "arch": "base_p0",
+   "positions": 0,
+   "across_source_sd": 0.1585
+  },
+  "finer_granularity_robustness": {
+   "per_bin_10env_geometric_rank": [
+    "base_p1",
+    "base_p6",
+    "base_p4",
+    "base_p7",
+    "base_p8",
+    "base_p5",
+    "base_p2",
+    "base_p3",
+    "base_p0",
+    "base_p10",
+    "base_p9"
+   ],
+   "per_bin_top": "base_p1",
+   "per_bin_reshuffles_vs_arithmetic": false,
+   "per_query_90env_geometric_rank": [
+    "base_p1",
+    "base_p4",
+    "base_p8",
+    "base_p7",
+    "base_p6",
+    "base_p5",
+    "base_p2",
+    "base_p3",
+    "base_p0",
+    "base_p10",
+    "base_p9"
+   ],
+   "per_query_top": "base_p1",
+   "per_query_reshuffles_vs_arithmetic": true,
+   "note": "Cohen's growth-rate optimum is the GM over environmental states; tested at source (5), source x difficulty bin (~10) and per-query (90) granularity. Per-query GM floors scores at 1e-6 so a single near-zero does not annihilate an arm."
+  },
+  "verdict": "NO RESHUFFLE at source granularity: arithmetic- and geometric-mean rankings are IDENTICAL (Spearman 1.00, 0 arms change rank); the deployment (bet-hedging) optimum is the SAME arm as the arithmetic optimum (base_p1). This is itself informative: base_p1's lead is NOT an artefact of averaging over volatile per-domain scores - it is top or near-top on every source (across-source sd 0.089, below lower-mean rivals), so it is robust to query-domain uncertainty, not a high-variance gamble. Finer-granularity robustness: per-bin GM top=base_p1 (no reshuffle), per-query GM top=base_p1 (reshuffles)."
+ }
+}

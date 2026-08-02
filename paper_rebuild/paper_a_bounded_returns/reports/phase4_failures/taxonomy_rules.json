@@ -1,0 +1,100 @@
+{
+  "citation_fabrication": [
+    "\\bweb search synthesis\\b",
+    "\\bno (real|actual|specific|concrete) (source|citation|reference)s?\\b",
+    "\\bplaceholder (citation|source|reference)s?\\b",
+    "\\bunverifiable\\b",
+    "\\bgeneric (link|source|url)s?\\b",
+    "\\bno url\\b",
+    "\\bmissing (citation|reference)s?\\b",
+    "\\bunattributed\\b"
+  ],
+  "hallucinated_source": [
+    "\\bfabricat",
+    "\\bdoes not exist\\b",
+    "\\bdoesn'?t exist\\b",
+    "\\bcannot (be )?verif",
+    "\\bcan'?t (be )?verif",
+    "\\bnot (a )?real (source|paper|study|citation)\\b",
+    "\\bmade[- ]up\\b",
+    "\\binvented\\b",
+    "\\bhallucinat"
+  ],
+  "entity_confusion": [
+    "\\bwrong (year|date|person|name|author|entity|number|value)\\b",
+    "\\bincorrect (year|date|person|name|author|entity|number|value|attribution)\\b",
+    "\\bmisidentif",
+    "\\bmisattribut",
+    "\\bconfus(es|ed|ing) .{0,40}\\bwith\\b",
+    "\\bconflat"
+  ],
+  "missing_perspective": [
+    "\\b(only|just) (one|a single) (perspective|viewpoint|side|angle)\\b",
+    "\\bmissing (perspective|viewpoint|counter[- ]?argument|opposing view)s?\\b",
+    "\\bno (counter[- ]?argument|opposing view|alternative view)s?\\b",
+    "\\blacks? (perspective|viewpoint|counter|alternative view|dissent)",
+    "\\bone[- ]sided\\b",
+    "\\bdoes not (cover|address|include) .{0,40}\\b(other|alternative|opposing|counter)",
+    "\\bfail(s|ed)? to (consider|include|address) .{0,40}\\b(other|alternative|opposing|counter|perspective)"
+  ],
+  "format_violation": [
+    "\\b(not|no) (in )?(table|bullet|list|comparison table) form(at)?\\b",
+    "\\bshould (be|have been) .{0,30}\\btable\\b",
+    "\\bwrong (format|structure)\\b",
+    "\\bdoes not follow .{0,30}\\b(format|structure|template|schema)\\b",
+    "\\bformat(ting)? (violation|issue|problem)\\b",
+    "\\bignores? the (requested|asked) (format|structure)\\b",
+    "\\bprose (instead|rather) than\\b"
+  ],
+  "superficial_analysis": [
+    "\\bsuperficial\\b",
+    "\\bshallow (analysis|treatment|coverage)\\b",
+    "\\brestates? the (query|question)\\b",
+    "\\bno (real )?synthesis\\b",
+    "\\blacks? (depth|synthesis|analysis|nuance)\\b",
+    "\\bsurface[- ]level\\b",
+    "\\bdescriptive (only|rather than)\\b",
+    "\\bno critical (analysis|evaluation|assessment)\\b",
+    "\\bnot (deeply )?analy[sz]ed\\b",
+    "\\bmore (descriptive|assertion) than (analysis|argument)\\b",
+    "\\bgeneric .{0,30}(explanation|treatment|discussion)\\b"
+  ],
+  "missing_evidence": [
+    "\\bnot supported (by|with) .{0,40}\\b(evidence|data|source|citation)\\b",
+    "\\bunsupported .{0,30}(claim|assertion|conclusion)\\b",
+    "\\bwithout .{0,20}(evidence|citation|source|data)\\b",
+    "\\bno (concrete|specific|supporting) (evidence|data|examples)\\b",
+    "\\blacks? (evidence|supporting data|concrete (evidence|data))\\b",
+    "\\bnot (clearly )?traceable\\b",
+    "\\bdoes not (include|provide|contain) .{0,30}\\b(quantitative|numerical|statistical) (data|information|evidence)\\b",
+    "\\bno quantitative (data|information|figures|statistics)\\b",
+    "\\bno (numbers|numerical|statistics)\\b"
+  ],
+  "empty_or_sparse": [
+    "\\breport is empty\\b",
+    "\\bno content\\b",
+    "\\bextremely (short|brief|sparse)\\b",
+    "\\bessentially empty\\b",
+    "\\b(very|quite) (thin|brief)\\b",
+    "\\binsufficient content\\b"
+  ],
+  "scope_drift": [
+    "\\boff[- ]topic\\b",
+    "\\bdoes not answer the (query|question)\\b",
+    "\\bdoesn'?t answer the (query|question)\\b",
+    "\\banswer(s|ed) a different\\b",
+    "\\b(scope|topic) drift\\b",
+    "\\btangential\\b",
+    "\\bveers? (off|away)\\b",
+    "\\bmiss(es|ed) the (point|question|query|ask)\\b",
+    "\\bdoes not address the (specific )?(query|question|ask)\\b"
+  ],
+  "factual_contradiction": [
+    "\\bcontradict",
+    "\\binconsistent\\b",
+    "\\bconflict(s|ing)? (with|between)\\b",
+    "\\bone (part|section) says .{0,40}\\banother\\b",
+    "\\bstates? .{0,40}\\bbut (also|later)\\b",
+    "\\binternal(ly)? (contradict|inconsistent)"
+  ]
+}

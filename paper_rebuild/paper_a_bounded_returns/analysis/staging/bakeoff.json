@@ -1,0 +1,461 @@
+{
+  "experiment": "bakeoff_3family_leaderboard",
+  "date": "2026-07-12",
+  "design": "7 frameworks x fixed gpt-4o-mini backbone x 30 frozen queries x 3-family panel (GPT-5.2 anchor + Opus 4.8 + Sonnet 5), identical rubric_v2",
+  "judge_version_note": "GPT-5.2 = primary anchor (comparable to banked corpus). Opus 4.8/Sonnet 5 = labelled current-Claude robustness cohort; raw here (J0 offset judge_version_bridge applies only for level-comparison to banked numbers).",
+  "anchor_leaderboard_gpt52": [
+    {
+      "framework": "open_deep_research",
+      "overall": 0.435,
+      "ci95": [
+        0.3922,
+        0.4796
+      ],
+      "n": 30
+    },
+    {
+      "framework": "open_deep_research_tavily",
+      "overall": 0.4331,
+      "ci95": [
+        0.3914,
+        0.4761
+      ],
+      "n": 30
+    },
+    {
+      "framework": "ii_researcher",
+      "overall": 0.4233,
+      "ci95": [
+        0.3901,
+        0.457
+      ],
+      "n": 30
+    },
+    {
+      "framework": "gpt_researcher",
+      "overall": 0.4166,
+      "ci95": [
+        0.3628,
+        0.4689
+      ],
+      "n": 30
+    },
+    {
+      "framework": "owl",
+      "overall": 0.3524,
+      "ci95": [
+        0.3024,
+        0.4043
+      ],
+      "n": 29
+    },
+    {
+      "framework": "deerflow",
+      "overall": 0.3339,
+      "ci95": [
+        0.2792,
+        0.393
+      ],
+      "n": 27
+    },
+    {
+      "framework": "storm",
+      "overall": 0.3297,
+      "ci95": [
+        0.2742,
+        0.3884
+      ],
+      "n": 30
+    }
+  ],
+  "top_cluster_tightness": {
+    "top4_frameworks": [
+      "open_deep_research",
+      "open_deep_research_tavily",
+      "ii_researcher",
+      "gpt_researcher"
+    ],
+    "spread": 0.0184,
+    "note": "spread across the top-4 frameworks on the GPT-5.2 anchor; small spread = bounded returns to orchestration reproduced across independent codebases"
+  },
+  "per_family_overall": {
+    "gpt52": {
+      "gpt_researcher": {
+        "n": 30,
+        "overall": 0.4166,
+        "ci95": [
+          0.3628,
+          0.4689
+        ]
+      },
+      "open_deep_research": {
+        "n": 30,
+        "overall": 0.435,
+        "ci95": [
+          0.3922,
+          0.4796
+        ]
+      },
+      "open_deep_research_tavily": {
+        "n": 30,
+        "overall": 0.4331,
+        "ci95": [
+          0.3914,
+          0.4761
+        ]
+      },
+      "storm": {
+        "n": 30,
+        "overall": 0.3297,
+        "ci95": [
+          0.2742,
+          0.3884
+        ]
+      },
+      "ii_researcher": {
+        "n": 30,
+        "overall": 0.4233,
+        "ci95": [
+          0.3901,
+          0.457
+        ]
+      },
+      "owl": {
+        "n": 29,
+        "overall": 0.3524,
+        "ci95": [
+          0.3024,
+          0.4043
+        ]
+      },
+      "deerflow": {
+        "n": 27,
+        "overall": 0.3339,
+        "ci95": [
+          0.2792,
+          0.393
+        ]
+      }
+    },
+    "opus48": {
+      "gpt_researcher": {
+        "n": 30,
+        "overall": 0.7536,
+        "ci95": [
+          0.6871,
+          0.8194
+        ]
+      },
+      "open_deep_research": {
+        "n": 30,
+        "overall": 0.7155,
+        "ci95": [
+          0.6676,
+          0.7631
+        ]
+      },
+      "open_deep_research_tavily": {
+        "n": 30,
+        "overall": 0.8405,
+        "ci95": [
+          0.7866,
+          0.8929
+        ]
+      },
+      "storm": {
+        "n": 30,
+        "overall": 0.7469,
+        "ci95": [
+          0.6686,
+          0.8192
+        ]
+      },
+      "ii_researcher": {
+        "n": 30,
+        "overall": 0.7258,
+        "ci95": [
+          0.6595,
+          0.7881
+        ]
+      },
+      "owl": {
+        "n": 29,
+        "overall": 0.7262,
+        "ci95": [
+          0.6519,
+          0.7955
+        ]
+      },
+      "deerflow": {
+        "n": 27,
+        "overall": 0.7534,
+        "ci95": [
+          0.6756,
+          0.8224
+        ]
+      }
+    },
+    "sonnet5": {
+      "gpt_researcher": {
+        "n": 30,
+        "overall": 0.6387,
+        "ci95": [
+          0.5671,
+          0.7087
+        ]
+      },
+      "open_deep_research": {
+        "n": 30,
+        "overall": 0.5938,
+        "ci95": [
+          0.5387,
+          0.6475
+        ]
+      },
+      "open_deep_research_tavily": {
+        "n": 30,
+        "overall": 0.7339,
+        "ci95": [
+          0.6559,
+          0.8094
+        ]
+      },
+      "storm": {
+        "n": 30,
+        "overall": 0.61,
+        "ci95": [
+          0.5302,
+          0.6863
+        ]
+      },
+      "ii_researcher": {
+        "n": 30,
+        "overall": 0.657,
+        "ci95": [
+          0.5944,
+          0.7181
+        ]
+      },
+      "owl": {
+        "n": 29,
+        "overall": 0.6078,
+        "ci95": [
+          0.5241,
+          0.6899
+        ]
+      },
+      "deerflow": {
+        "n": 27,
+        "overall": 0.5938,
+        "ci95": [
+          0.5099,
+          0.6729
+        ]
+      }
+    }
+  },
+  "panel_mean_overall": {
+    "gpt_researcher": 0.603,
+    "open_deep_research": 0.5814,
+    "open_deep_research_tavily": 0.6692,
+    "storm": 0.5622,
+    "ii_researcher": 0.602,
+    "owl": 0.5621,
+    "deerflow": 0.5604
+  },
+  "cross_family_rank_agreement_spearman": {
+    "gpt52_vs_opus48": -0.2143,
+    "gpt52_vs_sonnet5": 0.1429,
+    "opus48_vs_sonnet5": 0.5357,
+    "note": "Spearman of arm rankings across judge families; low = families disagree on the leaderboard"
+  },
+  "judge_leniency_mean_overall": {
+    "gpt52": 0.3891,
+    "opus48": 0.7517,
+    "sonnet5": 0.6336
+  },
+  "backend_substudy_quality": {
+    "gpt52": {
+      "d_overall_tavily_minus_azure": -0.0018,
+      "d_overall_ci95": [
+        -0.0372,
+        0.034
+      ],
+      "d_citation_quality": 0.125,
+      "d_attribution_quality": 0.0167,
+      "n_pairs": 30
+    },
+    "opus48": {
+      "d_overall_tavily_minus_azure": 0.125,
+      "d_overall_ci95": [
+        0.0731,
+        0.1772
+      ],
+      "d_citation_quality": 0.1,
+      "d_attribution_quality": 0.2667,
+      "n_pairs": 30
+    },
+    "sonnet5": {
+      "d_overall_tavily_minus_azure": 0.14,
+      "d_overall_ci95": [
+        0.0737,
+        0.2062
+      ],
+      "d_citation_quality": 0.0833,
+      "d_attribution_quality": 0.15,
+      "n_pairs": 30
+    }
+  },
+  "backend_substudy_concentration": {
+    "experiment": "bakeoff_concentration_rqb",
+    "date": "2026-07-12",
+    "method": "domain-HHI + arXiv/academic share from report-markdown URL extraction; paired bootstrap seed=20260712 N=10000",
+    "caveat": "only Open Deep Research is crossed on backend, so a full 2-way framework x backend variance partition is not identified; we report the clean within-ODR backend contrast plus the across-framework HHI spread as a size comparison.",
+    "per_arm": {
+      "gpt_researcher": {
+        "n_reports": 30,
+        "mean_hhi": 0.4264,
+        "mean_arxiv_share": 0.0122,
+        "mean_academic_share": 0.2247,
+        "mean_n_urls": 21.4667,
+        "mean_n_unique_domains": 3.8667
+      },
+      "open_deep_research": {
+        "n_reports": 30,
+        "mean_hhi": 0.2941,
+        "mean_arxiv_share": 0.0267,
+        "mean_academic_share": 0.1805,
+        "mean_n_urls": 10.4667,
+        "mean_n_unique_domains": 6.4667
+      },
+      "open_deep_research_tavily": {
+        "n_reports": 30,
+        "mean_hhi": 0.1261,
+        "mean_arxiv_share": 0.0047,
+        "mean_academic_share": 0.1612,
+        "mean_n_urls": 20.6333,
+        "mean_n_unique_domains": 15.2
+      },
+      "storm": {
+        "n_reports": 30,
+        "mean_hhi": 0.0945,
+        "mean_arxiv_share": 0.0069,
+        "mean_academic_share": 0.1325,
+        "mean_n_urls": 23.9333,
+        "mean_n_unique_domains": 18.0333
+      },
+      "ii_researcher": {
+        "n_reports": 30,
+        "mean_hhi": 0.3636,
+        "mean_arxiv_share": 0.0,
+        "mean_academic_share": 0.2421,
+        "mean_n_urls": 10.6333,
+        "mean_n_unique_domains": 3.5667
+      },
+      "owl": {
+        "n_reports": 29,
+        "mean_hhi": 0.2253,
+        "mean_arxiv_share": 0.0043,
+        "mean_academic_share": 0.1454,
+        "mean_n_urls": 14.1034,
+        "mean_n_unique_domains": 7.1724
+      },
+      "deerflow": {
+        "n_reports": 27,
+        "mean_hhi": 0.2584,
+        "mean_arxiv_share": 0.0062,
+        "mean_academic_share": 0.1955,
+        "mean_n_urls": 9.4444,
+        "mean_n_unique_domains": 6
+      }
+    },
+    "backend_contrast": {
+      "framework": "open_deep_research",
+      "n_common_queries": 30,
+      "hhi_azure_vs_tavily": {
+        "mean_diff": -0.168,
+        "ci95": [
+          -0.2527,
+          -0.0966
+        ],
+        "n_pairs": 30
+      },
+      "arxiv_azure_vs_tavily": {
+        "mean_diff": -0.022,
+        "ci95": [
+          -0.0577,
+          0.0
+        ],
+        "n_pairs": 30
+      },
+      "academic_azure_vs_tavily": {
+        "mean_diff": -0.0193,
+        "ci95": [
+          -0.1086,
+          0.0744
+        ],
+        "n_pairs": 30
+      },
+      "note": "positive mean_diff = Tavily MORE concentrated / more arXiv than Azure web-search"
+    },
+    "framework_hhi_spread": {
+      "arms": {
+        "gpt_researcher": 0.4264,
+        "open_deep_research": 0.2941,
+        "storm": 0.0945,
+        "ii_researcher": 0.3636,
+        "owl": 0.2253,
+        "deerflow": 0.2584
+      },
+      "range": 0.3319,
+      "note": "framework main-effect proxy on default backends; compare its size to the within-ODR backend dHHI"
+    }
+  },
+  "completion_rates": {
+    "gpt_researcher": {
+      "n_judged": 30,
+      "completion_rate": 1.0
+    },
+    "open_deep_research": {
+      "n_judged": 30,
+      "completion_rate": 1.0
+    },
+    "open_deep_research_tavily": {
+      "n_judged": 30,
+      "completion_rate": 1.0
+    },
+    "storm": {
+      "n_judged": 30,
+      "completion_rate": 1.0
+    },
+    "ii_researcher": {
+      "n_judged": 30,
+      "completion_rate": 1.0
+    },
+    "owl": {
+      "n_judged": 29,
+      "completion_rate": 0.967
+    },
+    "deerflow": {
+      "n_judged": 27,
+      "completion_rate": 0.9
+    }
+  },
+  "headline": {
+    "quality_bounded": "top-4 frameworks within 0.0184 on GPT-5.2 anchor",
+    "backend_on_quality_judge_dependent": {
+      "gpt52_d_overall": -0.0018,
+      "opus48_d_overall": 0.125,
+      "sonnet5_d_overall": 0.14,
+      "reading": "GPT-5.2 sees ~0 backend effect on quality; Claude families reward the citation-richer Tavily arm -> the backend's quality effect is judge-dependent"
+    },
+    "backend_on_concentration": {
+      "mean_diff": -0.168,
+      "ci95": [
+        -0.2527,
+        -0.0966
+      ],
+      "n_pairs": 30
+    }
+  }
+}

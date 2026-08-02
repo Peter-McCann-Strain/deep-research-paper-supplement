@@ -1,0 +1,105 @@
+{
+  "experiment": "bakeoff_concentration_rqb",
+  "date": "2026-07-12",
+  "method": "domain-HHI + arXiv/academic share from report-markdown URL extraction; paired bootstrap seed=20260712 N=10000",
+  "caveat": "only Open Deep Research is crossed on backend, so a full 2-way framework x backend variance partition is not identified; we report the clean within-ODR backend contrast plus the across-framework HHI spread as a size comparison.",
+  "per_arm": {
+    "gpt_researcher": {
+      "n_reports": 30,
+      "mean_hhi": 0.4264,
+      "mean_arxiv_share": 0.0122,
+      "mean_academic_share": 0.2247,
+      "mean_n_urls": 21.4667,
+      "mean_n_unique_domains": 3.8667
+    },
+    "open_deep_research": {
+      "n_reports": 30,
+      "mean_hhi": 0.2941,
+      "mean_arxiv_share": 0.0267,
+      "mean_academic_share": 0.1805,
+      "mean_n_urls": 10.4667,
+      "mean_n_unique_domains": 6.4667
+    },
+    "open_deep_research_tavily": {
+      "n_reports": 30,
+      "mean_hhi": 0.1261,
+      "mean_arxiv_share": 0.0047,
+      "mean_academic_share": 0.1612,
+      "mean_n_urls": 20.6333,
+      "mean_n_unique_domains": 15.2
+    },
+    "storm": {
+      "n_reports": 30,
+      "mean_hhi": 0.0945,
+      "mean_arxiv_share": 0.0069,
+      "mean_academic_share": 0.1325,
+      "mean_n_urls": 23.9333,
+      "mean_n_unique_domains": 18.0333
+    },
+    "ii_researcher": {
+      "n_reports": 30,
+      "mean_hhi": 0.3636,
+      "mean_arxiv_share": 0.0,
+      "mean_academic_share": 0.2421,
+      "mean_n_urls": 10.6333,
+      "mean_n_unique_domains": 3.5667
+    },
+    "owl": {
+      "n_reports": 29,
+      "mean_hhi": 0.2253,
+      "mean_arxiv_share": 0.0043,
+      "mean_academic_share": 0.1454,
+      "mean_n_urls": 14.1034,
+      "mean_n_unique_domains": 7.1724
+    },
+    "deerflow": {
+      "n_reports": 27,
+      "mean_hhi": 0.2584,
+      "mean_arxiv_share": 0.0062,
+      "mean_academic_share": 0.1955,
+      "mean_n_urls": 9.4444,
+      "mean_n_unique_domains": 6
+    }
+  },
+  "backend_contrast": {
+    "framework": "open_deep_research",
+    "n_common_queries": 30,
+    "hhi_azure_vs_tavily": {
+      "mean_diff": -0.168,
+      "ci95": [
+        -0.2527,
+        -0.0966
+      ],
+      "n_pairs": 30
+    },
+    "arxiv_azure_vs_tavily": {
+      "mean_diff": -0.022,
+      "ci95": [
+        -0.0577,
+        0.0
+      ],
+      "n_pairs": 30
+    },
+    "academic_azure_vs_tavily": {
+      "mean_diff": -0.0193,
+      "ci95": [
+        -0.1086,
+        0.0744
+      ],
+      "n_pairs": 30
+    },
+    "note": "positive mean_diff = Tavily MORE concentrated / more arXiv than Azure web-search"
+  },
+  "framework_hhi_spread": {
+    "arms": {
+      "gpt_researcher": 0.4264,
+      "open_deep_research": 0.2941,
+      "storm": 0.0945,
+      "ii_researcher": 0.3636,
+      "owl": 0.2253,
+      "deerflow": 0.2584
+    },
+    "range": 0.3319,
+    "note": "framework main-effect proxy on default backends; compare its size to the within-ODR backend dHHI"
+  }
+}

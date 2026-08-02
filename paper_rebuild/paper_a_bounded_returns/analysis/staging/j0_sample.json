@@ -1,0 +1,202 @@
+[
+  {
+    "pattern": "base_p0",
+    "query_id": "10cece36-a507-4a93-9600-13f3e0e677f8",
+    "complexity": "simple"
+  },
+  {
+    "pattern": "base_p0",
+    "query_id": "174539438039017258-s17",
+    "complexity": "moderate"
+  },
+  {
+    "pattern": "base_p0",
+    "query_id": "174539439157207885-s3",
+    "complexity": "moderate"
+  },
+  {
+    "pattern": "base_p0",
+    "query_id": "6aa10957-bdd9-4dab-a4e1-234a17cb87dd",
+    "complexity": "simple"
+  },
+  {
+    "pattern": "base_p0",
+    "query_id": "b02ede76-2353-40f3-9da9-d319c617ab0d",
+    "complexity": "complex"
+  },
+  {
+    "pattern": "base_p0",
+    "query_id": "e15a37b4-cd7f-4f52-ba81-9f33b24aabe9",
+    "complexity": "complex"
+  },
+  {
+    "pattern": "base_p1",
+    "query_id": "10cece36-a507-4a93-9600-13f3e0e677f8",
+    "complexity": "simple"
+  },
+  {
+    "pattern": "base_p1",
+    "query_id": "174539435612599314-s20",
+    "complexity": "simple"
+  },
+  {
+    "pattern": "base_p1",
+    "query_id": "174539439157207885-s3",
+    "complexity": "moderate"
+  },
+  {
+    "pattern": "base_p1",
+    "query_id": "a4bae04b-4337-4f28-ab8b-5a518cf58fe0",
+    "complexity": "complex"
+  },
+  {
+    "pattern": "base_p1",
+    "query_id": "aca95495-b0fe-4330-90fc-d2fd1e2c709e",
+    "complexity": "complex"
+  },
+  {
+    "pattern": "base_p1",
+    "query_id": "dsqa_0710",
+    "complexity": "moderate"
+  },
+  {
+    "pattern": "base_p10",
+    "query_id": "174539435410626618-s2",
+    "complexity": "moderate"
+  },
+  {
+    "pattern": "base_p10",
+    "query_id": "939cd89c-32e3-4ba3-a9c2-734a9f3b80d1",
+    "complexity": "complex"
+  },
+  {
+    "pattern": "base_p10",
+    "query_id": "f6de7687-7cff-4f68-93ea-f632bf6266af",
+    "complexity": "complex"
+  },
+  {
+    "pattern": "base_p10",
+    "query_id": "q1_bert_vs_gpt",
+    "complexity": "simple"
+  },
+  {
+    "pattern": "base_p2",
+    "query_id": "10cece36-a507-4a93-9600-13f3e0e677f8",
+    "complexity": "simple"
+  },
+  {
+    "pattern": "base_p2",
+    "query_id": "dsqa_0058",
+    "complexity": "complex"
+  },
+  {
+    "pattern": "base_p2",
+    "query_id": "dsqa_0593",
+    "complexity": "moderate"
+  },
+  {
+    "pattern": "base_p3",
+    "query_id": "6aa10957-bdd9-4dab-a4e1-234a17cb87dd",
+    "complexity": "simple"
+  },
+  {
+    "pattern": "base_p3",
+    "query_id": "dsqa_0109",
+    "complexity": "moderate"
+  },
+  {
+    "pattern": "base_p3",
+    "query_id": "dsqa_0458",
+    "complexity": "complex"
+  },
+  {
+    "pattern": "base_p4",
+    "query_id": "174539435612599314-s20",
+    "complexity": "simple"
+  },
+  {
+    "pattern": "base_p4",
+    "query_id": "49d841f1-0c95-4a87-9b62-5e2a54e8e1a8",
+    "complexity": "complex"
+  },
+  {
+    "pattern": "base_p4",
+    "query_id": "q2_rag_vs_finetuning",
+    "complexity": "moderate"
+  },
+  {
+    "pattern": "base_p5",
+    "query_id": "174539438140586950-s4",
+    "complexity": "moderate"
+  },
+  {
+    "pattern": "base_p5",
+    "query_id": "4f36f602-6c14-4c23-a37d-e5ee92ed4552",
+    "complexity": "complex"
+  },
+  {
+    "pattern": "base_p5",
+    "query_id": "d65103ae-c881-4116-a0a7-1b233eb6275a",
+    "complexity": "simple"
+  },
+  {
+    "pattern": "base_p6",
+    "query_id": "d65103ae-c881-4116-a0a7-1b233eb6275a",
+    "complexity": "simple"
+  },
+  {
+    "pattern": "base_p6",
+    "query_id": "dsqa_0458",
+    "complexity": "complex"
+  },
+  {
+    "pattern": "base_p6",
+    "query_id": "dsqa_0788",
+    "complexity": "moderate"
+  },
+  {
+    "pattern": "base_p7",
+    "query_id": "b02ede76-2353-40f3-9da9-d319c617ab0d",
+    "complexity": "complex"
+  },
+  {
+    "pattern": "base_p7",
+    "query_id": "d65103ae-c881-4116-a0a7-1b233eb6275a",
+    "complexity": "simple"
+  },
+  {
+    "pattern": "base_p7",
+    "query_id": "dsqa_0788",
+    "complexity": "moderate"
+  },
+  {
+    "pattern": "base_p8",
+    "query_id": "174539435612599314-s20",
+    "complexity": "simple"
+  },
+  {
+    "pattern": "base_p8",
+    "query_id": "c2a1a24b-8a83-453f-9892-d17b533ffe93",
+    "complexity": "complex"
+  },
+  {
+    "pattern": "base_p8",
+    "query_id": "dsqa_0109",
+    "complexity": "moderate"
+  },
+  {
+    "pattern": "base_p9",
+    "query_id": "174539438444028587-s6",
+    "complexity": "moderate"
+  },
+  {
+    "pattern": "base_p9",
+    "query_id": "2c05315d-6898-4667-b454-d99b7381bedb",
+    "complexity": "complex"
+  },
+  {
+    "pattern": "base_p9",
+    "query_id": "6aa10957-bdd9-4dab-a4e1-234a17cb87dd",
+    "complexity": "simple"
+  }
+]

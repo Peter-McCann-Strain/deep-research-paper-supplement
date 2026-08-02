@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 from deep_research.judge_runner import run_judge_file
+from deep_research.paper_rebuild import run_paper_rebuild
 from deep_research.public_export import export_public_tree
 from deep_research.release_audit import audit_release_tree
 from deep_research.reproduce import (
@@ -263,6 +264,19 @@ def cmd_judge_run(args: argparse.Namespace) -> int:
     return 0 if report.status == "success" else 1
 
 
+def cmd_paper_rebuild(args: argparse.Namespace) -> int:
+    settings = _settings(args)
+    report = run_paper_rebuild(
+        settings.paths.project_root,
+        check_only=args.check_only,
+        tables=not args.skip_tables,
+        figures=not args.skip_figures,
+        compile_pdf=not args.skip_compile,
+    )
+    print(report.to_json())
+    return 0 if report.status == "success" else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="deep-research")
     parser.add_argument("--project-root", default="", help="Repository root override")
@@ -409,6 +423,27 @@ def build_parser() -> argparse.ArgumentParser:
         "--dry-run", action="store_true", help="Validate files and show provider plan only"
     )
     judge_run.set_defaults(func=cmd_judge_run)
+
+    paper = sub.add_parser("paper", help="Build and verify paper artifacts")
+    paper_sub = paper.add_subparsers(dest="paper_command", required=True)
+    rebuild = paper_sub.add_parser(
+        "rebuild",
+        help="Rebuild Paper A tables, figures, and optionally the PDF",
+    )
+    rebuild.add_argument("paper", choices=["paper-a"], help="Paper to rebuild")
+    rebuild.add_argument(
+        "--check-only",
+        action="store_true",
+        help="Verify public paper inputs and generated assets without running scripts",
+    )
+    rebuild.add_argument("--skip-tables", action="store_true", help="Do not regenerate tables")
+    rebuild.add_argument("--skip-figures", action="store_true", help="Do not regenerate figures")
+    rebuild.add_argument(
+        "--skip-compile",
+        action="store_true",
+        help="Do not compile the final PDF with tectonic",
+    )
+    rebuild.set_defaults(func=cmd_paper_rebuild)
 
     return parser
 

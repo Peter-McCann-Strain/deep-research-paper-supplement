@@ -100,7 +100,7 @@ LOCAL_OR_PRIVATE_MARKERS = (
     "file" + "://",
 )
 LOCAL_PATH_RE = re.compile(
-    r"(?:/home/[A-Za-z0-9._-]+/|/Users/[A-Za-z0-9._-]+/|"
+    r"(?<![A-Za-z0-9._-])(?:/home/[A-Za-z0-9._-]+/|/Users/[A-Za-z0-9._-]+/|"
     r"[A-Za-z]:(?:\\+|/+)(?:Users|Documents and Settings)(?:\\+|/+)"
     r"[A-Za-z0-9._ -]+(?:\\+|/+))",
     re.IGNORECASE,

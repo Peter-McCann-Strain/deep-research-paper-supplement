@@ -1,8 +1,8 @@
 # Reproducibility
 
-This repo supports three public workflows: no-cost checks, inspection of the frozen paper-reference summaries, and optional current-API reruns. The current-API path uses hosted models and search, so it is best-effort by design.
+This repo supports four public workflows: no-cost checks, inspection of the frozen paper-reference summaries, Paper A artifact rebuilds, and optional current-API reruns. The current-API path uses hosted models and search, so it is best-effort by design.
 
-It does not recreate the private historical run bit for bit. Exact replay would require archived raw reports, judge verdict trees, model/search snapshots, and local infrastructure that are outside this GitHub supplement.
+It does not recreate the private historical raw run bit for bit. Exact raw replay would require archived generated reports, raw judge-verdict packet directories, model/search snapshots, and local infrastructure that are outside this GitHub supplement. The paper-facing artifacts are rebuilt from the included canonical store and compact derived analysis tables.
 
 ## Setup
 
@@ -10,8 +10,8 @@ Requires Python `>=3.11,<3.13`.
 
 ```bash
 python3 -m venv venv
-source venv/bin/activate
-python -m pip install -c constraints-public.txt -e ".[api]"
+[ -f venv/bin/activate ] && source venv/bin/activate
+python -m pip install -c constraints-public.txt -e ".[api,paper]"
 cp .env.example .env
 ```
 
@@ -34,6 +34,30 @@ deep-research reproduce paper-a --mode provenance
 ```
 
 `quickstart-check` runs the offline first-run path in one command. `smoke` validates public reference files. `reference` prints the compact headline ordering, broad score ranges, and comparison policy used for best-effort public reruns. `provenance` verifies checked hashes and counts for the public reference files. None of these commands make paid API calls. See `repro/PAPER_A_REPRO_MAP.md` for the command-to-artifact map and comparability contract.
+
+## Paper Artifact Rebuild
+
+Check that all public rebuild inputs are present:
+
+```bash
+deep-research paper rebuild paper-a --check-only
+```
+
+Regenerate tables and figures from the shipped canonical store and derived analysis tables:
+
+```bash
+deep-research paper rebuild paper-a --skip-compile
+```
+
+Compile the manuscript too when `tectonic` is installed:
+
+```bash
+deep-research paper rebuild paper-a
+```
+
+This writes generated assets under `paper_rebuild/paper_a_bounded_returns/`. A full compile also refreshes `papers/paper_a_bounded_returns/main.pdf` from the rebuilt source PDF for citation and browsing. The artifact rebuild makes no provider API calls.
+
+`paper_rebuild/paper_a_bounded_returns/analysis/rebuild_all.sh` is retained as historical provenance code for rebuilding the canonical store when optional raw result directories are available. It is not the default public command because it depends on raw artifacts that are intentionally not shipped.
 
 ## Best-Effort API Rerun
 
@@ -119,6 +143,7 @@ Run the offline test gate before publishing:
 python -m pip install -c constraints-public.txt -e ".[api,paper,dev]"
 python -m pytest -q -p no:cacheprovider
 ruff check --no-cache deep_research tests
+deep-research paper rebuild paper-a --check-only
 ```
 
 Before publishing a candidate tree:

@@ -1,0 +1,260 @@
+{
+  "experiment": "synthablation_sonnet_crosscheck",
+  "date": "2026-07-27",
+  "judge_model": "claude-sonnet-5",
+  "judge_source": "synthablation_j8",
+  "note": "Current-Claude (Sonnet 5 only, Opus dropped per 2026-07-27 efficiency decision) cross-family replication of the banked GPT-5.2 `frozen_defence.synth_ablation` finding. Same 5 scaffolds x ~29 (82de3e92 quarantined), same seed/paired-bootstrap machinery as build_frozen_defence.py.",
+  "coverage": {
+    "single_pass": 29,
+    "draft_revise": 29,
+    "map_reduce": 29,
+    "beam": 29,
+    "verifier_select": 29
+  },
+  "per_scaffold": {
+    "single_pass": {
+      "factual_accuracy": {
+        "mean": 0.7586,
+        "ci95": [
+          0.6681,
+          0.8448
+        ],
+        "n": 29
+      },
+      "citation_quality": {
+        "mean": 0.9914,
+        "ci95": [
+          0.9741,
+          1.0
+        ],
+        "n": 29
+      },
+      "overall": {
+        "mean": 0.787,
+        "ci95": [
+          0.7368,
+          0.8364
+        ],
+        "n": 29
+      }
+    },
+    "draft_revise": {
+      "factual_accuracy": {
+        "mean": 0.8836,
+        "ci95": [
+          0.819,
+          0.944
+        ],
+        "n": 29
+      },
+      "citation_quality": {
+        "mean": 0.9914,
+        "ci95": [
+          0.9741,
+          1.0
+        ],
+        "n": 29
+      },
+      "overall": {
+        "mean": 0.8552,
+        "ci95": [
+          0.81,
+          0.8965
+        ],
+        "n": 29
+      }
+    },
+    "map_reduce": {
+      "factual_accuracy": {
+        "mean": 0.75,
+        "ci95": [
+          0.6552,
+          0.8362
+        ],
+        "n": 29
+      },
+      "citation_quality": {
+        "mean": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "n": 29
+      },
+      "overall": {
+        "mean": 0.8114,
+        "ci95": [
+          0.7664,
+          0.853
+        ],
+        "n": 29
+      }
+    },
+    "beam": {
+      "factual_accuracy": {
+        "mean": 0.7845,
+        "ci95": [
+          0.694,
+          0.8664
+        ],
+        "n": 29
+      },
+      "citation_quality": {
+        "mean": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "n": 29
+      },
+      "overall": {
+        "mean": 0.8048,
+        "ci95": [
+          0.7599,
+          0.8476
+        ],
+        "n": 29
+      }
+    },
+    "verifier_select": {
+      "factual_accuracy": {
+        "mean": 0.75,
+        "ci95": [
+          0.6638,
+          0.8362
+        ],
+        "n": 29
+      },
+      "citation_quality": {
+        "mean": 0.9741,
+        "ci95": [
+          0.9397,
+          1.0
+        ],
+        "n": 29
+      },
+      "overall": {
+        "mean": 0.7939,
+        "ci95": [
+          0.737,
+          0.8484
+        ],
+        "n": 29
+      }
+    }
+  },
+  "contrasts_vs_single_pass": {
+    "draft_revise_minus_single_pass": {
+      "factual_accuracy_diff": {
+        "point": 0.125,
+        "ci95": [
+          0.069,
+          0.181
+        ],
+        "p_two_sided_boot": "<1e-04",
+        "n_pairs": 29
+      },
+      "citation_quality_diff": {
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "p_two_sided_boot": "<1e-04",
+        "n_pairs": 29
+      },
+      "beats_single_pass_factual": true,
+      "n_common_queries": 29
+    },
+    "map_reduce_minus_single_pass": {
+      "factual_accuracy_diff": {
+        "point": -0.0086,
+        "ci95": [
+          -0.0819,
+          0.0647
+        ],
+        "p_two_sided_boot": 0.7604,
+        "n_pairs": 29
+      },
+      "citation_quality_diff": {
+        "point": 0.0086,
+        "ci95": [
+          0.0,
+          0.0259
+        ],
+        "p_two_sided_boot": "<1e-04",
+        "n_pairs": 29
+      },
+      "beats_single_pass_factual": false,
+      "n_common_queries": 29
+    },
+    "beam_minus_single_pass": {
+      "factual_accuracy_diff": {
+        "point": 0.0259,
+        "ci95": [
+          -0.0388,
+          0.0905
+        ],
+        "p_two_sided_boot": 0.396,
+        "n_pairs": 29
+      },
+      "citation_quality_diff": {
+        "point": 0.0086,
+        "ci95": [
+          0.0,
+          0.0259
+        ],
+        "p_two_sided_boot": "<1e-04",
+        "n_pairs": 29
+      },
+      "beats_single_pass_factual": false,
+      "n_common_queries": 29
+    },
+    "verifier_select_minus_single_pass": {
+      "factual_accuracy_diff": {
+        "point": -0.0086,
+        "ci95": [
+          -0.069,
+          0.0603
+        ],
+        "p_two_sided_boot": 0.727,
+        "n_pairs": 29
+      },
+      "citation_quality_diff": {
+        "point": -0.0172,
+        "ci95": [
+          -0.0517,
+          0.0172
+        ],
+        "p_two_sided_boot": 0.1884,
+        "n_pairs": 29
+      },
+      "beats_single_pass_factual": false,
+      "n_common_queries": 29
+    }
+  },
+  "n_scaffolds_beating_single_pass_factual": 1,
+  "finding_iv_hardens_causal_sonnet": false,
+  "cross_family_verdict": {
+    "gpt52_n_scaffolds_beating_single_pass_factual": 1,
+    "gpt52_finding_iv_hardens_causal": false,
+    "sonnet_n_scaffolds_beating_single_pass_factual": 1,
+    "sonnet_finding_iv_hardens_causal": false,
+    "beats_single_pass_factual_by_scaffold": {
+      "gpt52": {
+        "draft_revise_minus_single_pass": true,
+        "map_reduce_minus_single_pass": false,
+        "beam_minus_single_pass": false,
+        "verifier_select_minus_single_pass": false
+      },
+      "sonnet5": {
+        "draft_revise_minus_single_pass": true,
+        "map_reduce_minus_single_pass": false,
+        "beam_minus_single_pass": false,
+        "verifier_select_minus_single_pass": false
+      }
+    },
+    "same_scaffold_beats_both_judges": true,
+    "reading": "Banked GPT-5.2 already found finding_iv_hardens_causal=FALSE (draft_revise, not zero scaffolds, beats single_pass on factual accuracy given identical frozen evidence) -- the causal-hardening claim never actually held even under GPT-5.2 alone. Sonnet-5 REPLICATES this exactly: draft_revise beats single_pass (+0.125, CI excludes 0, p<1e-4), the other three scaffolds do not. So the honest finding is a robust, cross-family-replicated PARTIAL exception (draft_revise specifically recovers factual accuracy via self-revision even on frozen evidence), not the full causal-hardening originally hoped for -- report this exception explicitly rather than the stronger claim."
+  }
+}

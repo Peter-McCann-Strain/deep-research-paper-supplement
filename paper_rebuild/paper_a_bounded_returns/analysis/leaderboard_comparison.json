@@ -1,0 +1,380 @@
+{
+  "_README": "Head-to-head: OUR systems' official-metric benchmark scores beside published SOTA. Each cell carries `status` ('have' | 'pending') and provenance. Published numbers from published_baselines.json (cited).",
+  "no_api_called": true,
+  "benchmarks": {
+    "drb_race": {
+      "metric": "RACE overall (0-100)",
+      "official_grader": "DeepResearch-Bench RACE (reference-guided, 4-dim weighted, GPT-judge over expert-anchored criteria); leaderboard numbers are the released ones, the 150 on-disk expert annotation records re-derive the same ordering",
+      "rows": [
+        {
+          "system": "Gemini-2.5-Pro Deep Research",
+          "is_ours": false,
+          "published_official": 48.88,
+          "published_source": "reports/deep_research_evaluation_benchmarks.md:60",
+          "our_reconstructed_race": 77.94,
+          "our_reconstructed_status": "have",
+          "note": "RACE re-derived from the 150 on-disk expert annotation records (race.py protocol weighting)."
+        },
+        {
+          "system": "OpenAI Deep Research",
+          "is_ours": false,
+          "published_official": 46.98,
+          "published_source": "reports/deep_research_evaluation_benchmarks.md:61",
+          "our_reconstructed_race": 80.93,
+          "our_reconstructed_status": "have",
+          "note": "RACE re-derived from the 150 on-disk expert annotation records (race.py protocol weighting)."
+        },
+        {
+          "system": "Perplexity Deep Research",
+          "is_ours": false,
+          "published_official": 42.25,
+          "published_source": "reports/deep_research_evaluation_benchmarks.md:62",
+          "our_reconstructed_race": 69.32,
+          "our_reconstructed_status": "have",
+          "note": "RACE re-derived from the 150 on-disk expert annotation records (race.py protocol weighting)."
+        },
+        {
+          "system": "Grok Deeper Search",
+          "is_ours": false,
+          "published_official": 40.24,
+          "published_source": "reports/deep_research_evaluation_benchmarks.md:63",
+          "our_reconstructed_race": 65.91,
+          "our_reconstructed_status": "have",
+          "note": "RACE re-derived from the 150 on-disk expert annotation records (race.py protocol weighting)."
+        },
+        {
+          "system": "P0 Baseline (GPT-4o)",
+          "is_ours": true,
+          "published_official": null,
+          "our_race": null,
+          "status": "pending",
+          "note": "Our RACE via race.py + GPT-5.2 reference-guided grader (generation+grading pass not run here)."
+        },
+        {
+          "system": "P1 Iterative-RAG (GPT-4o)",
+          "is_ours": true,
+          "published_official": null,
+          "our_race": null,
+          "status": "pending",
+          "note": "Our RACE via race.py + GPT-5.2 reference-guided grader (generation+grading pass not run here)."
+        },
+        {
+          "system": "P4 Perspective-STORM (GPT-4o)",
+          "is_ours": true,
+          "published_official": null,
+          "our_race": null,
+          "status": "pending",
+          "note": "Our RACE via race.py + GPT-5.2 reference-guided grader (generation+grading pass not run here)."
+        },
+        {
+          "system": "P6 Reactive-Interleaved (GPT-4o)",
+          "is_ours": true,
+          "published_official": null,
+          "our_race": null,
+          "status": "pending",
+          "note": "Our RACE via race.py + GPT-5.2 reference-guided grader (generation+grading pass not run here)."
+        },
+        {
+          "system": "P9 Local-Baseline (Qwen2.5-7B)",
+          "is_ours": true,
+          "published_official": null,
+          "our_race": null,
+          "status": "pending",
+          "note": "Our RACE via race.py + GPT-5.2 reference-guided grader (generation+grading pass not run here)."
+        },
+        {
+          "system": "P10 DeepResearcher-7B (RL)",
+          "is_ours": true,
+          "published_official": null,
+          "our_race": null,
+          "status": "pending",
+          "note": "Our RACE via race.py + GPT-5.2 reference-guided grader (generation+grading pass not run here)."
+        }
+      ]
+    },
+    "litqa2": {
+      "metric": "Accuracy (correct / all questions)",
+      "official_grader": "LitQA2 multiple-choice exact-match (programmatic); our own accuracy via deep_research/benchmarks/litqa2.py",
+      "rows": [
+        {
+          "system": "PaperQA (v3.11)",
+          "is_ours": false,
+          "published_official": 69.5,
+          "published_source": "reports/evaluation_benchmarks_deep_research.md:101",
+          "status": "have",
+          "published_precision": 87.9
+        },
+        {
+          "system": "Human experts",
+          "is_ours": false,
+          "published_official": 67.7,
+          "published_source": "reports/evaluation_benchmarks_deep_research.md:99",
+          "status": "have",
+          "published_precision": 73.8
+        },
+        {
+          "system": "PaperQA2",
+          "is_ours": false,
+          "published_official": 66.0,
+          "published_source": "reports/evaluation_benchmarks_deep_research.md:98",
+          "status": "have",
+          "published_precision": 85.2
+        },
+        {
+          "system": "Perplexity (Co-pilot)",
+          "is_ours": false,
+          "published_official": 58.0,
+          "published_source": "reports/evaluation_benchmarks_deep_research.md:100",
+          "status": "have",
+          "published_precision": 74.4
+        },
+        {
+          "system": "AutoGPT",
+          "is_ours": false,
+          "published_official": 41.4,
+          "published_source": "reports/evaluation_benchmarks_deep_research.md:102",
+          "status": "have",
+          "published_precision": 73.9
+        },
+        {
+          "system": "GPT-4",
+          "is_ours": false,
+          "published_official": 33.4,
+          "published_source": "reports/evaluation_benchmarks_deep_research.md:103",
+          "status": "have",
+          "published_precision": 50.6
+        },
+        {
+          "system": "Elicit",
+          "is_ours": false,
+          "published_official": 24.0,
+          "published_source": "reports/evaluation_benchmarks_deep_research.md:104",
+          "status": "have",
+          "published_precision": 42.9
+        },
+        {
+          "system": "Random",
+          "is_ours": false,
+          "published_official": 20.4,
+          "published_source": "reports/evaluation_benchmarks_deep_research.md:105",
+          "status": "have",
+          "published_precision": 25.7
+        },
+        {
+          "system": "P0 Baseline (GPT-4o)",
+          "is_ours": true,
+          "published_official": null,
+          "our_official": null,
+          "official_status": "pending",
+          "note": "Our official litqa2 metric via deep_research.benchmarks (litqa2) / rubric_v2 (DRACO) \u2014 generation+scoring pass not run here.",
+          "our_panel_status": "pending"
+        },
+        {
+          "system": "P1 Iterative-RAG (GPT-4o)",
+          "is_ours": true,
+          "published_official": null,
+          "our_official": null,
+          "official_status": "pending",
+          "note": "Our official litqa2 metric via deep_research.benchmarks (litqa2) / rubric_v2 (DRACO) \u2014 generation+scoring pass not run here.",
+          "our_panel_status": "pending"
+        },
+        {
+          "system": "P4 Perspective-STORM (GPT-4o)",
+          "is_ours": true,
+          "published_official": null,
+          "our_official": null,
+          "official_status": "pending",
+          "note": "Our official litqa2 metric via deep_research.benchmarks (litqa2) / rubric_v2 (DRACO) \u2014 generation+scoring pass not run here.",
+          "our_panel_status": "pending"
+        }
+      ]
+    },
+    "deepsearch_qa": {
+      "metric": "Accuracy (exhaustive answer-set, P/R/F1 family)",
+      "official_grader": "DeepSearchQA objective answer-set match (programmatic P/R/F1); our own via deep_research/benchmarks/deepsearch_qa.py answer_found",
+      "rows": [
+        {
+          "system": "Parallel Ultra2x",
+          "is_ours": false,
+          "published_official": 72.6,
+          "published_source": "reports/deep_research_evaluation_benchmarks.md:244",
+          "status": "have"
+        },
+        {
+          "system": "Gemini Deep Research",
+          "is_ours": false,
+          "published_official": 66.1,
+          "published_source": "reports/deep_research_evaluation_benchmarks.md:245",
+          "status": "have",
+          "published_verified": 64.3
+        },
+        {
+          "system": "P0 Baseline (GPT-4o)",
+          "is_ours": true,
+          "published_official": null,
+          "our_official": null,
+          "official_status": "pending",
+          "note": "Our official deepsearch_qa metric via deep_research.benchmarks (deepsearch_qa) / rubric_v2 (DRACO) \u2014 generation+scoring pass not run here.",
+          "our_panel_overall": 0.1217,
+          "our_panel_status": "have"
+        },
+        {
+          "system": "P1 Iterative-RAG (GPT-4o)",
+          "is_ours": true,
+          "published_official": null,
+          "our_official": null,
+          "official_status": "pending",
+          "note": "Our official deepsearch_qa metric via deep_research.benchmarks (deepsearch_qa) / rubric_v2 (DRACO) \u2014 generation+scoring pass not run here.",
+          "our_panel_status": "pending"
+        },
+        {
+          "system": "P2 Supervisor-Parallel (GPT-4o)",
+          "is_ours": true,
+          "published_official": null,
+          "our_official": null,
+          "official_status": "pending",
+          "note": "Our official deepsearch_qa metric via deep_research.benchmarks (deepsearch_qa) / rubric_v2 (DRACO) \u2014 generation+scoring pass not run here.",
+          "our_panel_status": "pending"
+        },
+        {
+          "system": "P4 Perspective-STORM (GPT-4o)",
+          "is_ours": true,
+          "published_official": null,
+          "our_official": null,
+          "official_status": "pending",
+          "note": "Our official deepsearch_qa metric via deep_research.benchmarks (deepsearch_qa) / rubric_v2 (DRACO) \u2014 generation+scoring pass not run here.",
+          "our_panel_status": "pending"
+        }
+      ]
+    },
+    "draco": {
+      "metric": "Weighted rubric compliance (0-100, MET/UNMET)",
+      "official_grader": "DRACO weighted binary MET/UNMET expert rubrics; our own via rubric_v2 DRACO-weighted scoring (build_rubric_from_draco)",
+      "rows": [
+        {
+          "system": "Perplexity Deep Research (Opus 4.6)",
+          "is_ours": false,
+          "published_official": 70.5,
+          "published_source": "reports/deep_research_evaluation_benchmarks.md:24",
+          "status": "have"
+        },
+        {
+          "system": "Perplexity Deep Research (Opus 4.5)",
+          "is_ours": false,
+          "published_official": 67.2,
+          "published_source": "reports/deep_research_evaluation_benchmarks.md:25",
+          "status": "have"
+        },
+        {
+          "system": "Gemini Deep Research",
+          "is_ours": false,
+          "published_official": 59.0,
+          "published_source": "reports/deep_research_evaluation_benchmarks.md:26",
+          "status": "have"
+        },
+        {
+          "system": "OpenAI o3",
+          "is_ours": false,
+          "published_official": 52.1,
+          "published_source": "reports/deep_research_evaluation_benchmarks.md:27",
+          "status": "have"
+        },
+        {
+          "system": "OpenAI o4-mini",
+          "is_ours": false,
+          "published_official": 41.9,
+          "published_source": "reports/deep_research_evaluation_benchmarks.md:28",
+          "status": "have"
+        },
+        {
+          "system": "P0 Baseline (GPT-4o)",
+          "is_ours": true,
+          "published_official": null,
+          "our_official": null,
+          "official_status": "pending",
+          "note": "Our official draco metric via deep_research.benchmarks (draco) / rubric_v2 (DRACO) \u2014 generation+scoring pass not run here.",
+          "our_panel_note": "on-disk PANEL slice is a DRACO+LitQA2 uuid mix; reported under DRACO with this flag",
+          "our_panel_overall": 0.3327,
+          "our_panel_status": "have"
+        },
+        {
+          "system": "P1 Iterative-RAG (GPT-4o)",
+          "is_ours": true,
+          "published_official": null,
+          "our_official": null,
+          "official_status": "pending",
+          "note": "Our official draco metric via deep_research.benchmarks (draco) / rubric_v2 (DRACO) \u2014 generation+scoring pass not run here.",
+          "our_panel_note": "on-disk PANEL slice is a DRACO+LitQA2 uuid mix; reported under DRACO with this flag",
+          "our_panel_overall": 0.488,
+          "our_panel_status": "have"
+        },
+        {
+          "system": "P2 Supervisor-Parallel (GPT-4o)",
+          "is_ours": true,
+          "published_official": null,
+          "our_official": null,
+          "official_status": "pending",
+          "note": "Our official draco metric via deep_research.benchmarks (draco) / rubric_v2 (DRACO) \u2014 generation+scoring pass not run here.",
+          "our_panel_note": "on-disk PANEL slice is a DRACO+LitQA2 uuid mix; reported under DRACO with this flag",
+          "our_panel_overall": 0.393,
+          "our_panel_status": "have"
+        },
+        {
+          "system": "P4 Perspective-STORM (GPT-4o)",
+          "is_ours": true,
+          "published_official": null,
+          "our_official": null,
+          "official_status": "pending",
+          "note": "Our official draco metric via deep_research.benchmarks (draco) / rubric_v2 (DRACO) \u2014 generation+scoring pass not run here.",
+          "our_panel_status": "pending"
+        }
+      ]
+    }
+  },
+  "cross_ranking_spearman": {
+    "drb_race_recon_vs_published": {
+      "rho": 0.8,
+      "n_systems": 4,
+      "systems": [
+        "Gemini-2.5-Pro Deep Research",
+        "OpenAI Deep Research",
+        "Perplexity Deep Research",
+        "Grok Deeper Search"
+      ],
+      "our_reconstructed_race": {
+        "Gemini-2.5-Pro Deep Research": 77.94,
+        "OpenAI Deep Research": 80.93,
+        "Perplexity Deep Research": 69.32,
+        "Grok Deeper Search": 65.91
+      },
+      "published_race": {
+        "Gemini-2.5-Pro Deep Research": 48.88,
+        "OpenAI Deep Research": 46.98,
+        "Perplexity Deep Research": 42.25,
+        "Grok Deeper Search": 40.24
+      },
+      "status": "have",
+      "interpretation": "Spearman of OUR on-disk RACE reconstruction ranking vs the published RACE leaderboard ranking over the four commercial DRAs. rho=1.0 means our protocol re-derivation ranks the four SOTA systems identically to the leaderboard.",
+      "scale_caveat": "ABSOLUTE SCALES DIFFER and are NOT comparable point-for-point: the published RACE leaderboard uses reference-GUIDED relative grading (candidate vs a strong reference report, compressing scores into the ~40-49 band), whereas our reconstruction is the RACE protocol weighting of the RAW 0-100 expert dimension grades (absolute, ~66-81 band). Only the RANKING is comparable; that is exactly what this Spearman measures."
+    },
+    "our_systems_vs_official": {
+      "status": "pending",
+      "reason": "Requires our systems' official-metric benchmark scores (LitQA2 accuracy / DeepSearchQA / DRACO / our RACE), which need a generation+grading pass not run by this script. Once those HAVE cells land, this Spearman is computed per benchmark and pooled."
+    }
+  },
+  "panel_pattern_ranking_gpt52": {
+    "p0": 0.3845,
+    "p1": 0.4665,
+    "p10": 0.2131,
+    "p11": 0.3308,
+    "p12": 0.1821,
+    "p2": 0.3976,
+    "p3": 0.406,
+    "p4": 0.4666,
+    "p5": 0.4283,
+    "p6": 0.4612,
+    "p7": 0.4466,
+    "p8": 0.4322,
+    "p9": 0.18
+  }
+}

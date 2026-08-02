@@ -1,0 +1,156 @@
+{
+  "method_note": "Many-Facet Rasch / IRT fit to the binary judged-verdict tensor. Facets: report-ability theta_r (report = pattern x query, R=985), criterion-difficulty b_c (item = md5-hashed criterion text, C=673; identical rubric text collapses to one item so general criteria anchor across queries), judge-severity s_j (J=3). 1PL/MFRM logit P(satisfied)=theta_r - b_c - s_j; 2PL adds criterion discrimination a_c (logit=a_c*(theta_r-b_c-s_j)). Estimator: penalised joint MLE (MAP) via L-BFGS-B with analytic sparse gradients; weak Gaussian priors (SD_theta=SD_b=5.0, SD_logA=0.5) control JML separation, judges near-unregularised (SD_s=100.0). Identification: criteria & judge severities centred to mean 0, offset folded into theta; 2PL geometric-mean discrimination free (shrunk to 1 by prior). Sign: higher b_c and higher s_j => harder to satisfy (severe). Filter: satisfied_is_known, 11 base patterns base_p0..base_p10, 3 core judges (gpt52, claude_opus, claude_sonnet); 115 empty-text criteria dropped. Pure CPU, no API calls.",
+  "n_verdicts_used": 111869,
+  "n_reports": 985,
+  "n_criteria": 673,
+  "n_judges": 3,
+  "seed": 20260703,
+  "model_fit": {
+    "1PL": {
+      "mcfadden_r2": 0.3674,
+      "auc": 0.8787,
+      "accuracy": 0.8007,
+      "brier": 0.1388,
+      "aic": 99226.6,
+      "bic": 115194.6,
+      "loglik": -47954.3,
+      "k_params": 1659
+    },
+    "2PL": {
+      "mcfadden_r2": 0.4095,
+      "auc": 0.8928,
+      "accuracy": 0.8115,
+      "brier": 0.1303,
+      "aic": 94183.5,
+      "bic": 116619.6,
+      "loglik": -44760.8,
+      "k_params": 2331
+    },
+    "LR_2pl_vs_1pl": {
+      "chi2": 6387.0,
+      "df": 672,
+      "p": 0.0,
+      "dAIC_favouring_2pl": 5043.1
+    },
+    "null_loglik": -75802.5
+  },
+  "per_dimension_difficulty": {
+    "analytical_depth": -0.2114,
+    "attribution_quality": 1.8689,
+    "citation_quality": 0.059,
+    "coverage": -0.6071,
+    "factual_accuracy": 0.0686,
+    "information_recall": 0.587,
+    "instruction_following": -0.3064,
+    "logical_coherence": -0.781,
+    "organization": -3.3573
+  },
+  "per_dimension_difficulty_all_items_unweighted": {
+    "analytical_depth": 0.8856,
+    "attribution_quality": 0.8925,
+    "citation_quality": 0.4067,
+    "coverage": -0.1826,
+    "factual_accuracy": 0.237,
+    "information_recall": 0.8667,
+    "instruction_following": -0.4084,
+    "logical_coherence": -1.0927,
+    "organization": -1.9433
+  },
+  "per_dimension_difficulty_verdict_weighted": {
+    "analytical_depth": -0.1994,
+    "attribution_quality": 1.8603,
+    "citation_quality": 0.0618,
+    "coverage": -0.4672,
+    "factual_accuracy": 0.0678,
+    "information_recall": 0.5902,
+    "instruction_following": -0.3056,
+    "logical_coherence": -0.7882,
+    "organization": -3.347
+  },
+  "per_dimension_n_wellobserved_criteria": {
+    "analytical_depth": 4,
+    "attribution_quality": 2,
+    "citation_quality": 4,
+    "coverage": 73,
+    "factual_accuracy": 8,
+    "information_recall": 4,
+    "instruction_following": 5,
+    "logical_coherence": 3,
+    "organization": 4
+  },
+  "per_dimension_pass_rate": {
+    "analytical_depth": 0.5887,
+    "attribution_quality": 0.2414,
+    "citation_quality": 0.549,
+    "coverage": 0.6237,
+    "factual_accuracy": 0.5351,
+    "information_recall": 0.4576,
+    "instruction_following": 0.6135,
+    "logical_coherence": 0.6716,
+    "organization": 0.9028
+  },
+  "per_dimension_difficulty_note": "PRIMARY per_dimension_difficulty = mean 1PL criterion difficulty b_c (logits, higher=harder) over WELL-OBSERVED criteria (n>=30 verdicts: the general DRACO rubric statements shared across queries, the only identifiable items). The all-item unweighted mean is corrupted because ~84% of criteria are query-specific singletons with prior-dominated b_c; the verdict-weighted mean is provided too and agrees with well-observed. PREDICTION test: factual_accuracy & information_recall highest; analytical_depth lowest.",
+  "judge_severity": {
+    "gpt52": 1.0948,
+    "claude_opus": -0.1543,
+    "claude_sonnet": -0.9405
+  },
+  "judge_severity_note": "1PL s_j in logits, centred to mean 0; higher = more severe (satisfies less).",
+  "var_severity": 0.6079,
+  "var_judge_report_interaction": 0.5582,
+  "var_judge_report_interaction_disattenuated": 0.3192,
+  "var_ratio_severity_vs_interaction": 1.089,
+  "var_ratio_severity_vs_interaction_disattenuated": 1.905,
+  "cross_judge_ordering_rho": 0.6463,
+  "cross_judge_ordering_rho_pairwise": {
+    "gpt52|claude_opus": 0.6422,
+    "gpt52|claude_sonnet": 0.6208,
+    "claude_opus|claude_sonnet": 0.6758
+  },
+  "cross_judge_ordering_rho_pattern_level": 0.7818,
+  "var_ratio_note": "per-judge report abilities re-fit with criterion difficulties anchored at joint 1PL b_c. Var(severity)=variance of the 3 judge mean-ability levels; Var(interaction)=variance of judge x report residual after removing judge level & report consensus. Raw interaction variance is inflated by per-report estimation noise (~38 verdicts/report/judge); disattenuated version subtracts the (2/3)*mean(SE^2) noise floor. Both severity and interaction reported so the paper can state levels-vs-orderings honestly.",
+  "irt_n_eff_or_separation_reliability": {
+    "report_person_separation_reliability": 0.9674,
+    "report_strata": 7.593,
+    "judge_severity_separation_reliability": 0.9998,
+    "effective_judge_count_pearson": 1.1459,
+    "effective_judge_count_spearman": 1.3086,
+    "mean_inter_judge_ability_corr_pearson": 0.809,
+    "canonical_n_eff": 1.6547,
+    "note": "effective_judge_count = k/(1+(k-1)*rbar) over mean inter-judge report-ability correlation (k=3); an IRT-ability analog to the canonical agreement-based n_eff=1.655. report/judge separation reliability = (Var(hat)-mean SE^2)/Var(hat)."
+  },
+  "low_discrimination_criteria": [
+    {
+      "criterion_id": "fd303255bd5e",
+      "dimension": "citation_quality",
+      "text": "Different sections draw from different sources rather than relying on a single source",
+      "discrimination": 0.0914,
+      "difficulty": 1.0304,
+      "n_verdicts": 2926,
+      "pass_rate": 0.3797
+    }
+  ],
+  "low_discrimination_criteria_note": "2PL a_c < 0.30 among items with >=100 verdicts (well-estimated). Near-zero a_c = criterion does not separate reports (near-constant pass/fail) -> pruning candidate.",
+  "per_dimension_median_discrimination": {
+    "analytical_depth": 1.051,
+    "attribution_quality": 1.0521,
+    "citation_quality": 1.0521,
+    "coverage": 1.0572,
+    "factual_accuracy": 1.0521,
+    "information_recall": 1.0535,
+    "instruction_following": 1.0518,
+    "logical_coherence": 1.0507,
+    "organization": 1.0529
+  },
+  "per_dimension_median_discrimination_wellobserved": {
+    "analytical_depth": 1.2243,
+    "attribution_quality": 1.1542,
+    "citation_quality": 0.6083,
+    "coverage": 1.2814,
+    "factual_accuracy": 1.4391,
+    "information_recall": 1.7483,
+    "instruction_following": 2.3681,
+    "logical_coherence": 2.3301,
+    "organization": 1.5047
+  }
+}

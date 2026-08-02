@@ -37,6 +37,8 @@ jobs:
           python -m venv /tmp/deep-research-public-venv
           /tmp/deep-research-public-venv/bin/python -m pip install -c constraints-public.txt -e ".[api,paper,dev]"
           /tmp/deep-research-public-venv/bin/deep-research quickstart-check
+          /tmp/deep-research-public-venv/bin/deep-research paper rebuild paper-a --check-only
+          /tmp/deep-research-public-venv/bin/deep-research paper rebuild paper-a --skip-compile
           /tmp/deep-research-public-venv/bin/deep-research reproduce paper-a --mode smoke
           /tmp/deep-research-public-venv/bin/deep-research reproduce paper-a --mode reference
           /tmp/deep-research-public-venv/bin/deep-research reproduce paper-a --mode provenance

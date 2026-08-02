@@ -1,0 +1,4 @@
+family_ab,citation_fabrication,empty_or_sparse,entity_confusion,factual_contradiction,format_violation,hallucinated_source,missing_evidence,missing_perspective,scope_drift,superficial_analysis
+Ablation,0.32,0.006,0.021,0.203,0.001,0.041,0.353,0.005,0.01,0.041
+GPT-4o,0.22,0.052,0.03,0.2,0.0,0.041,0.361,0.011,0.013,0.072
+Local7B,0.025,0.333,0.019,0.139,0.001,0.064,0.267,0.015,0.01,0.127

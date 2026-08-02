@@ -9,10 +9,12 @@
 ## Public Export Note
 
 This document records the historical methodology used for the paper. The GitHub
-export ships the API workflow in `deep_research/`, compact inputs, frozen
-reference summaries, public tests, and the final PDF. It does not ship the
-archived execution engine, local/GPU pattern implementations, raw reports, raw
-judge verdict trees, or historical model/search snapshots.
+export ships the API workflow in `deep_research/`, the reusable pattern and
+evaluation modules, compact inputs, compact derived analysis tables, frozen
+reference summaries, public tests, the Paper A rebuild package, and the final
+PDF. It does not ship raw generated report forests, raw judge-verdict packet
+directories, private notes, model weights, checkpoints, or historical
+model/search snapshots.
 
 Naming note: this protocol describes six orchestration archetypes (`P0`--`P5`).
 The public reference table contains thirteen frozen `base_p*` rows because the

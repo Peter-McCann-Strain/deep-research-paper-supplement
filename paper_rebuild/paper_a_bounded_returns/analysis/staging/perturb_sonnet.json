@@ -1,0 +1,49 @@
+{
+  "experiment": "perturb_sonnet_crosscheck",
+  "date": "2026-07-27",
+  "judge_model": "claude-sonnet-5",
+  "judge_source": "perturb_j11",
+  "scope_note": "Does NOT reproduce build_e13_detector_roc.py's gpt52_injection_roc (matched-pair score-DROP vs clean originals, which needs the clean originals re-judged with Sonnet too -- not done here). This is an independent-judge score-agreement check on the 34 perturbed reports alone (13 base_p* patterns, 82de3e92 quarantined).",
+  "coverage": {
+    "gpt52": 34,
+    "sonnet5": 34,
+    "common_pairs": 34
+  },
+  "gpt52_overall": {
+    "mean": 0.3471,
+    "ci95": [
+      0.2872,
+      0.4059
+    ],
+    "n": 34
+  },
+  "sonnet_overall": {
+    "mean": 0.6383,
+    "ci95": [
+      0.5353,
+      0.7348
+    ],
+    "n": 34
+  },
+  "gpt52_factual_accuracy": {
+    "mean": 0.239,
+    "ci95": [
+      0.1912,
+      0.2831
+    ],
+    "n": 34
+  },
+  "sonnet_factual_accuracy": {
+    "mean": 0.5809,
+    "ci95": [
+      0.4706,
+      0.6875
+    ],
+    "n": 34
+  },
+  "cross_family_agreement": {
+    "pearson_r_overall_score": 0.876,
+    "spearman_rho_overall_score": 0.8402,
+    "n_pairs": 34
+  }
+}

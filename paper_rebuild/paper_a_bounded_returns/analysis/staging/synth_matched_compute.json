@@ -1,0 +1,102 @@
+{
+  "experiment": "synth_matched_compute",
+  "date": "2026-07-24",
+  "question": "Is draft_revise's +0.08 factual gain over single_pass just more compute? Test across the natural compute ladder of the 5 frozen-evidence scaffolds (no new generation).",
+  "compute_ladder_llm_calls": {
+    "single_pass": 1,
+    "draft_revise": 3,
+    "map_reduce": 7,
+    "beam": 7,
+    "verifier_select": 45
+  },
+  "per_scaffold": {
+    "single_pass": {
+      "llm_calls": 1,
+      "factual_mean": 0.3125,
+      "overall_mean": 0.5473,
+      "n": 30
+    },
+    "draft_revise": {
+      "llm_calls": 3,
+      "factual_mean": 0.3917,
+      "overall_mean": 0.6029,
+      "n": 30
+    },
+    "map_reduce": {
+      "llm_calls": 7,
+      "factual_mean": 0.3,
+      "overall_mean": 0.5547,
+      "n": 30
+    },
+    "beam": {
+      "llm_calls": 7,
+      "factual_mean": 0.3417,
+      "overall_mean": 0.5861,
+      "n": 30
+    },
+    "verifier_select": {
+      "llm_calls": 45,
+      "factual_mean": 0.3,
+      "overall_mean": 0.5423,
+      "n": 30
+    }
+  },
+  "draft_revise_vs_others_factual": {
+    "single_pass": {
+      "llm_calls": 1,
+      "factual_delta_vs_draft_revise": {
+        "delta": -0.0792,
+        "ci95": [
+          -0.1208,
+          -0.0375
+        ],
+        "n": 30
+      },
+      "draft_revise_still_wins": true
+    },
+    "map_reduce": {
+      "llm_calls": 7,
+      "factual_delta_vs_draft_revise": {
+        "delta": -0.0917,
+        "ci95": [
+          -0.1375,
+          -0.0458
+        ],
+        "n": 30
+      },
+      "draft_revise_still_wins": true
+    },
+    "beam": {
+      "llm_calls": 7,
+      "factual_delta_vs_draft_revise": {
+        "delta": -0.05,
+        "ci95": [
+          -0.0958,
+          0.0
+        ],
+        "n": 30
+      },
+      "draft_revise_still_wins": true
+    },
+    "verifier_select": {
+      "llm_calls": 45,
+      "factual_delta_vs_draft_revise": {
+        "delta": -0.0917,
+        "ci95": [
+          -0.1375,
+          -0.0417
+        ],
+        "n": 30
+      },
+      "draft_revise_still_wins": true
+    }
+  },
+  "compute_factual_spearman_across_arms": -0.3,
+  "best_factual_scaffold": "draft_revise",
+  "verdict": {
+    "best_factual_is_draft_revise": true,
+    "no_higher_compute_scaffold_beats_draft_revise": true,
+    "compute_does_not_predict_factual": true,
+    "reading": "If draft_revise (3 calls) holds the top factual score and neither the 7-call (beam/map_reduce) nor 45-call (verifier_select) scaffold beats it, and factual does not rise with compute across arms, then the +0.08 gain is ARCHITECTURAL (the draft->critique->revise loop) rather than a compute artefact. This is the matched-compute defence of the frozen_defence finding, at $0."
+  }
+}

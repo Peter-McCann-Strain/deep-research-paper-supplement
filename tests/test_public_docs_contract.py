@@ -21,23 +21,13 @@ def test_public_query_manifest_records_redacted_rows_without_private_sentinels()
     assert "public_redaction" in Path("data/README.md").read_text()
 
 
-def test_protocol_doc_does_not_claim_missing_historical_modules_are_shipped():
+def test_protocol_doc_describes_expanded_public_scope_without_raw_artifacts():
     doc = Path("docs/evaluation_protocol.md").read_text()
     human_doc = Path("docs/human_evaluation_protocol.md").read_text()
 
     assert "Public Export Note" in doc
-    assert "public" in doc and "does not ship the" in doc and "archived execution engine" in doc
-    forbidden_claims = [
-        "Implementation is " + "provided by",
-        "`deep_research/" + "evaluation/`",
-        "`deep_research/" + "ablation/framework.py`",
-        "`execution_" + "pipeline.py`",
-        "`judge_" + "pipeline.py`",
-        "`retrieval_" + "eval.py`",
-        "`rubric_" + "v2.py`",
-        "`multi_" + "judge.py`",
-        "`citation_" + "verifier.py`",
-    ]
-    for claim in forbidden_claims:
-        assert claim not in doc
-        assert claim not in human_doc
+    assert "reusable pattern and" in doc and "evaluation modules" in doc
+    assert "Paper A rebuild package" in doc
+    assert "raw generated report forests" in doc
+    assert "raw judge-verdict packet" in doc
+    assert "not raw evaluator packets" in human_doc

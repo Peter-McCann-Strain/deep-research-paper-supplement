@@ -1,0 +1,12 @@
+\begin{tabular}{lrr}
+\toprule
+Judge & Youden's $J$ & Cohen's $\kappa$ \\
+\midrule
+DR-Judge-7B & +0.503 & +0.453 \\
+GPT-5.2 & +0.583 & +0.524 \\
+Claude Sonnet & +0.626 & +0.667 \\
+Claude Opus & +0.853 & +0.857 \\
+\bottomrule
+\multicolumn{3}{l}{\footnotesize Signed $J=\mathrm{TPR}-\mathrm{FPR}$ vs the adjudicated panel target ($n=3824$ cells).} \\
+\multicolumn{3}{l}{\footnotesize $J$ is primary; $\kappa$ confounds prevalence with informedness.} \\
+\end{tabular}

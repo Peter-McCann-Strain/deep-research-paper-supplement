@@ -1,0 +1,319 @@
+{
+  "_meta": {
+    "built": "2026-07-03",
+    "script": "scratchpad/build_isoquant_claimtype.py",
+    "judge_capability_ladder": "gpt52",
+    "bootstrap_seed": 20260703,
+    "provenance": "reads df_overall_scores / df_e14_oracle_verdicts / df_c0_verdicts + canonical_numbers.json (read-only); NO API; CPU-only",
+    "warning": "STAGING ONLY -- not merged into canonical_numbers.json"
+  },
+  "isoquant": {
+    "_note": "Capability x architecture isoquant, all rungs judged by GPT-5.2 (gpt52). Capability axis (7B<8B<14B<gpt-4o<gpt-4.1) is measured at the SIMPLEST architecture (P9 local scaffold = P0-equivalent); local rungs use length-adjusted scores (within-frozen-pool OLS, strips the verbosity confound) and frozen retrieval (gpt-4o extractor held constant); frontier rungs use raw gpt52 with live retrieval. Architecture axis (P0->P4, cost 1x->17.5x) is measured at gpt-4o and gpt-4.1. The full 2D surface is UNDER-IDENTIFIED (no P4-on-local cell); what is estimable is the two margins plus the P0/P4 contrast at two frontier tiers (the interaction slice).",
+    "judge": "gpt52",
+    "capability_ladder_at_P0_architecture": [
+      {
+        "tier": "7B",
+        "model": "Qwen2.5-7B-Instruct (P9)",
+        "params_b": 7,
+        "q_len_adj": 0.2775,
+        "q_raw": 0.2784,
+        "retrieval": "frozen (gpt-4o extractor)",
+        "n": 89
+      },
+      {
+        "tier": "8B",
+        "model": "Qwen3-8B (P13, 2025-04)",
+        "params_b": 8,
+        "q_len_adj": 0.299,
+        "q_raw": 0.3557,
+        "retrieval": "frozen (gpt-4o extractor)",
+        "n": 89,
+        "note": "newer vintage than 7B/14B -> off the pure-capacity line (vintage confound)"
+      },
+      {
+        "tier": "14B",
+        "model": "Qwen2.5-14B-Instruct (P17)",
+        "params_b": 14,
+        "q_len_adj": 0.3113,
+        "q_raw": 0.3037,
+        "retrieval": "frozen (gpt-4o extractor)",
+        "n": 89
+      },
+      {
+        "tier": "gpt-4o",
+        "model": "gpt-4o (P0 baseline)",
+        "params_b": null,
+        "q_len_adj": null,
+        "q_raw": 0.3845,
+        "retrieval": "live",
+        "n": 90
+      },
+      {
+        "tier": "gpt-4.1",
+        "model": "gpt-4.1 (P0 baseline)",
+        "params_b": null,
+        "q_len_adj": null,
+        "q_raw": 0.4870333333333334,
+        "retrieval": "live",
+        "n": 45
+      }
+    ],
+    "capability_step_deltas": [
+      {
+        "from": "7B",
+        "to": "8B",
+        "delta_quality": 0.0215
+      },
+      {
+        "from": "8B",
+        "to": "14B",
+        "delta_quality": 0.0123
+      },
+      {
+        "from": "14B",
+        "to": "gpt-4o",
+        "delta_quality": 0.0732
+      },
+      {
+        "from": "gpt-4o",
+        "to": "gpt-4.1",
+        "delta_quality": 0.1025
+      }
+    ],
+    "architecture_axis": {
+      "compute_multiple_p4_vs_p0": 17.5,
+      "at_gpt4o": {
+        "p0": 0.3845,
+        "p4": 0.4666,
+        "paired_delta_p4_minus_p0": 0.082,
+        "ci95": [
+          0.0493,
+          0.1155
+        ],
+        "n": 90
+      },
+      "at_gpt4_1": {
+        "p0": 0.4870333333333334,
+        "p4": 0.527103125,
+        "paired_delta_p4_minus_p0": 0.0861,
+        "ci95": [
+          0.0266,
+          0.1478
+        ],
+        "n": 32
+      }
+    },
+    "frontier_separability": {
+      "premium_at_gpt4o": 0.082,
+      "premium_at_gpt4_1": 0.0861,
+      "interaction_arch_x_capability": 0.0041,
+      "verdict": "Architecture premium is essentially CONSTANT across the two frontier tiers (0.082 vs 0.086; interaction +0.0041, tiny vs CIs) -> additively separable / smooth isoquant over gpt-4o<->gpt-4.1: architecture and capability act as SUBSTITUTES here, no detectable complementarity. Complementarity at the low-capability end is UNTESTED (no P4-on-local cell)."
+    },
+    "headline_isoquant_cell": {
+      "P4_at_gpt4o": 0.4666,
+      "P0_at_gpt4_1": 0.487,
+      "gap": 0.0204,
+      "compute_multiple": {
+        "P4_at_gpt4o": 17.5,
+        "P0_at_gpt4_1": 1.0
+      },
+      "readout": "DIRECTLY OBSERVED (no extrapolation): P4-on-gpt-4o (0.467) ~= P0-on-gpt-4.1 (0.487) -- roughly on the SAME isoquant. One base-model generation upgrade (gpt-4o->gpt-4.1) delivers ~+0.103 quality at P0, which equals-or-exceeds the entire P0->P4 orchestration stack (+0.082) at ~1/17 the compute. Along the frontier segment, capability is the cheaper axis and substitutes for architecture."
+    },
+    "exchange_rate": {
+      "unit_arch_step": "P0 -> P4 (full orchestration), cost 1x -> 17.5x",
+      "arch_premium_gpt4o": 0.082,
+      "capability_per_param_doubling": 0.0253,
+      "capability_per_param_doubling_ci95": [
+        0.0076,
+        0.0427
+      ],
+      "mrs_in_param_doublings": 3.24,
+      "mrs_in_param_doublings_ci95": [
+        1.15,
+        15.2
+      ],
+      "capability_per_vintage_step_7Bto8B_7mo": 0.0215,
+      "mrs_in_vintage_steps": 3.82,
+      "statement": "One architecture step (P0->P4, ~0.082 quality) buys about 3.2 parameter-doublings on the local ladder (~8x params) OR ~3.8 small-model vintage-steps (~2 years of local-model progress) -- but this is a WITHIN-LOCAL extrapolation of a small, near-zero-touching slope (ratio CI is wide, ~2-15 doublings) and the capability axis is markedly non-uniform, so quote as an order of magnitude."
+    },
+    "compute_confound_caveat": {
+      "disentanglement_compute_attributable_pct_point": 40,
+      "note": "The P0->P4 premium (0.082) is an UPPER BOUND on the pure-architecture effect: a matched-budget probe (on P1) attributes a borderline ~40% of the P1>P0 gap to raw compute (not significant, Wilcoxon p=0.053). If a similar share holds for P4, the architecture-only premium is nearer ~0.05, shrinking every exchange rate above by ~40%."
+    },
+    "coverage_notes": [
+      "Full 2D response surface NOT fittable: no P4-on-local cell, so architecture-only OLS is L-shaped (arch varies only at gpt-4o & gpt-4.1; capability varies only at P0). Interaction estimable ONLY between gpt-4o and gpt-4.1.",
+      "Retrieval-control discontinuity: local rungs use FROZEN retrieval (gpt-4o extractor held constant, isolates the generation model); frontier rungs use LIVE retrieval. The ladder stitches two experiments.",
+      "Query-set / n mismatch: local rungs = 89 frozen queries; gpt-4o P0 = 90 live; gpt-4.1 P0 = 45-query subset (20 heaviest queries timed out at 1800s).",
+      "Capability 'tier' is NOT a uniform unit: local steps are small (+0.01 to +0.02) but the 14B->gpt-4o jump (+0.07) and gpt-4o->gpt-4.1 jump (+0.10) are large -- a regime change at the local->frontier boundary.",
+      "8B (Qwen3-8B) is a newer vintage than the 7B/14B Qwen2.5 pair, so the pure-capacity slope uses only the same-vintage 7B->14B pair (canonical 0.0253/doubling)."
+    ],
+    "verdict": "ESTIMABLE (partial). The isoquant is smooth/separable and capability-favouring over the FRONTIER segment: one gpt-4o->gpt-4.1 generation (~+0.10) >= the full P0->P4 stack (~+0.08) at 1/17 the compute, and P4@gpt-4o ~= P0@gpt-4.1 sit on one isoquant. Exchange rate ~ 1 architecture step ~= 3 param-doublings (order of magnitude). Complementarity at low capability is plausible but UNMEASURED -- the ladder is too thin (missing P4-on-local) to fit a clean interacted surface across the whole range."
+  },
+  "oracle_claim_type": {
+    "_note": "Claim-type stratification of the oracle factual channel. Oracle condition = perfect/gold retrieval (df_e14_oracle_verdicts); base condition = live retrieval (df_c0_verdicts). VFA = fraction of claims with verdict=='supports' (matches df_*_per_report.verified_factual_accuracy = n_supports/n_claims). Claims are tagged by simple text heuristics (regex below). PRIMARY analysis is matched on the 11 queries and 8 patterns shared by both conditions, pooled over patterns, with a QUERY cluster bootstrap (seed 20260703, 10000 reps). The oracle/base reports are different generations so claims are NOT paired claim-by-claim -- this is a between-report VFA contrast at the claim-type level.",
+    "verdict_to_vfa": "VFA(type) = mean(verdict=='supports') over claims of that type",
+    "typing_heuristics": {
+      "priority_order": [
+        "comparative",
+        "numeric",
+        "multihop",
+        "singlehop"
+      ],
+      "comparative_aggregative": "\\b(more|less|greater|higher|lower|larger|smaller|than|most|least|compared|comparison|versus|vs\\.?|exceed|outperform|majority|fewer|highest|lowest|best|worst|dominant|primary|leading|superior|inferior|increas|decreas|reduc|improv|prioriti|tied|rank)",
+      "numeric_quantitative": "\\\\d  (any digit; applied after comparative)",
+      "multihop_causal": "\\b(because|therefore|thus|hence|due to|leads? to|results? in|resulting|caused? by|enabl|allow|drives?|contribut|as a result)\\b",
+      "singlehop_lookup": "residual (simple declarative factual claim)",
+      "two_way_grouping": {
+        "grounding": [
+          "singlehop",
+          "numeric"
+        ],
+        "synthesis": [
+          "comparative",
+          "multihop"
+        ]
+      },
+      "caveat": "Heuristics are noisy; multi-hop is under-detected (citation_idx is null for ~85% of claims, near-zero inline [n] markers) so multi-hop rests on causal connectives only and is low-power."
+    },
+    "aggregate_matched": {
+      "oracle_vfa": 0.3663,
+      "base_vfa": 0.2873,
+      "delta": 0.079,
+      "ci95": [
+        -0.0021,
+        0.1794
+      ],
+      "note": "Modest positive aggregate (consistent with e14 cluster retrieval_component 0.092 and the flat e5 dose slope) -- the stratification asks WHERE this small lift lives."
+    },
+    "per_type_matched": {
+      "singlehop": {
+        "oracle_vfa": 0.3867735470941884,
+        "base_vfa": 0.29982668977469673,
+        "n_oracle_claims": 998,
+        "n_base_claims": 577,
+        "delta": 0.0869,
+        "ci95": [
+          0.028,
+          0.1601
+        ]
+      },
+      "numeric": {
+        "oracle_vfa": 0.3047619047619048,
+        "base_vfa": 0.07462686567164178,
+        "n_oracle_claims": 210,
+        "n_base_claims": 134,
+        "delta": 0.2301,
+        "ci95": [
+          0.0294,
+          0.3738
+        ]
+      },
+      "comparative": {
+        "oracle_vfa": 0.34854771784232363,
+        "base_vfa": 0.36177474402730375,
+        "n_oracle_claims": 482,
+        "n_base_claims": 293,
+        "delta": -0.0132,
+        "ci95": [
+          -0.108,
+          0.1535
+        ]
+      },
+      "multihop": {
+        "oracle_vfa": 0.4,
+        "base_vfa": 0.25,
+        "n_oracle_claims": 30,
+        "n_base_claims": 16,
+        "delta": 0.15,
+        "ci95": [
+          -0.1632,
+          0.3636
+        ]
+      }
+    },
+    "per_group_matched_grounding_vs_synthesis": {
+      "grounding": {
+        "oracle_vfa": 0.37251655629139074,
+        "base_vfa": 0.25738396624472576,
+        "n_oracle_claims": 1208,
+        "n_base_claims": 711,
+        "delta": 0.1151,
+        "ci95": [
+          0.036,
+          0.221
+        ]
+      },
+      "synthesis": {
+        "oracle_vfa": 0.3515625,
+        "base_vfa": 0.3559870550161812,
+        "n_oracle_claims": 512,
+        "n_base_claims": 309,
+        "delta": -0.0044,
+        "ci95": [
+          -0.1029,
+          0.1489
+        ]
+      }
+    },
+    "per_type_unmatched_robustness": {
+      "singlehop": {
+        "oracle_vfa": 0.3384,
+        "base_vfa": 0.2851,
+        "delta": 0.0533,
+        "n_oracle": 2807,
+        "n_base": 1722
+      },
+      "numeric": {
+        "oracle_vfa": 0.3371,
+        "base_vfa": 0.1647,
+        "delta": 0.1723,
+        "n_oracle": 807,
+        "n_base": 510
+      },
+      "comparative": {
+        "oracle_vfa": 0.2828,
+        "base_vfa": 0.3146,
+        "delta": -0.0317,
+        "n_oracle": 891,
+        "n_base": 515
+      },
+      "multihop": {
+        "oracle_vfa": 0.3333,
+        "base_vfa": 0.1224,
+        "delta": 0.2109,
+        "n_oracle": 60,
+        "n_base": 49
+      }
+    },
+    "n_matched_queries": 11,
+    "common_patterns": [
+      "p0",
+      "p1",
+      "p10",
+      "p4",
+      "p5",
+      "p7",
+      "p8",
+      "p9"
+    ],
+    "anchors": {
+      "e5_factual_slope": -0.0011111111111111545,
+      "e5_factual_slope_ci95_two_sided": [
+        -0.03500797211962474,
+        0.03278574989740243
+      ],
+      "e14_cluster_retrieval_component": 0.092,
+      "e14_cluster_retrieval_component_ci95": [
+        0.0304,
+        0.1536
+      ]
+    },
+    "coverage_notes": [
+      "Only 11 queries overlap between the oracle and base conditions (oracle uses a hash/dsqa query sample, base c0 uses the variance-stratified UUID+hash sample); the QUERY cluster bootstrap resamples these 11, so matched CIs are WIDE. Unmatched (all-query) robustness is reported alongside.",
+      "multihop cell is tiny (matched n=46 oracle / 25 base) -> its delta is directional only; rely on the 2-way synthesis bucket (comparative+multihop) for the powered synthesis test.",
+      "The prediction (single-hop improves; numeric/aggregative/multi-hop carry the flatness) is PARTIALLY refined by the data: the flatness is concentrated in COMPARATIVE-AGGREGATIVE claims; NUMERIC claims behave like grounding and improve the MOST.",
+      "Base numeric VFA is very low (~0.10): without gold evidence the model's numbers rarely verify against retrieved sources; oracle grounding is exactly what a specific-number lookup needs."
+    ],
+    "verdict": "SUPPORTED WITH A TWIST. The modest aggregate oracle lift (matched +0.079) is NOT uniform across claim types. GROUNDING claims improve (grounding delta +0.115: single-hop +0.087, numeric +0.230) while SYNTHESIS claims stay flat (synthesis delta -0.004), driven by comparative-aggregative claims (-0.013). So perfect evidence buys GROUNDING (look up a fact/number) but not SYNTHESIS PROPER (compare/aggregate across sources) -- the flat aggregate hides a real grounding gain masked by a flat comparative-aggregative channel. Refines the preregistered guess: it is comparative-aggregative, not numeric, that carries the flatness. Small-n (11 shared queries) -> directional; unmatched robustness agrees on the ordering."
+  }
+}

@@ -157,7 +157,7 @@ def test_notice_and_pattern_metrics_are_manifested():
     assert "mixed-license" in Path("NOTICE").read_text()
 
 
-def test_public_dependency_profile_is_minimal_and_api_extra_is_explicit():
+def test_public_dependency_profile_uses_api_and_paper_without_local_model_stack():
     project = tomllib.loads(Path("pyproject.toml").read_text())
 
     assert project["project"]["dependencies"] == ["python-dotenv>=1.0.0"]
@@ -165,8 +165,6 @@ def test_public_dependency_profile_is_minimal_and_api_extra_is_explicit():
     assert any(dep.startswith("openai") for dep in api_extra)
     assert any(dep.startswith("anthropic") for dep in api_extra)
     requirements = Path("requirements.txt").read_text()
-    assert ".[api]" in requirements
-    assert ".[paper]" not in requirements
-    assert ".[api,paper]" not in requirements
+    assert ".[api,paper]" in requirements
     assert ("tor" + "ch") not in Path("constraints-public.txt").read_text().lower()
     assert "tavily" not in Path("deep_research/cli.py").read_text()

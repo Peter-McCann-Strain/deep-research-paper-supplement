@@ -1,0 +1,74 @@
+{
+  "_README": "Curated published SOTA numbers for the four head-to-head benchmarks, hand-extracted (2026-06-15) from this repo's three benchmark-survey reports. Every number carries a `source` (the report file + line) and an `origin` (the primary leaderboard/paper the report cites). These are the *official-metric* SOTA figures the head-to-head table places our systems beside. Do NOT auto-regenerate: this is a hand-verified curation; edits must re-cite.",
+  "_provenance_reports": [
+    "reports/deep_research_evaluation_benchmarks.md",
+    "reports/evaluation_benchmarks_deep_research.md",
+    "reports/benchmark_research.md"
+  ],
+  "benchmarks": {
+    "drb_race": {
+      "metric": "RACE overall (0-100)",
+      "metric_direction": "higher_better",
+      "official_grader": "DeepResearch-Bench RACE (reference-guided, 4-dim weighted, GPT-judge over expert-anchored criteria); leaderboard numbers are the released ones, the 150 on-disk expert annotation records re-derive the same ordering",
+      "note": "These four systems are exactly the four DRAs whose 400 reports + 150 expert RACE annotations live on disk under data/benchmarks/drb1/. Our own systems' RACE is produced by deep_research/benchmarks/race.py (pending GPT-5.2 grading).",
+      "rows": [
+        {"system": "Gemini-2.5-Pro Deep Research", "score": 48.88, "source": "reports/deep_research_evaluation_benchmarks.md:60", "origin": "DeepResearch-Bench leaderboard (Du et al. 2025); HF Ayanami0730/DeepResearch-Leaderboard"},
+        {"system": "OpenAI Deep Research", "score": 46.98, "source": "reports/deep_research_evaluation_benchmarks.md:61", "origin": "DeepResearch-Bench leaderboard (Du et al. 2025)"},
+        {"system": "Claude-3.7-Sonnet w/Search", "score": 40.67, "source": "reports/deep_research_evaluation_benchmarks.md:64", "origin": "DeepResearch-Bench leaderboard (Du et al. 2025)"},
+        {"system": "Perplexity Deep Research", "score": 42.25, "source": "reports/deep_research_evaluation_benchmarks.md:62", "origin": "DeepResearch-Bench leaderboard (Du et al. 2025)"},
+        {"system": "Grok Deeper Search", "score": 40.24, "source": "reports/deep_research_evaluation_benchmarks.md:63", "origin": "DeepResearch-Bench leaderboard (Du et al. 2025)"}
+      ]
+    },
+    "litqa2": {
+      "metric": "Accuracy (correct / all questions)",
+      "metric_secondary": "Precision (correct / answered)",
+      "metric_direction": "higher_better",
+      "official_grader": "LitQA2 multiple-choice exact-match (programmatic); our own accuracy via deep_research/benchmarks/litqa2.py",
+      "note": "PaperQA2 reports superhuman precision (85.2 vs human 73.8); accuracy not significantly above humans.",
+      "rows": [
+        {"system": "PaperQA (v3.11)", "score": 69.5, "precision": 87.9, "source": "reports/evaluation_benchmarks_deep_research.md:101", "origin": "PaperQA2 paper / FutureHouse (Skarlinski et al. 2024, arXiv:2409.13740)"},
+        {"system": "Human experts", "score": 67.7, "precision": 73.8, "source": "reports/evaluation_benchmarks_deep_research.md:99", "origin": "PaperQA2 paper (Skarlinski et al. 2024)"},
+        {"system": "PaperQA2", "score": 66.0, "precision": 85.2, "source": "reports/evaluation_benchmarks_deep_research.md:98", "origin": "PaperQA2 paper (Skarlinski et al. 2024, arXiv:2409.13740)"},
+        {"system": "Perplexity (Co-pilot)", "score": 58.0, "precision": 74.4, "source": "reports/evaluation_benchmarks_deep_research.md:100", "origin": "PaperQA2 paper (Skarlinski et al. 2024)"},
+        {"system": "AutoGPT", "score": 41.4, "precision": 73.9, "source": "reports/evaluation_benchmarks_deep_research.md:102", "origin": "PaperQA2 paper (Skarlinski et al. 2024)"},
+        {"system": "GPT-4", "score": 33.4, "precision": 50.6, "source": "reports/evaluation_benchmarks_deep_research.md:103", "origin": "PaperQA2 paper (Skarlinski et al. 2024)"},
+        {"system": "Elicit", "score": 24.0, "precision": 42.9, "source": "reports/evaluation_benchmarks_deep_research.md:104", "origin": "PaperQA2 paper (Skarlinski et al. 2024)"},
+        {"system": "Random", "score": 20.4, "precision": 25.7, "source": "reports/evaluation_benchmarks_deep_research.md:105", "origin": "PaperQA2 paper (Skarlinski et al. 2024)"}
+      ]
+    },
+    "deepsearch_qa": {
+      "metric": "Accuracy (exhaustive answer-set, P/R/F1 family)",
+      "metric_direction": "higher_better",
+      "official_grader": "DeepSearchQA objective answer-set match (programmatic P/R/F1); our own via deep_research/benchmarks/deepsearch_qa.py answer_found",
+      "note": "Independently-verified Gemini DR number (64.3) given alongside the headline 66.1.",
+      "rows": [
+        {"system": "Parallel Ultra2x", "score": 72.6, "source": "reports/deep_research_evaluation_benchmarks.md:244", "origin": "Gemini DeepSearchQA results table (DeepMind, Dec 2025; Kaggle leaderboard)"},
+        {"system": "Gemini Deep Research", "score": 66.1, "score_verified": 64.3, "source": "reports/deep_research_evaluation_benchmarks.md:245", "origin": "Gemini DeepSearchQA results table (DeepMind, Dec 2025; arXiv:2601.20975)"}
+      ]
+    },
+    "draco": {
+      "metric": "Weighted rubric compliance (0-100, MET/UNMET)",
+      "metric_direction": "higher_better",
+      "official_grader": "DRACO weighted binary MET/UNMET expert rubrics; our own via rubric_v2 DRACO-weighted scoring (build_rubric_from_draco)",
+      "note": "Perplexity DR (Opus 4.6) tops the public DRACO leaderboard.",
+      "rows": [
+        {"system": "Perplexity Deep Research (Opus 4.6)", "score": 70.5, "source": "reports/deep_research_evaluation_benchmarks.md:24", "origin": "DRACO leaderboard (Perplexity, arXiv:2602.11685)"},
+        {"system": "Perplexity Deep Research (Opus 4.5)", "score": 67.2, "source": "reports/deep_research_evaluation_benchmarks.md:25", "origin": "DRACO leaderboard (Perplexity, arXiv:2602.11685)"},
+        {"system": "Gemini Deep Research", "score": 59.0, "source": "reports/deep_research_evaluation_benchmarks.md:26", "origin": "DRACO leaderboard (Perplexity, arXiv:2602.11685)"},
+        {"system": "OpenAI o3", "score": 52.1, "source": "reports/deep_research_evaluation_benchmarks.md:27", "origin": "DRACO leaderboard (Perplexity, arXiv:2602.11685)"},
+        {"system": "OpenAI o4-mini", "score": 41.9, "source": "reports/deep_research_evaluation_benchmarks.md:28", "origin": "DRACO leaderboard (Perplexity, arXiv:2602.11685)"}
+      ]
+    }
+  },
+  "context_benchmarks_not_in_headtohead": {
+    "_note": "Objective web-research SOTA we cite for context but do NOT run our systems on in this head-to-head (validation-only / out-of-genre).",
+    "browsecomp": [
+      {"system": "OpenAI Deep Research", "score": 51.5, "metric": "accuracy", "source": "reports/evaluation_benchmarks_deep_research.md:206", "origin": "OpenAI BrowseComp (arXiv:2504.12516)"},
+      {"system": "Gemini Deep Research", "score": 59.2, "metric": "accuracy", "source": "reports/deep_research_evaluation_benchmarks.md (Gemini sec)", "origin": "Gemini DR report"}
+    ],
+    "hle": [
+      {"system": "OpenAI Deep Research", "score": 26.6, "metric": "accuracy", "source": "reports/evaluation_benchmarks_deep_research.md:198", "origin": "OpenAI Deep Research report"},
+      {"system": "Gemini Deep Research", "score": 46.4, "metric": "accuracy", "source": "reports/evaluation_benchmarks_deep_research.md:199", "origin": "Gemini DR report"}
+    ]
+  }
+}

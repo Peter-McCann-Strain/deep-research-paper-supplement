@@ -46,6 +46,14 @@ Expected status: `success`; expected counts are 90 public queries and 13 frozen 
 
 Expected status: `success`. The command verifies hashes and counts in `repro/reference/REFERENCE_MANIFEST.json`. A mismatch usually means a reference file was edited without regenerating the manifest.
 
+## `deep-research paper rebuild paper-a --check-only`
+
+Expected status: `success`. The command verifies that the public paper rebuild source, canonical number store, derived analysis tables, generated table files, generated figure files, and bibliography files are present. It does not call provider APIs and does not require a TeX installation.
+
+## `deep-research paper rebuild paper-a --skip-compile`
+
+Expected status: `success`. The command regenerates Paper A tables and figures under `paper_rebuild/paper_a_bounded_returns/` from the included canonical store and compact derived analysis tables. It skips PDF compilation.
+
 ## `deep-research compare paper-a --run-summary repro/reference/paper_a_pattern_metrics.csv`
 
 Expected status: `success`; expected overlap is 13/13 patterns, full ordering match, full metric schema, and zero metric deltas. The `n_queries` values are historical scored-observation counts, so 87 or 89 means archived coverage was incomplete for that pattern even though the public manifest contains 90 queries. Blank judge cells mark unavailable archived judge metrics.

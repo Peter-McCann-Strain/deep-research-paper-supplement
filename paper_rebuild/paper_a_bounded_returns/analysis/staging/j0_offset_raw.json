@@ -1,0 +1,260 @@
+{
+  "opus": {
+    "family": "opus",
+    "judge_model": "claude-opus-4-8",
+    "banked_judge": "claude_opus",
+    "n_reports": 40,
+    "landed_files": 40,
+    "n_new_verdicts": 1546,
+    "n_banked_known": 1513,
+    "n_aligned_criteria": 1513,
+    "unaligned_new_dropped": 33,
+    "overall_new_satrate": 0.7786,
+    "overall_banked_satrate": 0.6444,
+    "overall_delta": 0.1342,
+    "overall_delta_ci95": [
+      0.1014,
+      0.1673
+    ],
+    "cohens_kappa": 0.425,
+    "raw_agreement": 0.7588,
+    "per_dim": {
+      "analytical_depth": {
+        "n": 166,
+        "new_mean": 0.8133,
+        "banked_mean": 0.5663,
+        "delta": 0.247,
+        "ci95": [
+          0.1728,
+          0.321
+        ]
+      },
+      "attribution_quality": {
+        "n": 80,
+        "new_mean": 0.6875,
+        "banked_mean": 0.25,
+        "delta": 0.4375,
+        "ci95": [
+          0.325,
+          0.55
+        ]
+      },
+      "citation_quality": {
+        "n": 163,
+        "new_mean": 0.816,
+        "banked_mean": 0.5215,
+        "delta": 0.2945,
+        "ci95": [
+          0.2134,
+          0.3758
+        ]
+      },
+      "coverage": {
+        "n": 189,
+        "new_mean": 0.8254,
+        "banked_mean": 0.6931,
+        "delta": 0.1323,
+        "ci95": [
+          0.0829,
+          0.1889
+        ]
+      },
+      "factual_accuracy": {
+        "n": 322,
+        "new_mean": 0.6553,
+        "banked_mean": 0.6118,
+        "delta": 0.0435,
+        "ci95": [
+          -0.0062,
+          0.096
+        ]
+      },
+      "information_recall": {
+        "n": 156,
+        "new_mean": 0.5897,
+        "banked_mean": 0.4744,
+        "delta": 0.1154,
+        "ci95": [
+          0.0188,
+          0.2125
+        ]
+      },
+      "instruction_following": {
+        "n": 160,
+        "new_mean": 0.8812,
+        "banked_mean": 0.7625,
+        "delta": 0.1188,
+        "ci95": [
+          0.0312,
+          0.2125
+        ]
+      },
+      "logical_coherence": {
+        "n": 117,
+        "new_mean": 0.812,
+        "banked_mean": 0.8291,
+        "delta": -0.0171,
+        "ci95": [
+          -0.1167,
+          0.075
+        ]
+      },
+      "organization": {
+        "n": 160,
+        "new_mean": 1.0,
+        "banked_mean": 0.9688,
+        "delta": 0.0312,
+        "ci95": [
+          0.0062,
+          0.0563
+        ]
+      }
+    },
+    "report_level_overall_delta": 0.1348,
+    "report_level_overall_delta_ci95": [
+      0.1018,
+      0.1679
+    ],
+    "adjustment_to_original_scale_overall": -0.1342,
+    "adjustment_per_dim": {
+      "analytical_depth": -0.247,
+      "attribution_quality": -0.4375,
+      "citation_quality": -0.2945,
+      "coverage": -0.1323,
+      "factual_accuracy": -0.0435,
+      "information_recall": -0.1154,
+      "instruction_following": -0.1188,
+      "logical_coherence": 0.0171,
+      "organization": -0.0312
+    }
+  },
+  "sonnet": {
+    "family": "sonnet",
+    "judge_model": "claude-sonnet-5",
+    "banked_judge": "claude_sonnet",
+    "n_reports": 40,
+    "landed_files": 40,
+    "n_new_verdicts": 1546,
+    "n_banked_known": 1494,
+    "n_aligned_criteria": 1494,
+    "unaligned_new_dropped": 52,
+    "overall_new_satrate": 0.674,
+    "overall_banked_satrate": 0.7463,
+    "overall_delta": -0.0723,
+    "overall_delta_ci95": [
+      -0.1085,
+      -0.0369
+    ],
+    "cohens_kappa": 0.4086,
+    "raw_agreement": 0.755,
+    "per_dim": {
+      "analytical_depth": {
+        "n": 160,
+        "new_mean": 0.6562,
+        "banked_mean": 0.7125,
+        "delta": -0.0563,
+        "ci95": [
+          -0.1437,
+          0.025
+        ]
+      },
+      "attribution_quality": {
+        "n": 80,
+        "new_mean": 0.35,
+        "banked_mean": 0.4625,
+        "delta": -0.1125,
+        "ci95": [
+          -0.225,
+          -0.0125
+        ]
+      },
+      "citation_quality": {
+        "n": 160,
+        "new_mean": 0.6875,
+        "banked_mean": 0.55,
+        "delta": 0.1375,
+        "ci95": [
+          0.05,
+          0.225
+        ]
+      },
+      "coverage": {
+        "n": 174,
+        "new_mean": 0.7184,
+        "banked_mean": 0.7644,
+        "delta": -0.046,
+        "ci95": [
+          -0.1084,
+          0.0123
+        ]
+      },
+      "factual_accuracy": {
+        "n": 320,
+        "new_mean": 0.6188,
+        "banked_mean": 0.7438,
+        "delta": -0.125,
+        "ci95": [
+          -0.1781,
+          -0.075
+        ]
+      },
+      "information_recall": {
+        "n": 160,
+        "new_mean": 0.45,
+        "banked_mean": 0.6812,
+        "delta": -0.2312,
+        "ci95": [
+          -0.3062,
+          -0.1562
+        ]
+      },
+      "instruction_following": {
+        "n": 160,
+        "new_mean": 0.7625,
+        "banked_mean": 0.8,
+        "delta": -0.0375,
+        "ci95": [
+          -0.1562,
+          0.0688
+        ]
+      },
+      "logical_coherence": {
+        "n": 120,
+        "new_mean": 0.725,
+        "banked_mean": 0.9083,
+        "delta": -0.1833,
+        "ci95": [
+          -0.2917,
+          -0.0833
+        ]
+      },
+      "organization": {
+        "n": 160,
+        "new_mean": 1.0,
+        "banked_mean": 0.9938,
+        "delta": 0.0062,
+        "ci95": [
+          0.0,
+          0.0188
+        ]
+      }
+    },
+    "report_level_overall_delta": -0.0738,
+    "report_level_overall_delta_ci95": [
+      -0.1104,
+      -0.038
+    ],
+    "adjustment_to_original_scale_overall": 0.0723,
+    "adjustment_per_dim": {
+      "analytical_depth": 0.0563,
+      "attribution_quality": 0.1125,
+      "citation_quality": -0.1375,
+      "coverage": 0.046,
+      "factual_accuracy": 0.125,
+      "information_recall": 0.2312,
+      "instruction_following": 0.0375,
+      "logical_coherence": 0.1833,
+      "organization": -0.0062
+    }
+  }
+}

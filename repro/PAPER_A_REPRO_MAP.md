@@ -1,6 +1,6 @@
 # Paper A Public Reproducibility Map
 
-Use this page to choose the right command and to see which paper artifact it checks. The public checkout supports integrity checks, reference inspection, compatible metric comparison, and current-API demos; it does not replay the archived raw experiment.
+Use this page to choose the right command and to see which paper artifact it checks. The public checkout supports integrity checks, reference inspection, compatible metric comparison, Paper A artifact rebuilds, and current-API demos. It does not bitwise replay the archived raw experiment.
 
 ## Public Commands
 
@@ -10,6 +10,9 @@ Use this page to choose the right command and to see which paper artifact it che
 | `deep-research reproduce paper-a --mode reference` | No | Prints the frozen headline reference: 90 queries, 13 patterns, primary `mean_3judge` ordering, and comparison policy. | Yes; this is the compact reference view. |
 | `deep-research reproduce paper-a --mode provenance` | No | Verifies hashes and counts for the public query, headline, and pattern-metric reference files. | Yes; artifact integrity check only. |
 | `deep-research compare paper-a --run-summary repro/reference/paper_a_pattern_metrics.csv` | No | Validates the shipped compact pattern-by-judge metrics CSV against the frozen reference JSON. | Yes; pattern-level audit only. |
+| `deep-research paper rebuild paper-a --check-only` | No | Verifies that the Paper A rebuild source, canonical store, derived tables, figures, and LaTeX inputs are present. | Yes; rebuild input integrity check. |
+| `deep-research paper rebuild paper-a --skip-compile` | No | Regenerates public tables and figures from the shipped canonical store and `data/analysis/`. | Yes; paper artifact rebuild from public derived data. |
+| `deep-research paper rebuild paper-a` | No provider APIs | Also compiles `paper_rebuild/paper_a_bounded_returns/main.tex` when `tectonic` is installed. | Yes; manuscript artifact rebuild. |
 | `deep-research doctor --verify-api` | Yes | Makes a tiny live generation call to verify current OpenAI/Azure hosted-search entitlement. | No; access check only. |
 | `deep-research cost paper-a --full --judge` | No | Estimates call counts and configurable budget guardrails for a full live API rerun. | No; planning only. |
 | `deep-research reproduce paper-a --mode api-best-effort --execute --limit N` | Yes | Generates current OpenAI/Azure hosted-search reports for public queries without model downloads and verifies `web_search_call`. | No; this is a live API demo, not the frozen 13-pattern matrix. |
@@ -33,16 +36,25 @@ The public manifest has 90 queries. `n_queries` in the compact metrics CSV is th
 ## Public Data
 
 - `data/eval_queries_v2.json`: compact public query set.
+- `data/analysis/`: compact derived analysis tables used by the public paper rebuild.
 - `data/public_judge_criteria.json`: small standalone judge-smoke criteria; integrated `--judge` uses each query's full bundled rubric.
 - `data/README.md` and `data/DATA_DICTIONARY.md`: sources, licenses, and field definitions.
 
+## Public Paper Rebuild
+
+- `paper_rebuild/paper_a_bounded_returns/main.tex`: manuscript source for artifact rebuilds.
+- `paper_rebuild/paper_a_bounded_returns/analysis/canonical_numbers.json`: canonical number store consumed by tables, figures, and prose checks.
+- `paper_rebuild/paper_a_bounded_returns/analysis/`: paper-specific table, figure, statistical, and provenance scripts.
+- `paper_rebuild/paper_a_bounded_returns/figures/` and `tables/`: generated assets consumed by the manuscript.
+- `papers/paper_a_bounded_returns/main.pdf`: checked final PDF for convenient citation and browsing.
+
 ## Excluded From Public GitHub
 
-Paper drafts, LaTeX sources, private notes, local agent memory, generated report forests, raw judge verdict trees, caches, model weights, checkpoints, local/GPU historical implementation modules, and submission bundles stay out of GitHub. `deep-research export-public` enforces the allowlist and writes `PUBLIC_EXPORT_REPORT.json` with file hashes and provenance.
+Private notes, local agent memory, generated report forests, raw judge verdict trees, caches, model weights, checkpoints, paper drafts, submission bundles, and outreach material stay out of GitHub. The final manuscript source needed for artifact rebuilds is included under `paper_rebuild/`. `deep-research export-public` enforces the allowlist and writes `PUBLIC_EXPORT_REPORT.json` with file hashes and provenance.
 
 ## Source Scope
 
-The source tree ships the API-backed reproduction, judging, comparison, export, audit, settings, compact inputs, tests, and final PDF. Historical local-model pattern implementations and raw judge forests are represented by the paper/reference artifacts, not by runnable public code, because the public workflow is no-download and API-only.
+The source tree ships the API-backed reproduction, judging, comparison, export, audit, settings, compact inputs, tests, final PDF, pattern implementations, evaluation modules, and paper artifact rebuild package. Optional local-model and GPU experiment code is included for provenance, but the supported public reproduction path is no-model-download and API-only unless a user deliberately opts into optional local experiments.
 
 ## Comparable Candidate Schema
 
