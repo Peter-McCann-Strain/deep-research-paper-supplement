@@ -6,6 +6,10 @@ import json
 import tomllib
 from pathlib import Path
 
+import pytest
+
+import deep_research.public_export as public_export
+from deep_research.cli import build_parser
 from deep_research.public_export import export_public_tree
 from deep_research.release_audit import audit_release_tree
 
@@ -192,6 +196,53 @@ def test_public_export_copies_allowlist_and_audits(tmp_path):
     assert report["artifact_file_count"] == report["file_count"] + 1
     assert "PUBLIC_EXPORT_REPORT.json" in report["files_in_artifact"]
     assert not (output / "private" / "notes.md").exists()
+
+
+def test_public_export_refuses_dirty_git_tree_without_explicit_opt_in(tmp_path, monkeypatch):
+    source = tmp_path / "source"
+    source.mkdir()
+    (source / "README.md").write_text("# Public\n")
+    (source / "PUBLIC_MANIFEST.json").write_text(
+        json.dumps(
+            {
+                "required_paths": ["README.md", "PUBLIC_MANIFEST.json"],
+                "include_globs": ["README.md", "PUBLIC_MANIFEST.json", "PUBLIC_EXPORT_REPORT.json"],
+                "exclude_globs": [],
+            }
+        )
+    )
+    monkeypatch.setattr(public_export, "_git_metadata", lambda _: {"commit": "abc123", "dirty": True})
+
+    with pytest.raises(ValueError, match="uncommitted changes"):
+        export_public_tree(source, tmp_path / "blocked-export")
+
+    result = export_public_tree(source, tmp_path / "allowed-export", allow_dirty=True)
+    report = json.loads((tmp_path / "allowed-export" / "PUBLIC_EXPORT_REPORT.json").read_text())
+
+    assert result.ok is True
+    assert report["source_git"] == {"commit": "abc123", "dirty": True}
+
+
+def test_export_public_cli_reports_dirty_tree_without_traceback(tmp_path, monkeypatch, capsys):
+    source = tmp_path / "source"
+    source.mkdir()
+
+    def fake_export(*_args, **_kwargs):
+        raise ValueError("source git tree has uncommitted changes")
+
+    monkeypatch.setattr("deep_research.cli.export_public_tree", fake_export)
+    args = build_parser().parse_args(
+        ["export-public", "--source-root", str(source), "--out", str(tmp_path / "export")]
+    )
+
+    exit_code = args.func(args)
+    payload = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 1
+    assert payload == {
+        "status": "failed",
+        "message": "source git tree has uncommitted changes",
+    }
 
 
 def test_notice_and_pattern_metrics_are_manifested():

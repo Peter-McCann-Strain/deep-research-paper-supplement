@@ -144,13 +144,18 @@ def cmd_release_audit(args: argparse.Namespace) -> int:
 
 def cmd_export_public(args: argparse.Namespace) -> int:
     source_root = Path(args.source_root).resolve()
-    result = export_public_tree(
-        source_root,
-        Path(args.out).resolve(),
-        manifest_path=Path(args.manifest) if args.manifest else None,
-        force=args.force,
-        max_file_mb=args.max_file_mb,
-    )
+    try:
+        result = export_public_tree(
+            source_root,
+            Path(args.out).resolve(),
+            manifest_path=Path(args.manifest) if args.manifest else None,
+            force=args.force,
+            max_file_mb=args.max_file_mb,
+            allow_dirty=args.allow_dirty,
+        )
+    except ValueError as exc:
+        print(json.dumps({"status": "failed", "message": str(exc)}, indent=2))
+        return 1
     print(result.to_json())
     return 0 if result.ok else 1
 
@@ -335,6 +340,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--force", action="store_true", help="Overwrite an earlier export from this command"
     )
     export.add_argument("--max-file-mb", type=int, default=None, help="Maximum public file size")
+    export.add_argument(
+        "--allow-dirty",
+        action="store_true",
+        help="Allow exports from a dirty git tree. Intended for local inspection, not release.",
+    )
     export.set_defaults(func=cmd_export_public)
 
     reproduce = sub.add_parser("reproduce", help="Run or plan public paper reproduction")

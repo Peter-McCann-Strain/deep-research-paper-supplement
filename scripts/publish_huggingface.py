@@ -99,6 +99,7 @@ def prepare_upload_folder(
     card_path: Path,
     force: bool,
     reuse_export: bool,
+    allow_dirty: bool,
 ) -> dict[str, Any]:
     from deep_research.public_export import export_public_tree
 
@@ -112,7 +113,7 @@ def prepare_upload_folder(
                 f"--reuse-export requires an existing export with PUBLIC_EXPORT_REPORT.json: {export_dir}"
             )
     else:
-        export_public_tree(REPO_ROOT, export_dir, force=force)
+        export_public_tree(REPO_ROOT, export_dir, force=force, allow_dirty=allow_dirty)
 
     _copy_export_to_upload(export_dir, upload_dir, force=force)
     _write_hf_readme(upload_dir, card_path)
@@ -170,6 +171,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--dataset-card", type=Path, default=DEFAULT_CARD_PATH)
     parser.add_argument("--reuse-export", action="store_true", help="Use an existing export-dir")
     parser.add_argument("--force", action="store_true", help="Replace export/upload dirs")
+    parser.add_argument(
+        "--allow-dirty",
+        action="store_true",
+        help="Allow preparing from a dirty git tree. Intended for local inspection, not release.",
+    )
     parser.add_argument("--private", action="store_true", help="Create/update a private HF repo")
     parser.add_argument("--dry-run", action="store_true", help="Prepare and audit but do not upload")
     parser.add_argument(
@@ -182,25 +188,30 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    result = prepare_upload_folder(
-        repo_id=args.repo_id,
-        export_dir=args.export_dir,
-        upload_dir=args.upload_dir,
-        card_path=args.dataset_card,
-        force=args.force,
-        reuse_export=args.reuse_export,
-    )
-    if args.dry_run:
-        result["status"] = "dry-run"
-        result["uploaded"] = False
-        print(json.dumps(result, indent=2))
-        return 0
-    url = publish(
-        args.upload_dir.resolve(),
-        repo_id=args.repo_id,
-        private=args.private,
-        commit_message=args.commit_message,
-    )
+    try:
+        result = prepare_upload_folder(
+            repo_id=args.repo_id,
+            export_dir=args.export_dir,
+            upload_dir=args.upload_dir,
+            card_path=args.dataset_card,
+            force=args.force,
+            reuse_export=args.reuse_export,
+            allow_dirty=args.allow_dirty,
+        )
+        if args.dry_run:
+            result["status"] = "dry-run"
+            result["uploaded"] = False
+            print(json.dumps(result, indent=2))
+            return 0
+        url = publish(
+            args.upload_dir.resolve(),
+            repo_id=args.repo_id,
+            private=args.private,
+            commit_message=args.commit_message,
+        )
+    except (FileNotFoundError, RuntimeError, ValueError) as exc:
+        print(json.dumps({"status": "failed", "message": str(exc)}, indent=2))
+        return 1
     result["status"] = "success"
     result["uploaded"] = True
     result["dataset_url"] = url

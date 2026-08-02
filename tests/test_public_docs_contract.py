@@ -27,6 +27,34 @@ def test_public_query_manifest_records_redacted_rows_without_private_sentinels()
     assert "public_redaction" in Path("data/README.md").read_text()
 
 
+def test_public_redacted_query_identifiers_removed_from_shipped_data():
+    import pandas as pd
+
+    forbidden = ("Evert", "Calderon", "Mesa Group", "Miro board", "Creditily", "creditily")
+    text_paths = [
+        Path("data/eval_queries_v2.json"),
+        Path("data/all_90_queries.json"),
+        Path("repro/reference/REFERENCE_MANIFEST.json"),
+        Path("data/analysis/build_manifest.json"),
+    ]
+    for path in text_paths:
+        text = path.read_text(errors="ignore")
+        assert not any(marker in text for marker in forbidden), path
+
+    for path in (
+        Path("data/analysis/df_queries.parquet"),
+        Path("data/analysis/df_citations.parquet"),
+        Path("data/analysis/df_verdicts.parquet"),
+    ):
+        df = pd.read_parquet(path)
+        for column in df.columns:
+            values = df[column].astype("string")
+            assert not any(
+                values.str.contains(marker, regex=False, na=False).any()
+                for marker in forbidden
+            ), f"{path}:{column}"
+
+
 def test_protocol_doc_describes_expanded_public_scope_without_raw_artifacts():
     doc = Path("docs/evaluation_protocol.md").read_text()
     human_doc = Path("docs/human_evaluation_protocol.md").read_text()
@@ -34,6 +62,8 @@ def test_protocol_doc_describes_expanded_public_scope_without_raw_artifacts():
     assert "Public Export Note" in doc
     assert "reusable pattern and" in doc and "evaluation modules" in doc
     assert "Paper A rebuild package" in doc
+    assert "Final 9-dimension rubric-v2 scoring" in doc
+    assert "Earlier planning notes used a 7-dimension shorthand" in doc
     assert "raw generated report forests" in doc
     assert "raw judge-verdict packet" in doc
     assert "not raw evaluator packets" in human_doc
@@ -75,6 +105,9 @@ def test_script_docs_point_to_maintained_catalog():
     repro_map = Path("repro/PAPER_A_REPRO_MAP.md").read_text()
 
     assert "repro/SCRIPT_CATALOG.csv" in script_readme
+    assert "Direct script entry points intended for public use" in script_readme
+    assert "verify_headline_numbers.py" in script_readme
+    assert "publish_huggingface.py" in script_readme
     assert "repro/SCRIPT_CATALOG.csv" in repro_map
     assert "one-row-per-script" in repro_map
 
@@ -87,7 +120,10 @@ def test_huggingface_publish_path_is_documented_without_token_arguments():
 
     assert "HF_TOKEN" in guide
     assert "--dry-run" in guide
+    assert "--allow-dirty" in guide
     assert "Deep Research Paper Supplement" in card
+    assert "license: other" in card
+    assert "mixed-license public data" in card
     assert 'add_argument("--token' not in script
     assert 'os.environ.get("HF_TOKEN")' in script
     assert "docs/huggingface_release.md" in manifest["required_paths"]
@@ -108,10 +144,24 @@ def test_check_api_help_is_safe_and_does_not_run_provider_calls():
     assert "Testing" not in result.stdout
 
 
+def test_check_api_skips_local_models_by_default_without_provider_calls():
+    result = subprocess.run(
+        [sys.executable, "scripts/check_api.py", "--model", "Qwen2.5-7B-Instruct"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0
+    assert "No API-backed models selected." in result.stdout
+    assert "Testing" not in result.stdout
+
+
 def test_paper_artifact_index_links_manuscript_assets_and_coverage():
     index = Path("repro/PAPER_A_ARTIFACT_INDEX.md").read_text()
     paper_readme = Path("paper_rebuild/paper_a_bounded_returns/README.md").read_text()
     readme = Path("README.md").read_text()
+    coverage = Path("data/analysis/coverage_report.md").read_text()
 
     for required in (
         "paper_rebuild/paper_a_bounded_returns/main.tex",
@@ -122,6 +172,11 @@ def test_paper_artifact_index_links_manuscript_assets_and_coverage():
         "data/analysis/coverage_report.md",
     ):
         assert required in index
+    assert "Bounded Returns to Orchestration" in readme
+    assert "papers/paper_a_bounded_returns/main.pdf" in readme
+    assert "Exclusion reason" in readme
+    assert "Executive summary" in coverage
+    assert "Missing-file sections" in coverage
     assert "PAPER_A_ARTIFACT_INDEX.md" in paper_readme
     assert "PAPER_A_ARTIFACT_INDEX.md" in readme
 
@@ -130,17 +185,26 @@ def test_data_docs_describe_included_analysis_tables_without_absolute_paths():
     top_dictionary = Path("data/DATA_DICTIONARY.md").read_text()
     analysis_dictionary = Path("data/analysis/DATA_DICTIONARY.md").read_text()
     data_readme = Path("data/README.md").read_text()
+    data_licenses = Path("DATA_LICENSES.md").read_text()
+    references_bib = Path("paper_rebuild/paper_a_bounded_returns/references.bib").read_text()
 
     assert "Compact derived parquet/metadata tables" in top_dictionary
     assert "not absolute local paths" in analysis_dictionary
     assert "df_citations.parquet" in analysis_dictionary
     assert "df_e14_oracle_verdicts.parquet" in analysis_dictionary
+    assert "simple`, `moderate`, or `complex" in analysis_dictionary
+    assert "Public redaction pass" in analysis_dictionary
     assert "retained only" in analysis_dictionary
     assert "Anthropic API directly" in analysis_dictionary
     assert "No Downloads Required" in data_readme
     assert "does not regenerate the selected 90-query Paper A manifest" in data_readme
+    assert "data/analysis/*.parquet" in data_licenses
+    assert "final scrubbed manuscript" in data_licenses
+    assert "paper_rebuild/" in data_licenses
     assert "Absolute path to the `.md` report" not in analysis_dictionary
     assert "COLM/EMNLP" not in analysis_dictionary
+    assert "not yet web-verified" not in references_bib
+    assert "PHASE3_FIX_LIST" not in references_bib
 
 
 def test_public_evaluation_seeds_are_process_stable():

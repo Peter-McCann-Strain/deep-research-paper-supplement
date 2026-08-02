@@ -18,6 +18,9 @@ The dry run builds a manifest-based export, creates a Hugging Face upload folder
 with the dataset card at `README.md`, refreshes `PUBLIC_EXPORT_REPORT.json`, and
 runs the public release audit on the upload folder.
 
+For release publishing, run from a clean committed git tree. The helper refuses
+dirty-tree exports unless `--allow-dirty` is passed for local inspection.
+
 ## Publish
 
 Set the token through the environment or an existing `huggingface-cli login`;

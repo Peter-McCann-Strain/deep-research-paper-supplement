@@ -39,7 +39,7 @@ async def run_checks(args: argparse.Namespace) -> int:
         return 2
     if not args.include_local:
         model_names = [
-            name for name in model_names if str(MODELS[name].get("deployment", "")).lower() != "local"
+            name for name in model_names if str(getattr(MODELS[name], "deployment", "")).lower() != "local"
         ]
 
     print("=" * 60)

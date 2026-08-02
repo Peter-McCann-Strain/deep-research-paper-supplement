@@ -36,7 +36,7 @@ are not expected to resolve in a public checkout.
 | query_id | str | Unique query identifier | `data/eval_queries_v2.json` |
 | source | category | Benchmark source: `custom`, `draco`, `deepsearch_qa`, `research_qa`, `litqa2` | manifest |
 | domain | str | Query subject domain (free-form) | manifest |
-| difficulty | category | `easy` / `medium` / `hard` | manifest |
+| difficulty | category | `simple`, `moderate`, or `complex` from the public manifest | manifest |
 | query_text | str | Natural-language query | manifest |
 | expected_topics | list[str] | Expected coverage elements | manifest `expected_elements` |
 | gold_answer | str | Reference/gold answer if known | manifest `reference_answer` |
@@ -154,6 +154,10 @@ not public-file availability claims.
    baseline (as `build_oracle_opus.py` does). Pairing oracle `*48` scores against the
    main-panel baseline in `df_scores` produces a spurious negative factual-accuracy
    delta (~-0.15) that is a judge-version artefact, not an oracle effect.
+6. **Public redaction pass.** One DRACO-derived business-context row was
+   anonymized before public release. The same anonymized labels are applied to
+   `df_queries.parquet`, `df_citations.parquet`, and `df_verdicts.parquet`; row
+   counts and scoring fields are unchanged.
 
 ## Build reproducibility
 

@@ -29,7 +29,8 @@
     "excluded_patterns": [
       "ablation_p5_no_citation_verify"
     ],
-    "excluded_reason": "Only 2/90 reports were generated for ablation_p5_no_citation_verify (run aborted early); statistical comparisons would be unreliable."
+    "excluded_reason": "Only 2/90 reports were generated for ablation_p5_no_citation_verify (run aborted early); statistical comparisons would be unreliable.",
+    "public_redactions": "Before public release, one DRACO-derived business-context row and its derived citation/verdict text snippets were anonymized across data/eval_queries_v2.json, df_queries.parquet, df_citations.parquet, and df_verdicts.parquet. Row counts and scoring fields are unchanged."
   },
   "pandas_version": "2.3.3",
   "pyarrow_version": "23.0.1",

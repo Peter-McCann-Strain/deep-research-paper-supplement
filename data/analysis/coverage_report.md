@@ -8,6 +8,13 @@
 supported public judge workflow uses direct provider APIs and does not require
 Claude Code or local assistant sessions.
 
+## Executive summary
+
+- The headline base-pattern reference is covered by the shipped compact tables and canonical store; missing historical cells are already reflected in the published `n_queries` counts.
+- The public rebuild uses `data/analysis/*.parquet` and `paper_rebuild/paper_a_bounded_returns/analysis/canonical_numbers.json`; it does not need raw generated reports or raw judge packet trees.
+- `ablation_p5_no_citation_verify` is excluded from statistical comparisons because the run stopped early and has only two judged reports.
+- Missing-file sections below document historical raw artifacts that were not shipped. They explain provenance and coverage limits; they are not required for the supported public table/figure rebuild.
+
 ## Post-fix anomaly summary
 
 - Rubric-drift groups (same (pattern,query,dim) with different criterion sets across judges): **349**

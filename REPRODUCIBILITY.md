@@ -160,6 +160,10 @@ deep-research export-public --out /tmp/deep-research-public-export
 deep-research release-audit --root /tmp/deep-research-public-export
 ```
 
+`export-public` refuses a dirty git tree by default so `PUBLIC_EXPORT_REPORT.json`
+maps to an exact commit. Use `--allow-dirty` only for local inspection exports.
+Audit the exported tree, not the raw git checkout.
+
 The audit fails on private files, local paths, filled secret assignments, generated bundles, model weights, and oversized files. It also enforces `PUBLIC_MANIFEST.json`, so files outside the explicit allowlist are rejected.
 
 For a Hugging Face dataset mirror, run `scripts/publish_huggingface.py --dry-run`

@@ -64,7 +64,7 @@ The evaluation covers:
 
 - **6 patterns** spanning the complexity spectrum from single-call baseline to three-level hierarchical control (Section 3).
 - **90 evaluation queries** drawn from 5 benchmark sources with stratified sampling across domains, difficulty levels, and answer types (Section 4).
-- **7 quality dimensions** with 31 general criteria plus task-specific criteria per query (Section 5).
+- **Final 9-dimension rubric-v2 scoring** with 31 general criteria plus task-specific criteria per query (Section 5). Earlier planning notes used a 7-dimension shorthand; the shipped public data and API judge path use the 9 dimensions listed in `data/analysis/DATA_DICTIONARY.md`.
 - **Process metrics** at each pipeline stage: planning, query generation, retrieval, and synthesis (Section 6).
 - **Multi-judge ensemble evaluation** with inter-rater reliability measurement (Section 7).
 - **External benchmark calibration** against published system scores (Section 8).
@@ -76,7 +76,7 @@ The evaluation covers:
 | Principle | Implementation |
 |-----------|---------------|
 | Controlled comparison | Historical paper runs used a controlled GPT-4o/PTU generation environment with common search/extraction tools and API endpoints. Public API reruns use the current configured standard OpenAI and Anthropic model IDs and are documented as best-effort. |
-| Multi-dimensional assessment | Seven quality dimensions with distinct weights rather than a single holistic score. |
+| Multi-dimensional assessment | Final 9-dimension rubric-v2 scoring with distinct weights rather than a single holistic score. |
 | Measurement triangulation | LLM-as-judge verdicts, agentic citation verification, process metrics, human calibration, and concordance analysis. |
 | Reproducibility | Fixed random seeds, deterministic query manifest, checkpoint/resume execution, version-locked dependencies. |
 | Statistical rigor | Nonparametric tests appropriate for k-system comparison on n tasks, with multiplicity correction and effect sizes. |

@@ -19,6 +19,12 @@ Every shipped top-level `.py`, `.sh`, and `.js` script is classified in
 `repro/SCRIPT_CATALOG.csv`; `repro/SCRIPT_CATALOG.md` defines the status labels.
 If a script is added without a catalog row, the public docs contract test fails.
 
+Direct script entry points intended for public use:
+
+- `verify_headline_numbers.py`: checks headline reference JSON/CSV against the shipped canonical store.
+- `publish_huggingface.py`: prepares and audits the Hugging Face dataset upload folder; upload requires `HF_TOKEN` or an existing Hugging Face login.
+- For everything else, start with the CLI commands above or inspect `repro/SCRIPT_CATALOG.csv` before running the script directly.
+
 Use this map when navigating the folder:
 
 | Family | Examples | Public status |

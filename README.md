@@ -2,6 +2,16 @@
 
 This repository is the executable supplement for the bounded-returns deep-research orchestration paper. Install it from a checkout, not from PyPI, so the CLI can see `data/`, `repro/`, `docs/`, and the final PDF.
 
+| Paper | Details |
+|---|---|
+| Title | **Bounded Returns to Orchestration: A Synthesis Ceiling Beneath Eleven Controlled Deep-Research Architectures** |
+| Author | Peter McCann Strain, independent researcher |
+| Manuscript date | July 29, 2026 |
+| PDF | `papers/paper_a_bounded_returns/main.pdf` |
+| Rebuild source | `paper_rebuild/paper_a_bounded_returns/` |
+| Citation metadata | `CITATION.cff` |
+| DOI/arXiv | Not assigned in this release; add the identifier here when available. |
+
 Use this repo to:
 
 - run no-cost integrity checks for the shipped paper-reference files;
@@ -160,12 +170,23 @@ Large or regenerable material is local-first and gitignored. The physical home i
 
 Do not commit raw caches, local model weights, checkpoints, logs, generated report forests, raw judge packet directories, private notes, outreach messages, scratchpads, drafts, or submission bundles. Commit source, docs, compact canonical inputs, derived public tables, constraints, manifests, tests, the paper rebuild package, and the final paper PDF.
 
+| Exclusion reason | Examples | Public substitute |
+|---|---|---|
+| Privacy and consent | private notes, human-label packets, local evaluator materials | anonymized summaries and public protocol docs |
+| License or redistribution limits | large upstream benchmark caches, raw third-party corpora | selected public query manifests with source/license metadata |
+| Size and regenerability | generated report forests, raw judge packet trees, API/search caches | compact derived parquet tables, reference CSV/JSON summaries |
+| Provider drift | exact historical model/search snapshots | best-effort current API rerun with model IDs recorded |
+| Local infrastructure | model weights, checkpoints, GPU queues, dependency trees | API-only public workflow plus optional local scripts clearly cataloged |
+
 Build and audit a clean candidate tree before publishing:
 
 ```bash
 deep-research export-public --out /tmp/deep-research-public-export
 deep-research release-audit --root /tmp/deep-research-public-export
 ```
+
+`export-public` refuses a dirty git tree by default so `PUBLIC_EXPORT_REPORT.json`
+maps to an exact commit. Use `--allow-dirty` only for local inspection exports.
 
 If you run tests inside an exported candidate, rebuild the export before the
 final audit and before publishing. Python bytecode caches are intentionally

@@ -1,5 +1,5 @@
 ---
-license: apache-2.0
+license: other
 language:
   - en
 pretty_name: Deep Research Paper Supplement
@@ -53,3 +53,5 @@ public workflow does not require Claude Code or local assistant sessions.
 
 Apache-2.0 applies to code. Public data files are mixed-license by row/source;
 see `NOTICE` and `DATA_LICENSES.md` before redistributing data-derived material.
+The metadata uses `license: other` because the dataset mirror contains both
+Apache-2.0 code and mixed-license public data.
