@@ -41,6 +41,7 @@ The public manifest has 90 queries. `n_queries` in the compact metrics CSV is th
 - `data/README.md` and `data/DATA_DICTIONARY.md`: sources, licenses, and field definitions.
 - `repro/SCRIPT_CATALOG.csv`: one-row-per-script map explaining whether each top-level `scripts/` file is a supported helper, optional workflow, historical analysis helper, local-model/GPU workflow, external download, worker, or raw-artifact rebuild helper.
 - `repro/PAPER_A_ARTIFACT_INDEX.md`: one-page map from the manuscript to the shipped tables, figures, producers, and derived data files.
+- `docs/huggingface_release.md` and `repro/HUGGINGFACE_DATASET_CARD.md`: Hugging Face dataset-mirror publishing instructions and card text.
 
 ## Public Paper Rebuild
 

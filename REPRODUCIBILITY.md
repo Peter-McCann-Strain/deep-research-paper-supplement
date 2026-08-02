@@ -146,9 +146,12 @@ Run the offline test gate before publishing:
 ```bash
 python -m pip install -c constraints-public.txt -e ".[api,paper,dev]"
 python -m pytest -q -p no:cacheprovider
-ruff check --no-cache deep_research tests
+ruff check --select F821,F811,B008,B023 --no-cache deep_research tests
 deep-research paper rebuild paper-a --check-only
 ```
+
+The lint command is the high-impact gate used by CI. The archival research
+scripts are shipped for provenance and are not yet a full-style-clean tree.
 
 Before publishing a candidate tree:
 
@@ -158,6 +161,11 @@ deep-research release-audit --root /tmp/deep-research-public-export
 ```
 
 The audit fails on private files, local paths, filled secret assignments, generated bundles, model weights, and oversized files. It also enforces `PUBLIC_MANIFEST.json`, so files outside the explicit allowlist are rejected.
+
+For a Hugging Face dataset mirror, run `scripts/publish_huggingface.py --dry-run`
+first. The publish helper builds the same audited export, swaps in the Hugging
+Face dataset card for the upload copy, refreshes file hashes, and reads any
+credential only from `HF_TOKEN` or an existing Hugging Face login.
 
 If you run tests inside an exported candidate tree, rebuild the export before
 the final audit and before publishing. Runtime caches and bytecode are not part

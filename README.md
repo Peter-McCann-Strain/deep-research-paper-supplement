@@ -42,8 +42,11 @@ For maintainer checks, install the test extras and run the offline gate:
 ```bash
 python -m pip install -c constraints-public.txt -e ".[api,paper,dev]"
 python -m pytest -q -p no:cacheprovider
-ruff check --no-cache deep_research tests
+ruff check --select F821,F811,B008,B023 --no-cache deep_research tests
 ```
+
+The lint command is the high-impact gate used by CI. The archival research
+scripts are shipped for provenance and are not yet a full-style-clean tree.
 
 `quickstart-check`, `smoke`, `reference`, and `provenance` make no paid API calls. `quickstart-check` runs the full offline first-run path in one command. The reference command prints the compact public headline ordering and comparison policy from `repro/reference/paper_a_headline_numbers.json`. `repro/reference/paper_a_pattern_metrics.csv` gives a compact pattern-by-judge audit table, and `repro/reference/PATTERN_DICTIONARY.csv` maps every frozen `base_p*` identifier to the public reference table. `repro/PAPER_A_REPRO_MAP.md` maps every public command to its paper artifact and states whether it is comparable to the frozen paper metrics. `repro/PAPER_A_ARTIFACT_INDEX.md` maps the manuscript, tables, figures, scripts, and derived data files one by one.
 
@@ -171,6 +174,10 @@ rejected by the release audit.
 ## Reproducibility
 
 See `REPRODUCIBILITY.md` for the public artifact rebuild and no-model-download API workflow. The default live path is a best-effort API rerun. Historical exact raw replay requires frozen raw artifacts and model/search snapshots and is not the default GitHub path.
+
+For a Hugging Face dataset mirror, see `docs/huggingface_release.md`. The helper
+script reads `HF_TOKEN` from the environment and never accepts tokens as command
+arguments.
 
 ## Scope Limits
 

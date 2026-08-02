@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import csv
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 from deep_research.evaluation.multi_judge import _stable_seed as stable_judge_seed
@@ -75,6 +77,35 @@ def test_script_docs_point_to_maintained_catalog():
     assert "repro/SCRIPT_CATALOG.csv" in script_readme
     assert "repro/SCRIPT_CATALOG.csv" in repro_map
     assert "one-row-per-script" in repro_map
+
+
+def test_huggingface_publish_path_is_documented_without_token_arguments():
+    guide = Path("docs/huggingface_release.md").read_text()
+    card = Path("repro/HUGGINGFACE_DATASET_CARD.md").read_text()
+    script = Path("scripts/publish_huggingface.py").read_text()
+    manifest = json.loads(Path("PUBLIC_MANIFEST.json").read_text())
+
+    assert "HF_TOKEN" in guide
+    assert "--dry-run" in guide
+    assert "Deep Research Paper Supplement" in card
+    assert 'add_argument("--token' not in script
+    assert 'os.environ.get("HF_TOKEN")' in script
+    assert "docs/huggingface_release.md" in manifest["required_paths"]
+    assert "repro/HUGGINGFACE_DATASET_CARD.md" in manifest["required_paths"]
+    assert "scripts/publish_huggingface.py" in manifest["required_paths"]
+
+
+def test_check_api_help_is_safe_and_does_not_run_provider_calls():
+    result = subprocess.run(
+        [sys.executable, "scripts/check_api.py", "--help"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0
+    assert "API Connectivity Check" not in result.stdout
+    assert "Testing" not in result.stdout
 
 
 def test_paper_artifact_index_links_manuscript_assets_and_coverage():

@@ -1,6 +1,6 @@
 # Tested dependency constraints for the public API and paper rebuild supplement.
 # Install with: python -m pip install -c constraints-public.txt -e ".[api,paper]"
-# Add ".[dev]" for tests.
+# Add ".[dev]" for tests and ".[publish]" for Hugging Face uploads.
 # GPU/local-model packages are intentionally not pinned here.
 anthropic==0.120.2
 httpx==0.28.1
@@ -14,6 +14,7 @@ arxiv==4.0.1
 beautifulsoup4==4.15.0
 tavily-python==0.7.27
 trafilatura==2.2.0
+huggingface-hub==1.26.0
 matplotlib==3.11.1
 numpy==2.5.1
 pandas==3.0.5

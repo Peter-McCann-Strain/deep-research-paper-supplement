@@ -29,6 +29,7 @@ Use this map when navigating the folder:
 | Benchmark/data adapters | `download_benchmarks.py`, `select_eval_queries.py`, `prepare_human_eval.py` | Optional data-preparation utilities; review upstream licenses before redistributing downloaded data. |
 | Local-model and training probes | `train_p12_rl.py`, `finetune_dr_judge.py`, GPU queue scripts | Optional archival code. The public reproduction path does not require model weights or local GPU inference. |
 | Diagnostics and reconciliation | `verify_headline_numbers.py`, `reconcile_exclusions.py`, `tool_health_report.py` | Audit/provenance helpers used during paper development. |
+| Release publishing | `publish_huggingface.py` | Builds and audits the Hugging Face dataset upload folder; uploads only when `HF_TOKEN` or an existing login is available. |
 
 Manual Claude Code judging prep/parse scripts are not part of the public release.
 Current public judge execution is API-backed through `deep-research judge run` and

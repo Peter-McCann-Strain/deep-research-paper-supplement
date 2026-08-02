@@ -1,216 +1,219 @@
 #!/usr/bin/env python3
-"""Verify headline paper numbers against released artifacts.
-
-This is intentionally narrow: it checks the numbers reviewers are likely to
-audit first, and fails if the paper-facing contract drifts from canonical
-artifacts. The expected values live in reports/paper_draft/headline_numbers.json.
-"""
+"""Verify public headline Paper A numbers from released artifacts only."""
 
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import math
-import re
 import sys
 from pathlib import Path
 from typing import Any
 
-import pandas as pd
-
 ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_EXPECTED = ROOT / "reports" / "paper_draft" / "headline_numbers.json"
+DEFAULT_HEADLINE = ROOT / "repro" / "reference" / "paper_a_headline_numbers.json"
+DEFAULT_METRICS_CSV = ROOT / "repro" / "reference" / "paper_a_pattern_metrics.csv"
+DEFAULT_CANONICAL = (
+    ROOT / "paper_rebuild" / "paper_a_bounded_returns" / "analysis" / "canonical_numbers.json"
+)
 
 
-def _cohen_kappa(y_true: list[bool], y_pred: list[bool]) -> float:
-    if len(y_true) != len(y_pred) or not y_true:
-        return float("nan")
-    labels = sorted(set(y_true) | set(y_pred))
-    n = len(y_true)
-    po = sum(a == b for a, b in zip(y_true, y_pred)) / n
-    pe = 0.0
-    for label in labels:
-        p_true = sum(v == label for v in y_true) / n
-        p_pred = sum(v == label for v in y_pred) / n
-        pe += p_true * p_pred
-    if math.isclose(1.0, pe):
-        return 1.0 if math.isclose(1.0, po) else float("nan")
-    return (po - pe) / (1.0 - pe)
+def _load_json(path: Path) -> dict[str, Any]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise TypeError(f"{path} must contain a JSON object")
+    return payload
 
 
-def _accuracy(y_true: list[bool], y_pred: list[bool]) -> float:
-    if len(y_true) != len(y_pred) or not y_true:
-        return float("nan")
-    return sum(a == b for a, b in zip(y_true, y_pred)) / len(y_true)
+def _load_metrics(path: Path) -> list[dict[str, str]]:
+    rows = list(csv.DictReader(path.read_text(encoding="utf-8").splitlines()))
+    if not rows:
+        raise ValueError(f"{path} has no metric rows")
+    return rows
 
 
-def _round_float(value: Any, digits: int = 6) -> Any:
-    if isinstance(value, float):
-        return round(value, digits)
-    return value
+def _as_float(value: Any) -> float | None:
+    if value in ("", None):
+        return None
+    as_float = float(value)
+    if math.isnan(as_float):
+        return None
+    return as_float
 
 
-def _parse_tost_counts() -> dict[str, Any]:
-    path = ROOT / "reports" / "phase6a_corrections" / "03_tost_wilcoxon.md"
-    text = path.read_text(encoding="utf-8")
-    wilc = re.search(r"Wilcoxon TOST:\s*(\d+)/15 equivalent at ±0\.05,\s*(\d+)/15 at ±0\.02", text)
-    paired_t = re.search(r"Paired-t TOST \(previous\):\s*(\d+)/15 at ±0\.05", text)
-    return {
-        "tost.wilcoxon_equiv_0p05": int(wilc.group(1)) if wilc else None,
-        "tost.wilcoxon_equiv_0p02": int(wilc.group(2)) if wilc else None,
-        "tost.previous_paired_t_equiv_0p05": int(paired_t.group(1)) if paired_t else None,
-    }
+def _same_float(left: Any, right: Any, tolerance: float) -> bool:
+    left_float = _as_float(left)
+    right_float = _as_float(right)
+    if left_float is None or right_float is None:
+        return left_float is right_float
+    return abs(left_float - right_float) <= tolerance
 
 
-def _bibliography_counts() -> dict[str, Any]:
-    import bibtexparser
-
-    bib_path = ROOT / "reports" / "paper_draft" / "bibliography.bib"
-    paper_path = ROOT / "reports" / "paper_draft" / "paper_v9.md"
-    bib = bibtexparser.loads(bib_path.read_text(encoding="utf-8"))
-    keys = {entry["ID"] for entry in bib.entries}
-    text = paper_path.read_text(encoding="utf-8")
-    cited: set[str] = set()
-    for inner in re.findall(r"\[([^\[\]]+)\]", text):
-        if ":" in inner:
-            continue
-        for key in re.split(r"[,;\s]+", inner):
-            if key in keys:
-                cited.add(key)
-    return {
-        "bibliography.entries": len(keys),
-        "bibliography.cited_entries": len(cited),
-        "bibliography.uncited_entries": len(keys - cited),
-    }
-
-
-def compute_numbers() -> dict[str, Any]:
-    numbers: dict[str, Any] = {}
-    analysis = ROOT / "data" / "analysis"
-    paper_v9 = (ROOT / "reports" / "paper_draft" / "paper_v9.md").read_text(encoding="utf-8")
-
-    df_queries = pd.read_parquet(analysis / "df_queries.parquet")
-    df_runs = pd.read_parquet(analysis / "df_runs.parquet")
-    df_scores = pd.read_parquet(analysis / "df_scores.parquet")
-    df_overall = pd.read_parquet(analysis / "df_overall_scores.parquet")
-    df_verdicts = pd.read_parquet(analysis / "df_verdicts.parquet")
-
-    numbers.update(
-        {
-            "df_queries.rows": int(len(df_queries)),
-            "df_runs.rows": int(len(df_runs)),
-            "df_scores.rows": int(len(df_scores)),
-            "df_overall_scores.rows": int(len(df_overall)),
-            "df_verdicts.rows": int(len(df_verdicts)),
-            "df_overall_scores.base_p12.rows": int((df_overall["pattern"].astype(str) == "base_p12").sum()),
-        }
-    )
-
-    base = df_overall[df_overall["pattern_family"].astype(str).eq("base")]
-    score_col = "overall_score_recomputed"
-    means = base.groupby("pattern", observed=True)[score_col].agg(["mean", "count"])
-    for pattern in sorted(means.index.astype(str)):
-        numbers[f"means.{pattern}.mean"] = float(means.loc[pattern, "mean"])
-        numbers[f"means.{pattern}.n"] = int(means.loc[pattern, "count"])
-
-    numbers.update(_parse_tost_counts())
-
-    pa_path = ROOT / "reports" / "protocol_a" / "paired_bootstrap_summary.csv"
-    pa = pd.read_csv(pa_path)
-    numbers["protocol_a.patterns"] = int(len(pa))
-    numbers["protocol_a.mean_delta_tavily_minus_bing"] = float(pa["delta_tav_minus_bing"].mean())
-
-    c0 = pd.read_parquet(analysis / "df_c0_verdicts.parquet")
-    c0_counts = c0["verdict"].value_counts(normalize=True).mul(100.0)
-    for verdict in ["supports", "neutral", "contradicts", "no_source"]:
-        numbers[f"c0.verdict_pct.{verdict}"] = float(c0_counts.get(verdict, 0.0))
-
-    cits = pd.read_parquet(analysis / "df_citations.parquet")
-    numbers["citations.rows"] = int(len(cits))
-    numbers["citations.report_rows"] = int(cits[["pattern", "query_id"]].drop_duplicates().shape[0])
-    pp = pd.read_csv(ROOT / "reports" / "phase7a_citation_verification" / "per_pattern_stats.csv")
-    p4 = pp[pp["pattern"].eq("base_p4")].iloc[0]
-    numbers["citations.base_p4.total_citations"] = int(p4["total_citations"])
-    numbers["citations.base_p4.total_placeholder"] = int(p4["total_placeholder"])
-    numbers["citations.base_p4.placeholder_pct"] = float(p4["mean_placeholder_rate"] * 100.0)
-
-    dr = pd.read_parquet(ROOT / "reports" / "phase12_drjudge" / "eval_predictions_full.parquet")
-    for label, sub in {
-        "all": dr,
-        "undisputed": dr[~dr["is_disputed"]],
-        "disputed": dr[dr["is_disputed"]],
-    }.items():
-        target = sub["target"].astype(bool).tolist()
-        pred = sub["predicted"].astype(bool).tolist()
-        numbers[f"dr_judge.{label}.n"] = int(len(sub))
-        numbers[f"dr_judge.{label}.kappa"] = float(_cohen_kappa(target, pred))
-        numbers[f"dr_judge.{label}.accuracy"] = float(_accuracy(target, pred))
-
-    p12_summary = ROOT / "reports" / "phase16_p12_eval" / "per_pattern_summary.md"
-    if p12_summary.exists():
-        text = p12_summary.read_text(encoding="utf-8")
-        m = re.search(r"\|\s*\*\*mean overall_score\*\*\s*\|\s*\*\*([0-9.]+)\*\*", text)
-        if m:
-            numbers["p12.phase16.mean"] = float(m.group(1))
-
-    numbers.update(_bibliography_counts())
-
-    numbers["paper_v9.old_6_of_15_refs"] = len(re.findall(r"\b6 of 15\b|6-of-15", paper_v9))
-    numbers["paper_v9.old_release_count_refs"] = paper_v9.count("168,793") + paper_v9.count("60,411") + paper_v9.count("36,566")
-    numbers["paper_v9.old_citation_count_refs"] = paper_v9.count("22,522") + paper_v9.count("1,883")
-    numbers["paper_v9.protocol_caption_overclaim_refs"] = paper_v9.count("survive judge change")
-    top_level_cards = [
-        ROOT / "models" / "DR-Judge-7B-LoRA" / "README.md",
-        ROOT / "models" / "P12-RL-LoRA-v2" / "README.md",
-    ]
-    numbers["model_cards.top_level_placeholder_refs"] = sum(
-        p.read_text(encoding="utf-8").count("[More Information Needed]")
-        for p in top_level_cards
-        if p.exists()
-    )
-    return {key: _round_float(value) for key, value in sorted(numbers.items())}
-
-
-def _matches(actual: Any, expected: Any, tolerance: float) -> bool:
-    if isinstance(actual, (int, float)) and isinstance(expected, (int, float)):
-        return abs(float(actual) - float(expected)) <= tolerance
-    return actual == expected
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--expected", type=Path, default=DEFAULT_EXPECTED)
-    parser.add_argument("--dump-current", action="store_true", help="Print current computed numbers as JSON and exit.")
-    args = parser.parse_args()
-
-    actual = compute_numbers()
-    if args.dump_current:
-        print(json.dumps({"checks": {k: {"expected": v} for k, v in actual.items()}}, indent=2, sort_keys=True))
-        return 0
-
-    expected_payload = json.loads(args.expected.read_text(encoding="utf-8"))
+def _compare_rows(
+    *,
+    headline_row: dict[str, Any],
+    csv_row: dict[str, str],
+    canonical_row: dict[str, Any],
+    tolerance: float,
+) -> list[str]:
+    pattern = headline_row["pattern"]
     failures: list[str] = []
-    print("Headline number verification")
-    print("=" * 72)
-    for key, spec in expected_payload["checks"].items():
-        expected = spec["expected"]
-        tolerance = float(spec.get("tolerance", 0))
-        actual_value = actual.get(key)
-        ok = _matches(actual_value, expected, tolerance)
-        status = "OK" if ok else "FAIL"
-        print(f"{status:4} {key:48} actual={actual_value!r} expected={expected!r} tol={tolerance:g}")
-        if not ok:
-            failures.append(key)
+    if int(headline_row["n_queries"]) != int(csv_row["n_queries"]):
+        failures.append(f"{pattern}: headline n_queries differs from metrics CSV")
+    if int(headline_row["n_queries"]) != int(canonical_row["n_queries"]):
+        failures.append(f"{pattern}: headline n_queries differs from canonical numbers")
 
-    extra = sorted(set(actual) - set(expected_payload["checks"]))
-    if extra:
-        print(f"\nNOTE: {len(extra)} computed checks are not in {args.expected}: {', '.join(extra[:20])}")
+    checks = {
+        "mean_3judge": "mean_3judge",
+        "mean_gpt52": "mean_gpt52",
+        "mean_opus": "mean_opus",
+        "mean_sonnet_corrected": "mean_sonnet_corrected",
+        "ppi_debiased_mean": "ppi_debiased",
+    }
+    for headline_key, canonical_key in checks.items():
+        headline_value = headline_row.get(headline_key)
+        csv_value = csv_row.get(headline_key)
+        if canonical_key == "ppi_debiased":
+            canonical_value = canonical_row.get("ppi_debiased", {}).get("ppi_mean")
+        else:
+            canonical_value = canonical_row.get(canonical_key)
+        if not _same_float(headline_value, csv_value, tolerance):
+            failures.append(f"{pattern}: headline {headline_key} differs from metrics CSV")
+        if not _same_float(headline_value, canonical_value, tolerance):
+            failures.append(f"{pattern}: headline {headline_key} differs from canonical numbers")
 
-    if failures:
-        print(f"\nFAILED: {len(failures)} headline checks drifted: {', '.join(failures)}", file=sys.stderr)
-        return 1
-    print("\nAll headline checks passed.")
-    return 0
+    ci = headline_row.get("ppi_ci95")
+    if not isinstance(ci, list) or len(ci) != 2:
+        failures.append(f"{pattern}: headline ppi_ci95 is not a two-value interval")
+    else:
+        canonical_ci = canonical_row.get("ppi_debiased", {}).get("ci95", [])
+        csv_low = csv_row.get("ppi_ci95_low")
+        csv_high = csv_row.get("ppi_ci95_high")
+        for idx, (label, csv_value) in enumerate((("low", csv_low), ("high", csv_high))):
+            if not _same_float(ci[idx], csv_value, tolerance):
+                failures.append(f"{pattern}: headline ppi_ci95_{label} differs from metrics CSV")
+            if not _same_float(ci[idx], canonical_ci[idx] if len(canonical_ci) > idx else None, tolerance):
+                failures.append(f"{pattern}: headline ppi_ci95_{label} differs from canonical numbers")
+
+    return failures
+
+
+def verify_public_headlines(
+    *,
+    headline_path: Path,
+    metrics_csv_path: Path,
+    canonical_path: Path,
+    tolerance: float,
+) -> list[str]:
+    headline = _load_json(headline_path)
+    metrics_rows = _load_metrics(metrics_csv_path)
+    canonical = _load_json(canonical_path)
+
+    failures: list[str] = []
+    ordering = headline.get("primary_ordering")
+    if not isinstance(ordering, list) or not ordering:
+        return ["headline primary_ordering must be a non-empty list"]
+    if headline.get("paper") != "paper-a-bounded-returns":
+        failures.append("headline paper id is not paper-a-bounded-returns")
+    if headline.get("primary_metric") != "mean_3judge":
+        failures.append("headline primary_metric is not mean_3judge")
+    if int(headline.get("pattern_count", -1)) != len(ordering):
+        failures.append("headline pattern_count differs from primary_ordering length")
+    if int(headline.get("query_count", -1)) != 90:
+        failures.append("headline query_count is not 90")
+    if len(metrics_rows) != len(ordering):
+        failures.append("metrics CSV row count differs from headline ordering length")
+
+    csv_by_pattern = {row["pattern"]: row for row in metrics_rows}
+    canonical_headline = canonical.get("headline", {})
+    canonical_by_pattern = canonical_headline.get("per_pattern", {})
+    if not isinstance(canonical_by_pattern, dict):
+        failures.append("canonical headline.per_pattern is missing")
+        canonical_by_pattern = {}
+
+    ordering_patterns = [row["pattern"] for row in ordering]
+    csv_patterns_by_rank = [row["pattern"] for row in sorted(metrics_rows, key=lambda row: int(row["rank"]))]
+    if ordering_patterns != csv_patterns_by_rank:
+        failures.append("headline ordering differs from metrics CSV rank order")
+
+    sorted_by_score = [
+        row["pattern"] for row in sorted(ordering, key=lambda row: float(row["mean_3judge"]), reverse=True)
+    ]
+    if ordering_patterns != sorted_by_score:
+        failures.append("headline ordering is not sorted by descending mean_3judge")
+
+    for headline_row in ordering:
+        pattern = headline_row["pattern"]
+        csv_row = csv_by_pattern.get(pattern)
+        canonical_row = canonical_by_pattern.get(pattern)
+        if csv_row is None:
+            failures.append(f"{pattern}: missing from metrics CSV")
+            continue
+        if canonical_row is None:
+            failures.append(f"{pattern}: missing from canonical headline.per_pattern")
+            continue
+        failures.extend(
+            _compare_rows(
+                headline_row=headline_row,
+                csv_row=csv_row,
+                canonical_row=canonical_row,
+                tolerance=tolerance,
+            )
+        )
+
+    ranges = headline.get("headline_ranges", {})
+    first = ordering[0]
+    last = ordering[-1]
+    if ranges.get("best_pattern") != first["pattern"]:
+        failures.append("headline best_pattern differs from first ranked pattern")
+    if ranges.get("worst_pattern") != last["pattern"]:
+        failures.append("headline worst_pattern differs from last ranked pattern")
+    if not _same_float(ranges.get("best_mean_3judge"), first["mean_3judge"], tolerance):
+        failures.append("headline best_mean_3judge differs from first ranked mean")
+    if not _same_float(ranges.get("worst_mean_3judge"), last["mean_3judge"], tolerance):
+        failures.append("headline worst_mean_3judge differs from last ranked mean")
+
+    return failures
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--headline", type=Path, default=DEFAULT_HEADLINE)
+    parser.add_argument("--metrics-csv", type=Path, default=DEFAULT_METRICS_CSV)
+    parser.add_argument("--canonical", type=Path, default=DEFAULT_CANONICAL)
+    parser.add_argument("--tolerance", type=float, default=1e-6)
+    parser.add_argument("--json", action="store_true", help="Print machine-readable result JSON.")
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = build_parser().parse_args(argv)
+    failures = verify_public_headlines(
+        headline_path=args.headline,
+        metrics_csv_path=args.metrics_csv,
+        canonical_path=args.canonical,
+        tolerance=args.tolerance,
+    )
+    payload = {
+        "ok": not failures,
+        "headline": str(args.headline),
+        "metrics_csv": str(args.metrics_csv),
+        "canonical": str(args.canonical),
+        "failures": failures,
+    }
+    if args.json:
+        print(json.dumps(payload, indent=2))
+    elif failures:
+        print("Headline number verification FAILED", file=sys.stderr)
+        for failure in failures:
+            print(f"- {failure}", file=sys.stderr)
+    else:
+        print("Headline number verification OK")
+        print(f"Checked {args.headline}")
+        print(f"Checked {args.metrics_csv}")
+        print(f"Checked {args.canonical}")
+    return 1 if failures else 0
 
 
 if __name__ == "__main__":
