@@ -33,7 +33,7 @@ Directory map:
 | `references*.bib` | Bibliography files used by `main.tex`. |
 | `analysis/` | Paper-specific analysis, table, figure, and provenance scripts. |
 | `analysis/canonical_numbers.json` | Canonical paper number store consumed by tables, figures, and prose checks. |
-| `analysis/staging/` | Compact staged statistical outputs used by the canonical store. |
+| `analysis/staging/` | Compact staged statistical outputs used by the canonical store; `build_isoquant_claimtype.py` rebuilds the shipped capability/claim-type block from this data. |
 | `figures/` | Generated figure assets consumed by the manuscript. |
 | `tables/` | Generated LaTeX tables consumed by the manuscript. |
 | `reports/` | Curated compact statistical/failure-analysis summaries; not raw judge output. |

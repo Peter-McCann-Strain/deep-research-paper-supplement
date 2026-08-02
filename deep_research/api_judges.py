@@ -253,6 +253,7 @@ class OpenAIJudgeProvider:
             instructions=request.system_prompt,
             input=build_judge_user_message(request),
             text=OPENAI_JUDGE_RESPONSE_FORMAT,
+            store=False,
         )
         content = _response_text(response) or "{}"
         usage = getattr(response, "usage", None)

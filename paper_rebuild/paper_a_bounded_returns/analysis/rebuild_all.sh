@@ -137,6 +137,7 @@ echo "[p3j] build_perturb_sonnet";        python $A/build_perturb_sonnet.py >/de
 echo "[p3j-merge] perturb_sonnet_crosscheck"; python $A/merge_staging_key.py $A/staging/perturb_sonnet.json perturb_sonnet_crosscheck
 echo "[p3k] build_ablation_length_check"; python $A/build_ablation_length_check.py >/dev/null
 echo "[p3k-merge] ablation_length_check"; python $A/merge_staging_key.py $A/staging/ablation_length_check.json ablation_length_check
+echo "[p3l] build_isoquant_claimtype"; python $A/build_isoquant_claimtype.py --write >/dev/null
 echo "[6/9] make_stratification_figure";python $A/make_stratification_figure.py >/dev/null
 echo "[7/9] make_cost_figure";         python $A/make_cost_figure.py         >/dev/null
 echo "[8/9] make_oracle_figure";       python $A/make_oracle_figure.py       >/dev/null

@@ -181,6 +181,10 @@ P11_P12_PACKET = (
 )
 
 
+def _missing_archival_inputs() -> list[Path]:
+    return [path for path in QUARANTINE_FILES if not path.exists()]
+
+
 def load_p11_p12_judged_subset() -> dict[str, set[str]]:
     """Return {pattern -> set(query_id)} that the P11/P12 manual Claude-Code
     judging packet actually covered. P11/P12 (the late-added 7B patterns) were
@@ -198,6 +202,24 @@ def load_p11_p12_judged_subset() -> dict[str, set[str]]:
 
 
 def main() -> int:
+    missing_archival = _missing_archival_inputs()
+    if missing_archival:
+        print(
+            "reconcile_exclusions.py requires non-public archival Claude-Code "
+            "quarantine packet files and is not part of the default public rebuild.",
+            file=sys.stderr,
+        )
+        print("Missing archival inputs:", file=sys.stderr)
+        for path in missing_archival:
+            print(f"  - {path.relative_to(REPO)}", file=sys.stderr)
+        print(
+            "Use the shipped coverage report and data/analysis parquet files for public "
+            "inspection, or run this helper only from a maintainer checkout with the "
+            "archival report tree restored.",
+            file=sys.stderr,
+        )
+        return 2
+
     v = pd.read_parquet(VERDICTS, columns=["pattern", "pattern_family", "query_id", "judge"])
     v["pattern"] = v["pattern"].astype(str)
     v["pattern_family"] = v["pattern_family"].astype(str)

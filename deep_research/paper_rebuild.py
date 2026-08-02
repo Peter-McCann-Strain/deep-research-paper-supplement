@@ -7,6 +7,7 @@ recreate the private historical raw run or regenerate every upstream verdict.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import shutil
@@ -101,6 +102,9 @@ class PaperRebuildReport:
     compile_result: ScriptResult | None
     compile_skipped_reason: str | None
     output_pdf: str
+    canonical_store_unchanged: bool
+    canonical_store_fingerprint_before: dict[str, str | int] | None
+    canonical_store_fingerprint_after: dict[str, str | int] | None
     contract: str
 
     def to_json(self) -> str:
@@ -116,6 +120,21 @@ def _tail(text: str, *, limit: int = 3000) -> str:
     if len(text) <= limit:
         return text
     return text[-limit:]
+
+
+def _file_fingerprint(path: Path) -> dict[str, str | int] | None:
+    if not path.exists():
+        return None
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    stat = path.stat()
+    return {
+        "sha256": digest.hexdigest(),
+        "size_bytes": stat.st_size,
+        "mtime_ns": stat.st_mtime_ns,
+    }
 
 
 def _run_python_script(project_root: Path, script_name: str) -> ScriptResult:
@@ -194,16 +213,27 @@ def run_paper_rebuild(
             compile_result=None,
             compile_skipped_reason="check-only" if check_only else "missing inputs",
             output_pdf=_rel(PAPER_DIR / "main.pdf"),
+            canonical_store_unchanged=True,
+            canonical_store_fingerprint_before=_file_fingerprint(
+                project_root / ANALYSIS_DIR / "canonical_numbers.json"
+            ),
+            canonical_store_fingerprint_after=_file_fingerprint(
+                project_root / ANALYSIS_DIR / "canonical_numbers.json"
+            ),
             contract=(
                 "Rebuilds public paper artifacts from the included canonical store and compact "
                 "derived analysis tables; it does not rerun the private historical raw corpus."
             ),
         )
 
+    canonical_path = project_root / ANALYSIS_DIR / "canonical_numbers.json"
+    canonical_before = _file_fingerprint(canonical_path)
     table_results = [_run_python_script(project_root, name) for name in TABLE_SCRIPTS] if tables else []
     figure_results = (
         [_run_python_script(project_root, name) for name in FIGURE_SCRIPTS] if figures else []
     )
+    canonical_after = _file_fingerprint(canonical_path)
+    canonical_store_unchanged = canonical_before == canonical_after
 
     compile_result = None
     compile_skipped_reason = None
@@ -222,9 +252,12 @@ def run_paper_rebuild(
     script_failures = [r for r in [*table_results, *figure_results] if not r.ok]
     compile_failed = compile_result is not None and not compile_result.ok
 
-    if script_failures or compile_failed or missing_pdf_assets_after:
+    if script_failures or compile_failed or missing_pdf_assets_after or not canonical_store_unchanged:
         status = "failed"
-        message = "paper artifact rebuild failed"
+        if not canonical_store_unchanged:
+            message = "paper artifact rebuild mutated canonical_numbers.json"
+        else:
+            message = "paper artifact rebuild failed"
     else:
         status = "success"
         if compile_skipped_reason:
@@ -243,6 +276,9 @@ def run_paper_rebuild(
         compile_result=compile_result,
         compile_skipped_reason=compile_skipped_reason,
         output_pdf=_rel(PAPER_DIR / "main.pdf"),
+        canonical_store_unchanged=canonical_store_unchanged,
+        canonical_store_fingerprint_before=canonical_before,
+        canonical_store_fingerprint_after=canonical_after,
         contract=(
             "Rebuilds public paper artifacts from the included canonical store and compact "
             "derived analysis tables; it does not rerun the private historical raw corpus."

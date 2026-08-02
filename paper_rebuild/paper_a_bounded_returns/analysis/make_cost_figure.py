@@ -84,12 +84,7 @@ ax.legend(handles=leg,loc="lower right",frameon=True,framealpha=0.9,edgecolor="#
 plt.tight_layout()
 for ext in ("pdf","png"):
     plt.savefig(f"{ROOT}/paper_rebuild/paper_a_bounded_returns/figures/fig_cost.{ext}",dpi=300,bbox_inches="tight")
-# persist quality-per-dollar + frontier membership to canonical
+# Keep the public figure pass read-only with respect to canonical_numbers.json.
 spd={NAME[p]:round(h[p]['mean_3judge']/runs[p]['mean_cost_proxy_usd'],2)
      for p in NAME if p in runs and runs[p].get('mean_cost_proxy_usd')}
-cn=json.load(open(f"{ROOT}/paper_rebuild/paper_a_bounded_returns/analysis/canonical_numbers.json"))
-cn["cost_per_quality"]={"score_per_usd":spd,
-                        "pareto_frontier":[NAME[p] for p,_,_ in eff],
-                        "cheapest_on_frontier":NAME[eff[0][0]]}
-json.dump(cn,open(f"{ROOT}/paper_rebuild/paper_a_bounded_returns/analysis/canonical_numbers.json","w"),indent=1)
 print("wrote fig_cost; Pareto frontier:",[NAME[p] for p,_,_ in eff]," score/$:",spd)

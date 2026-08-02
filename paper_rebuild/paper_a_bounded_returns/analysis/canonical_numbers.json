@@ -17703,11 +17703,11 @@
  "capability_isoquant_and_claimtype": {
   "_meta": {
    "built": "2026-07-03",
-   "script": "scratchpad/build_isoquant_claimtype.py",
+   "script": "paper_rebuild/paper_a_bounded_returns/analysis/build_isoquant_claimtype.py",
    "judge_capability_ladder": "gpt52",
    "bootstrap_seed": 20260703,
-   "provenance": "reads df_overall_scores / df_e14_oracle_verdicts / df_c0_verdicts + canonical_numbers.json (read-only); NO API; CPU-only",
-   "warning": "MERGED into canonical_numbers.json; backs main.tex claim-type numbers (+0.115/-0.004/+0.079, Sec 5-6). Not yet wired into rebuild_all.sh (scratchpad/build_isoquant_claimtype.py) -- treat as a manual-rerun key until it is."
+   "provenance": "reads included analysis/staging/isoquant_claimtype.json and merges it into canonical_numbers.json; no provider APIs, no raw report forests, no private judge packets, CPU-only",
+   "warning": "Public compact rebuild from included staging data. Raw claim-packet and archival report inputs are intentionally not shipped."
   },
   "isoquant": {
    "_note": "Capability x architecture isoquant, all rungs judged by GPT-5.2 (gpt52). Capability axis (7B<8B<14B<gpt-4o<gpt-4.1) is measured at the SIMPLEST architecture (P9 local scaffold = P0-equivalent); local rungs use length-adjusted scores (within-frozen-pool OLS, strips the verbosity confound) and frozen retrieval (gpt-4o extractor held constant); frontier rungs use raw gpt52 with live retrieval. Architecture axis (P0->P4, cost 1x->17.5x) is measured at gpt-4o and gpt-4.1. The full 2D surface is UNDER-IDENTIFIED (no P4-on-local cell); what is estimable is the two margins plus the P0/P4 contrast at two frontier tiers (the interaction slice).",

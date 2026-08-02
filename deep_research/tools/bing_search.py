@@ -100,6 +100,7 @@ class BingSearcher:
                         model=self._model,
                         tools=[{"type": "web_search_preview"}],
                         input=prompt,
+                        store=False,
                     )
                     break
                 except (ConnectionError, OSError) as e:

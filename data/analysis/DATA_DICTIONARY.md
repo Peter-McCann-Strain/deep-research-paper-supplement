@@ -154,8 +154,8 @@ not public-file availability claims.
    baseline (as `build_oracle_opus.py` does). Pairing oracle `*48` scores against the
    main-panel baseline in `df_scores` produces a spurious negative factual-accuracy
    delta (~-0.15) that is a judge-version artefact, not an oracle effect.
-6. **Public redaction pass.** One DRACO-derived business-context row was
-   anonymized before public release. The same anonymized labels are applied to
+6. **Public redaction pass.** Two DRACO-derived rows were anonymized before
+   public release. The same anonymized labels are applied to
    `df_queries.parquet`, `df_citations.parquet`, and `df_verdicts.parquet`; row
    counts and scoring fields are unchanged.
 

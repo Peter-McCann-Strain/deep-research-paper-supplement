@@ -25,6 +25,8 @@ def test_public_query_manifest_records_redacted_rows_without_private_sentinels()
     assert "two draco-derived" in Path("NOTICE").read_text().lower()
     assert "Two DRACO-derived rows" in Path("DATA_LICENSES.md").read_text()
     assert "public_redaction" in Path("data/README.md").read_text()
+    assert "Two DRACO-derived rows" in Path("data/analysis/DATA_DICTIONARY.md").read_text()
+    assert "two DRACO-derived rows" in Path("data/analysis/build_manifest.json").read_text()
 
 
 def test_public_redacted_query_identifiers_removed_from_shipped_data():
@@ -170,6 +172,8 @@ def test_paper_artifact_index_links_manuscript_assets_and_coverage():
         "tables/tab_headline_means.tex",
         "tables/tab_bestofn_decoupled.tex",
         "data/analysis/coverage_report.md",
+        "analysis/build_isoquant_claimtype.py",
+        "analysis/staging/isoquant_claimtype.json",
     ):
         assert required in index
     assert "Bounded Returns to Orchestration" in readme
@@ -179,6 +183,33 @@ def test_paper_artifact_index_links_manuscript_assets_and_coverage():
     assert "Missing-file sections" in coverage
     assert "PAPER_A_ARTIFACT_INDEX.md" in paper_readme
     assert "PAPER_A_ARTIFACT_INDEX.md" in readme
+
+
+def test_isoquant_claim_block_has_public_builder_not_excluded_scratchpad():
+    canonical = json.loads(
+        Path("paper_rebuild/paper_a_bounded_returns/analysis/canonical_numbers.json").read_text()
+    )
+    manifest = json.loads(Path("PUBLIC_MANIFEST.json").read_text())
+    block = canonical["capability_isoquant_and_claimtype"]
+    meta = block["_meta"]
+    public_script = "paper_rebuild/paper_a_bounded_returns/analysis/build_isoquant_claimtype.py"
+    staging = "paper_rebuild/paper_a_bounded_returns/analysis/staging/isoquant_claimtype.json"
+    text = json.dumps(block)
+
+    assert meta["script"] == public_script
+    assert public_script in manifest["required_paths"]
+    assert staging in manifest["required_paths"]
+    assert "scratchpad" not in text
+    assert "manual-rerun" not in text
+
+    result = subprocess.run(
+        [sys.executable, public_script],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
+    assert json.loads(result.stdout)["canonical_matches_public_staging"] is True
 
 
 def test_data_docs_describe_included_analysis_tables_without_absolute_paths():
@@ -194,6 +225,7 @@ def test_data_docs_describe_included_analysis_tables_without_absolute_paths():
     assert "df_e14_oracle_verdicts.parquet" in analysis_dictionary
     assert "simple`, `moderate`, or `complex" in analysis_dictionary
     assert "Public redaction pass" in analysis_dictionary
+    assert "Two DRACO-derived rows" in analysis_dictionary
     assert "retained only" in analysis_dictionary
     assert "Anthropic API directly" in analysis_dictionary
     assert "No Downloads Required" in data_readme
@@ -205,6 +237,19 @@ def test_data_docs_describe_included_analysis_tables_without_absolute_paths():
     assert "COLM/EMNLP" not in analysis_dictionary
     assert "not yet web-verified" not in references_bib
     assert "PHASE3_FIX_LIST" not in references_bib
+
+
+def test_archival_exclusion_reconciler_fails_politely_without_private_packets():
+    result = subprocess.run(
+        [sys.executable, "scripts/reconcile_exclusions.py"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 2
+    assert "requires non-public archival Claude-Code quarantine packet files" in result.stderr
+    assert "Traceback" not in result.stderr
 
 
 def test_public_evaluation_seeds_are_process_stable():

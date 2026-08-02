@@ -4,7 +4,7 @@ with task difficulty. Recomputed from df_overall_scores (3-judge, sonnet-correct
 cannot drift from 04_stratification.md. Shows the flat cluster is a competence-conditioned
 main effect, not a task-averaging artifact -> motivates the scoped thesis.
 """
-import pandas as pd, numpy as np, json, warnings, sys, os
+import pandas as pd, numpy as np, warnings, sys, os
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 warnings.filterwarnings("ignore")
@@ -56,13 +56,5 @@ ax.set_title("Orchestration pays only when the task is hard for a single pass", 
 plt.tight_layout()
 for ext in ("pdf", "png"):
     plt.savefig(f"{ROOT}/paper_rebuild/paper_a_bounded_returns/figures/fig_stratification.{ext}", dpi=300, bbox_inches="tight")
-# persist the gradient to canonical
-out = {SLAB.get(s, s): {"p0": round(float(p0[i]), 4), "cluster": round(float(clu[i]), 4),
-                        "gap": round(float(gap[i]), 4)} for i, s in enumerate(src_order)}
-p = json.load(open(f"{ROOT}/paper_rebuild/paper_a_bounded_returns/analysis/canonical_numbers.json"))
-p["complexity_gradient"] = {"source_order_hard_to_easy": [SLAB.get(s, s) for s in src_order],
-                            "per_source": out,
-                            "gap_hardest": round(float(gap[0]), 4),
-                            "gap_easiest": round(float(gap[-1]), 4)}
-json.dump(p, open(f"{ROOT}/paper_rebuild/paper_a_bounded_returns/analysis/canonical_numbers.json", "w"), indent=1)
+# The public figure pass is read-only with respect to canonical_numbers.json.
 print("wrote fig_stratification; gap hard->easy:", [round(float(g), 3) for g in gap])

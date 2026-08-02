@@ -159,6 +159,7 @@ def test_openai_judge_provider_uses_responses_api_with_json_schema(tmp_path):
     call = fake_client.calls[0]
     assert call["model"] == "judge-model"
     assert call["instructions"] == "Return JSON only."
+    assert call["store"] is False
     assert "Criteria to Evaluate" in call["input"]
     schema_format = call["text"]["format"]
     schema = schema_format["schema"]

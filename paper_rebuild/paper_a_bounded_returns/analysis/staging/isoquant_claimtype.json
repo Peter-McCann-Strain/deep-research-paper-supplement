@@ -1,11 +1,11 @@
 {
   "_meta": {
     "built": "2026-07-03",
-    "script": "scratchpad/build_isoquant_claimtype.py",
+    "script": "paper_rebuild/paper_a_bounded_returns/analysis/build_isoquant_claimtype.py",
     "judge_capability_ladder": "gpt52",
     "bootstrap_seed": 20260703,
-    "provenance": "reads df_overall_scores / df_e14_oracle_verdicts / df_c0_verdicts + canonical_numbers.json (read-only); NO API; CPU-only",
-    "warning": "STAGING ONLY -- not merged into canonical_numbers.json"
+    "provenance": "reads included analysis/staging/isoquant_claimtype.json and merges it into canonical_numbers.json; no provider APIs, no raw report forests, no private judge packets, CPU-only",
+    "warning": "Public compact rebuild from included staging data. Raw claim-packet and archival report inputs are intentionally not shipped."
   },
   "isoquant": {
     "_note": "Capability x architecture isoquant, all rungs judged by GPT-5.2 (gpt52). Capability axis (7B<8B<14B<gpt-4o<gpt-4.1) is measured at the SIMPLEST architecture (P9 local scaffold = P0-equivalent); local rungs use length-adjusted scores (within-frozen-pool OLS, strips the verbosity confound) and frozen retrieval (gpt-4o extractor held constant); frontier rungs use raw gpt52 with live retrieval. Architecture axis (P0->P4, cost 1x->17.5x) is measured at gpt-4o and gpt-4.1. The full 2D surface is UNDER-IDENTIFIED (no P4-on-local cell); what is estimable is the two margins plus the P0/P4 contrast at two frontier tiers (the interaction slice).",
@@ -93,14 +93,15 @@
         "n": 90
       },
       "at_gpt4_1": {
-        "p0": 0.4870333333333334,
+        "p0": 0.4410125,
         "p4": 0.527103125,
         "paired_delta_p4_minus_p0": 0.0861,
         "ci95": [
           0.0266,
           0.1478
         ],
-        "n": 32
+        "n": 32,
+        "p0_note": "Corrected 2026-07-28 (adversarial review round 16): this p0 field must be the mean over the SAME 32 paired queries as p4/paired_delta_p4_minus_p0, not the 45-query full gpt-4.1 P0 sample (0.4870333, which is capability_ladder_at_P0_architecture gpt-4.1 tier q_raw). Verified by direct recomputation from results/judge_gpt52_gpt41_backbone/{p0_base,p4_base}: paired_delta (0.0861) was already correct (computed from the right 32-query pairing); only this p0 companion field was stale."
       }
     },
     "frontier_separability": {
