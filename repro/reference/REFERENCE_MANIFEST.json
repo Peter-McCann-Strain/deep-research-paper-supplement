@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "paper": "paper-a-bounded-returns",
+  "purpose": "Offline hashes and counts for public-reference provenance checks.",
+  "query_count": 90,
+  "pattern_count": 13,
+  "headline_pattern_count": 13,
+  "files": [
+    {
+      "path": "data/eval_queries_v2.json",
+      "sha256": "450c6e8cd1eb21ddf92d87bbbc228c73ec37da0c032a6811de93d45788db5655",
+      "bytes": 1298258
+    },
+    {
+      "path": "repro/reference/paper_a_headline_numbers.json",
+      "sha256": "849bd969a7af24f300f1a1f63006f200899e1084c1b5df07c08cff99d08a25a0",
+      "bytes": 4362
+    },
+    {
+      "path": "repro/reference/paper_a_pattern_metrics.csv",
+      "sha256": "aceb2116a1487b4496a8ca8617989574a78302227681b18928ff669e59d09c6e",
+      "bytes": 925
+    }
+  ]
+}

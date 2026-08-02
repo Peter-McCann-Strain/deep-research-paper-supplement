@@ -1,0 +1,22 @@
+{
+  "evaluations": [
+    {
+      "criterion_index": 0,
+      "verdict": "SATISFIED",
+      "evidence": "",
+      "reasoning": "Directly supported."
+    },
+    {
+      "criterion_index": 1,
+      "verdict": "NOT_SATISFIED",
+      "evidence": "No limitation stated.",
+      "reasoning": "The required limitation is absent."
+    },
+    {
+      "criterion_index": 2,
+      "verdict": "SATISFIED",
+      "evidence": "Discusses tradeoffs.",
+      "reasoning": "Addresses the criterion."
+    }
+  ]
+}

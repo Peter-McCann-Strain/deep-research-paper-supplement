@@ -1,0 +1,20 @@
+{
+  "description": "Small public criterion set for API judge smoke tests and examples. Full paper reruns may supply experiment-specific rubrics.",
+  "criteria": [
+    {
+      "criterion": "The report directly answers the research query rather than only describing adjacent background."
+    },
+    {
+      "criterion": "The report supports central factual claims with identifiable sources or citations."
+    },
+    {
+      "criterion": "The report states material limitations, uncertainty, or tradeoffs relevant to the query."
+    },
+    {
+      "criterion": "The report is internally coherent and does not contradict itself on core claims."
+    },
+    {
+      "criterion": "The report distinguishes evidence from speculation or recommendations."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONPYCACHEPREFIX: /tmp/deep-research-pycache
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install package
+        run: python -m pip install -c constraints-public.txt -e ".[api,paper,dev]"
+      - name: Run tests
+        run: python -m pytest -q -p no:cacheprovider
+      - name: Run high-impact lint
+        run: ruff check --select F821,F811,B008,B023 deep_research tests
+      - name: Build public export
+        run: deep-research export-public --out /tmp/deep-research-public-export
+      - name: Audit public export
+        run: deep-research release-audit --root /tmp/deep-research-public-export
+      - name: Test exported tree install
+        env:
+          OPENAI_API_KEY: test-openai
+        run: |
+          cd /tmp/deep-research-public-export
+          python -m venv /tmp/deep-research-public-venv
+          /tmp/deep-research-public-venv/bin/python -m pip install -c constraints-public.txt -e ".[api,paper,dev]"
+          /tmp/deep-research-public-venv/bin/deep-research quickstart-check
+          /tmp/deep-research-public-venv/bin/deep-research reproduce paper-a --mode smoke
+          /tmp/deep-research-public-venv/bin/deep-research reproduce paper-a --mode reference
+          /tmp/deep-research-public-venv/bin/deep-research reproduce paper-a --mode provenance
+          /tmp/deep-research-public-venv/bin/deep-research compare paper-a --run-summary repro/reference/paper_a_pattern_metrics.csv
+          /tmp/deep-research-public-venv/bin/deep-research reproduce paper-a --mode api-best-effort --limit 3 --max-cost-usd 5
+          /tmp/deep-research-public-venv/bin/deep-research judge run --query "Example research question" --report-file repro/examples/example_report.md --criteria-file data/public_judge_criteria.json --dry-run

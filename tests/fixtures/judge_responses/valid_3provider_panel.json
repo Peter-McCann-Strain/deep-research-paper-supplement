@@ -1,0 +1,97 @@
+{
+  "results": [
+    {
+      "provider": "openai",
+      "provider_mode": "openai",
+      "model": "gpt-5.6-sol",
+      "call_model_or_deployment": "gpt-5.6-sol",
+      "status": "success",
+      "parsed": {
+        "evaluations": [
+          {
+            "criterion_index": 0,
+            "verdict": "SATISFIED",
+            "evidence": "Cites source A.",
+            "reasoning": "Directly supported."
+          },
+          {
+            "criterion_index": 1,
+            "verdict": "NOT_SATISFIED",
+            "evidence": "No limitation stated.",
+            "reasoning": "The required limitation is absent."
+          },
+          {
+            "criterion_index": 2,
+            "verdict": "SATISFIED",
+            "evidence": "Discusses tradeoffs.",
+            "reasoning": "Addresses the criterion."
+          }
+        ]
+      },
+      "input_tokens": 10,
+      "output_tokens": 5
+    },
+    {
+      "provider": "anthropic",
+      "provider_mode": "anthropic",
+      "model": "claude-opus-4-8",
+      "call_model_or_deployment": "claude-opus-4-8",
+      "status": "success",
+      "parsed": {
+        "evaluations": [
+          {
+            "criterion_index": 0,
+            "verdict": "SATISFIED",
+            "evidence": "Cites source A.",
+            "reasoning": "Directly supported."
+          },
+          {
+            "criterion_index": 1,
+            "verdict": "NOT_SATISFIED",
+            "evidence": "No limitation stated.",
+            "reasoning": "The required limitation is absent."
+          },
+          {
+            "criterion_index": 2,
+            "verdict": "SATISFIED",
+            "evidence": "Discusses tradeoffs.",
+            "reasoning": "Addresses the criterion."
+          }
+        ]
+      },
+      "input_tokens": 10,
+      "output_tokens": 5
+    },
+    {
+      "provider": "anthropic",
+      "provider_mode": "anthropic",
+      "model": "claude-sonnet-4-6",
+      "call_model_or_deployment": "claude-sonnet-4-6",
+      "status": "success",
+      "parsed": {
+        "evaluations": [
+          {
+            "criterion_index": 0,
+            "verdict": "SATISFIED",
+            "evidence": "Cites source A.",
+            "reasoning": "Directly supported."
+          },
+          {
+            "criterion_index": 1,
+            "verdict": "NOT_SATISFIED",
+            "evidence": "No limitation stated.",
+            "reasoning": "The required limitation is absent."
+          },
+          {
+            "criterion_index": 2,
+            "verdict": "SATISFIED",
+            "evidence": "Discusses tradeoffs.",
+            "reasoning": "Addresses the criterion."
+          }
+        ]
+      },
+      "input_tokens": 10,
+      "output_tokens": 5
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+# Reproducibility
+
+This repo supports three public workflows: no-cost checks, inspection of the frozen paper-reference summaries, and optional current-API reruns. The current-API path uses hosted models and search, so it is best-effort by design.
+
+It does not recreate the private historical run bit for bit. Exact replay would require archived raw reports, judge verdict trees, model/search snapshots, and local infrastructure that are outside this GitHub supplement.
+
+## Setup
+
+Requires Python `>=3.11,<3.13`.
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install -c constraints-public.txt -e ".[api]"
+cp .env.example .env
+```
+
+Fill in either standard OpenAI credentials or Azure OpenAI credentials, plus Anthropic for the full judge panel:
+
+- Standard OpenAI: `OPENAI_API_KEY`
+- Azure OpenAI: `USE_AZURE_OPENAI=true`, `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_ENDPOINT`, `AZURE_OPENAI_API_VERSION=v1`, and `AZURE_OPENAI_DEPLOYMENT`
+- Full judge panel: `ANTHROPIC_API_KEY`
+
+Azure OpenAI uses deployment names. Public hosted-search generation expects the OpenAI-compatible v1 Responses API and a deployment entitled for the configured hosted `web_search` tool. The checked `constraints-public.txt` pins the tested direct public dependency set while excluding GPU/local-model stacks.
+
+## Smoke Check
+
+```bash
+deep-research quickstart-check
+deep-research doctor
+deep-research reproduce paper-a --mode smoke
+deep-research reproduce paper-a --mode reference
+deep-research reproduce paper-a --mode provenance
+```
+
+`quickstart-check` runs the offline first-run path in one command. `smoke` validates public reference files. `reference` prints the compact headline ordering, broad score ranges, and comparison policy used for best-effort public reruns. `provenance` verifies checked hashes and counts for the public reference files. None of these commands make paid API calls. See `repro/PAPER_A_REPRO_MAP.md` for the command-to-artifact map and comparability contract.
+
+## Best-Effort API Rerun
+
+Offline preflight without paid API calls:
+
+```bash
+deep-research doctor --require-api --ensure-dirs
+deep-research cost paper-a --limit 3
+deep-research reproduce paper-a --mode api-best-effort --limit 3 --max-cost-usd 5
+```
+
+This preflight writes a local JSON plan under `artifacts/reproduction/`; it does not call provider APIs. `doctor --require-api` checks that required generation credentials are present but does not validate live model/tool entitlement.
+
+Optional paid entitlement probes before execution:
+
+```bash
+deep-research doctor --verify-api
+deep-research doctor --verify-api --verify-judge-panel
+```
+
+`doctor --verify-api` makes a small paid generation request to confirm model/tool access and checks that the provider actually returns a `web_search_call`. Add `--verify-judge-panel` only when you want to validate the full OpenAI plus Anthropic judge-panel configuration. `doctor --require-judge-panel` is a no-call configuration check for the same credential set.
+
+Execute a small no-download API subset:
+
+```bash
+deep-research reproduce paper-a --mode api-best-effort --execute --limit 3 --max-cost-usd 5
+```
+
+Execute all public queries and run the API judge panel on generated reports:
+
+```bash
+deep-research reproduce paper-a --mode api-best-effort --execute --full --judge
+```
+
+The run writes generated Markdown reports, per-query JSON status files, query-rubric criteria files for judged runs, and `summary.json` under `artifacts/reproduction/paper_a_api_best_effort/`.
+
+Every generation call requires hosted web search. If the provider response lacks a `web_search_call`, the query is marked failed instead of being treated as a valid research report.
+
+A full generation run makes 90 OpenAI/Azure Responses calls. A full run with `--judge` adds up to 90 OpenAI judge calls and 180 Anthropic judge calls. Run `deep-research doctor --require-judge-panel`, `deep-research doctor --verify-api --verify-judge-panel`, and `deep-research cost paper-a --full --judge` before spending on the full panel.
+
+The summary records provider usage fields when they are returned, validated provider verdicts, current-run dimension-weighted scores, and an estimated incurred-cost ledger. Exact historical equality is not promised because model and search APIs drift.
+
+Compare a pattern-metric summary against the frozen reference with:
+
+```bash
+deep-research compare paper-a --run-summary path/to/pattern_metrics_summary.json
+deep-research compare paper-a --run-summary repro/reference/paper_a_pattern_metrics.csv
+```
+
+The live `api-best-effort` summary is expected to return `not-comparable` from this command because it does not rerun the paper's 13-pattern matrix. In the frozen CSV, `n_queries` is the historical count of scored observations for that pattern, not a claim that the public manifest has fewer than 90 queries. Blank judge cells mark unavailable archived judge coverage for that row.
+
+## API Judge Panel
+
+The public judge path calls provider APIs directly. It does not require local assistant sessions or subscriptions.
+
+Criteria can be JSON, JSONL, or plain text. JSON may be either a list or an object with a `criteria`, `rubric`, or `items` list.
+
+```bash
+deep-research judge run \
+  --query "Research question" \
+  --report-file repro/examples/example_report.md \
+  --criteria-file data/public_judge_criteria.json \
+  --panel paper-a-api \
+  --dry-run
+```
+
+Use `--dry-run` first to validate files and show the provider plan without making API calls. The default `paper-a-api` panel requires OpenAI plus Anthropic API credentials. `--panel openai-only` is useful for cheap debugging and should not be reported as the full Paper A judge panel. Integrated reproduction with `--judge` uses each query's bundled criteria, dimensions, and weights from `data/eval_queries_v2.json`; `data/public_judge_criteria.json` is only a small standalone smoke/example criteria file.
+
+| Provider path | API used by this repo | Extra check |
+|---|---|---|
+| OpenAI generation | Responses API with hosted `web_search` | response must include `web_search_call` |
+| Azure generation | OpenAI-compatible `/openai/v1/responses?api-version=v1` | deployment must be entitled for hosted `web_search` |
+| OpenAI judge | Responses API with strict JSON-schema output | all criteria must be returned once |
+| Anthropic judges | Messages API | Opus and Sonnet model IDs are recorded in outputs |
+
+Azure hosted search uses Bing grounding. Confirm pricing, data handling, and region/compliance requirements in your Azure account before live verification or a full run.
+
+## Public Export And Audit
+
+Run the offline test gate before publishing:
+
+```bash
+python -m pip install -c constraints-public.txt -e ".[api,paper,dev]"
+python -m pytest -q -p no:cacheprovider
+ruff check --no-cache deep_research tests
+```
+
+Before publishing a candidate tree:
+
+```bash
+deep-research export-public --out /tmp/deep-research-public-export
+deep-research release-audit --root /tmp/deep-research-public-export
+```
+
+The audit fails on private files, local paths, filled secret assignments, generated bundles, model weights, and oversized files. It also enforces `PUBLIC_MANIFEST.json`, so files outside the explicit allowlist are rejected.
+
+If you run tests inside an exported candidate tree, rebuild the export before
+the final audit and before publishing. Runtime caches and bytecode are not part
+of the public artifact.

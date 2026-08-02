@@ -1,0 +1,186 @@
+{
+  "comparison_policy": "Public best-effort API reruns should compare rank direction and broad score ranges. Exact equality requires archived historical APIs/search snapshots and generated artifacts.",
+  "headline_ranges": {
+    "best_mean_3judge": 0.6734,
+    "best_pattern": "base_p1",
+    "worst_mean_3judge": 0.241,
+    "worst_pattern": "base_p12"
+  },
+  "paper": "paper-a-bounded-returns",
+  "pattern_count": 13,
+  "primary_metric": "mean_3judge",
+  "primary_ordering": [
+    {
+      "mean_3judge": 0.6734,
+      "mean_gpt52": 0.4665,
+      "mean_opus": 0.7629,
+      "mean_sonnet_corrected": 0.7932,
+      "n_queries": 90,
+      "pattern": "base_p1",
+      "ppi_ci95": [
+        0.6417,
+        0.7103
+      ],
+      "ppi_debiased_mean": 0.6761
+    },
+    {
+      "mean_3judge": 0.6397,
+      "mean_gpt52": 0.4666,
+      "mean_opus": 0.6404,
+      "mean_sonnet_corrected": 0.8122,
+      "n_queries": 90,
+      "pattern": "base_p4",
+      "ppi_ci95": [
+        0.6155,
+        0.6632
+      ],
+      "ppi_debiased_mean": 0.6397
+    },
+    {
+      "mean_3judge": 0.634,
+      "mean_gpt52": 0.4612,
+      "mean_opus": 0.6393,
+      "mean_sonnet_corrected": 0.8016,
+      "n_queries": 87,
+      "pattern": "base_p6",
+      "ppi_ci95": [
+        0.6013,
+        0.6675
+      ],
+      "ppi_debiased_mean": 0.634
+    },
+    {
+      "mean_3judge": 0.6301,
+      "mean_gpt52": 0.4466,
+      "mean_opus": 0.6708,
+      "mean_sonnet_corrected": 0.7729,
+      "n_queries": 90,
+      "pattern": "base_p7",
+      "ppi_ci95": [
+        0.6023,
+        0.6556
+      ],
+      "ppi_debiased_mean": 0.6301
+    },
+    {
+      "mean_3judge": 0.625,
+      "mean_gpt52": 0.4322,
+      "mean_opus": 0.6743,
+      "mean_sonnet_corrected": 0.7684,
+      "n_queries": 90,
+      "pattern": "base_p8",
+      "ppi_ci95": [
+        0.5973,
+        0.651
+      ],
+      "ppi_debiased_mean": 0.625
+    },
+    {
+      "mean_3judge": 0.6007,
+      "mean_gpt52": 0.4283,
+      "mean_opus": 0.6008,
+      "mean_sonnet_corrected": 0.7728,
+      "n_queries": 89,
+      "pattern": "base_p5",
+      "ppi_ci95": [
+        0.5684,
+        0.6328
+      ],
+      "ppi_debiased_mean": 0.6007
+    },
+    {
+      "mean_3judge": 0.5853,
+      "mean_gpt52": 0.3976,
+      "mean_opus": 0.6535,
+      "mean_sonnet_corrected": 0.7047,
+      "n_queries": 90,
+      "pattern": "base_p2",
+      "ppi_ci95": [
+        0.5524,
+        0.6178
+      ],
+      "ppi_debiased_mean": 0.5853
+    },
+    {
+      "mean_3judge": 0.5697,
+      "mean_gpt52": 0.406,
+      "mean_opus": 0.5917,
+      "mean_sonnet_corrected": 0.7133,
+      "n_queries": 89,
+      "pattern": "base_p3",
+      "ppi_ci95": [
+        0.536,
+        0.598
+      ],
+      "ppi_debiased_mean": 0.5676
+    },
+    {
+      "mean_3judge": 0.4884,
+      "mean_gpt52": 0.3845,
+      "mean_opus": 0.4747,
+      "mean_sonnet_corrected": 0.6059,
+      "n_queries": 90,
+      "pattern": "base_p0",
+      "ppi_ci95": [
+        0.4463,
+        0.5308
+      ],
+      "ppi_debiased_mean": 0.4884
+    },
+    {
+      "mean_3judge": 0.4002,
+      "mean_gpt52": 0.3308,
+      "mean_opus": null,
+      "mean_sonnet_corrected": 0.4775,
+      "n_queries": 89,
+      "pattern": "base_p11",
+      "ppi_ci95": [
+        0.3579,
+        0.4235
+      ],
+      "ppi_debiased_mean": 0.3905
+    },
+    {
+      "mean_3judge": 0.3358,
+      "mean_gpt52": 0.2131,
+      "mean_opus": 0.3184,
+      "mean_sonnet_corrected": 0.4757,
+      "n_queries": 90,
+      "pattern": "base_p10",
+      "ppi_ci95": [
+        0.3045,
+        0.3667
+      ],
+      "ppi_debiased_mean": 0.3358
+    },
+    {
+      "mean_3judge": 0.2577,
+      "mean_gpt52": 0.18,
+      "mean_opus": 0.2431,
+      "mean_sonnet_corrected": 0.35,
+      "n_queries": 90,
+      "pattern": "base_p9",
+      "ppi_ci95": [
+        0.2174,
+        0.2943
+      ],
+      "ppi_debiased_mean": 0.2577
+    },
+    {
+      "mean_3judge": 0.241,
+      "mean_gpt52": 0.1821,
+      "mean_opus": null,
+      "mean_sonnet_corrected": 0.3428,
+      "n_queries": 90,
+      "pattern": "base_p12",
+      "ppi_ci95": [
+        0.1796,
+        0.2549
+      ],
+      "ppi_debiased_mean": 0.2162
+    }
+  ],
+  "query_count": 90,
+  "schema_version": 1,
+  "source_note": "Compact public summary derived from papers/paper_a_bounded_returns/analysis/canonical_numbers.json; raw generated reports and judge verdict forests are intentionally excluded."
+}

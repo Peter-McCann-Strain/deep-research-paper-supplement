@@ -1,0 +1,17 @@
+{
+  "paper": "paper-a-bounded-returns",
+  "reproduction_contract": "Best-effort API rerun. Exact equality with the submitted paper is not promised because live APIs, search results, and hosted model versions can change.",
+  "reference_metrics": {
+    "source": "repro/reference/paper_a_headline_numbers.json",
+    "comparison_policy": "Public best-effort API reruns should compare rank direction and broad score ranges. Exact equality requires archived historical APIs/search snapshots and generated artifacts.",
+    "included_reference_artifact": "paper_a_headline_numbers.json"
+  },
+  "judge_panel": {
+    "primary": "OpenAI API judge configured by OPENAI_JUDGE_MODEL",
+    "cross_family": [
+      "Anthropic API Opus configured by ANTHROPIC_OPUS_MODEL",
+      "Anthropic API Sonnet configured by ANTHROPIC_SONNET_MODEL"
+    ],
+    "forbidden_public_workflow": "local assistant or subagent judging"
+  }
+}
