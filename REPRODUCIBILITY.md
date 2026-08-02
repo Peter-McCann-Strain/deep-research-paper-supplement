@@ -33,7 +33,7 @@ deep-research reproduce paper-a --mode reference
 deep-research reproduce paper-a --mode provenance
 ```
 
-`quickstart-check` runs the offline first-run path in one command. `smoke` validates public reference files. `reference` prints the compact headline ordering, broad score ranges, and comparison policy used for best-effort public reruns. `provenance` verifies checked hashes and counts for the public reference files. None of these commands make paid API calls. See `repro/PAPER_A_REPRO_MAP.md` for the command-to-artifact map and comparability contract.
+`quickstart-check` runs the offline first-run path in one command. `smoke` validates public reference files. `reference` prints the compact headline ordering, broad score ranges, and comparison policy used for best-effort public reruns. `provenance` verifies checked hashes and counts for the public reference files. None of these commands make paid API calls. See `repro/PAPER_A_REPRO_MAP.md` for the command-to-artifact map and comparability contract, and `repro/PAPER_A_ARTIFACT_INDEX.md` for the manuscript/table/figure/data index.
 
 ## Paper Artifact Rebuild
 
@@ -58,6 +58,8 @@ deep-research paper rebuild paper-a
 This writes generated assets under `paper_rebuild/paper_a_bounded_returns/`. A full compile also refreshes `papers/paper_a_bounded_returns/main.pdf` from the rebuilt source PDF for citation and browsing. The artifact rebuild makes no provider API calls.
 
 `paper_rebuild/paper_a_bounded_returns/analysis/rebuild_all.sh` is retained as historical provenance code for rebuilding the canonical store when optional raw result directories are available. It is not the default public command because it depends on raw artifacts that are intentionally not shipped.
+
+For direct script use, consult `repro/SCRIPT_CATALOG.csv` first. It classifies every shipped top-level file under `scripts/` by family, public status, required inputs or services, expected outputs, and a short purpose summary.
 
 ## Best-Effort API Rerun
 
@@ -93,6 +95,8 @@ deep-research reproduce paper-a --mode api-best-effort --execute --full --judge
 ```
 
 The run writes generated Markdown reports, per-query JSON status files, query-rubric criteria files for judged runs, and `summary.json` under `artifacts/reproduction/paper_a_api_best_effort/`.
+
+The public API workflow reads `OPENAI_MODEL` and `OPENAI_JUDGE_MODEL` from `.env`. The shipped defaults were release-tested on 2026-08-02 and still require provider entitlement in the account used for the rerun. Legacy archival scripts that import `deep_research.config` retain `DEFAULT_MODEL` and `JUDGE_MODEL` overrides so historical sensitivity runners can be inspected or rerun deliberately.
 
 Every generation call requires hosted web search. If the provider response lacks a `web_search_call`, the query is marked failed instead of being treated as a valid research report.
 

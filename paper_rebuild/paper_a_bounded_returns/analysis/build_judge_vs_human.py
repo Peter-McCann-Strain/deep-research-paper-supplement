@@ -57,6 +57,7 @@ Determinism: a single seeded numpy generator over SORTED inputs.
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 import re
 import sys
@@ -107,6 +108,11 @@ CLUSTER_KEY: dict[str, Callable[[dict], str]] = {
 }
 
 rng = np.random.default_rng(SEED)
+
+
+def _stable_small_int(text: str, modulus: int) -> int:
+    digest = hashlib.sha256(text.encode("utf-8")).digest()
+    return int.from_bytes(digest[:4], "big") % modulus
 
 # inline citation markers like [4] or [3, 7] -> distinct indices referenced
 _CIT_RE = re.compile(r"\[\d+(?:\s*,\s*\d+)*\]")
@@ -860,7 +866,7 @@ def _selftest() -> int:
             # two synthetic judges in the family (seeds 10/11) for the CARE path
             vmap = {}
             for sd in (10, 11):
-                vmap.update(_synthetic_verdicts(gold, noise, flip, seed=sd + hash(fam) % 7))
+                vmap.update(_synthetic_verdicts(gold, noise, flip, seed=sd + _stable_small_int(fam, 7)))
             joined = join(gold, vmap)
             blk = agreement_block(joined)
             assert blk is not None and blk["auc"] is not None, f"agreement failed for {s}/{fam}"
@@ -868,7 +874,7 @@ def _selftest() -> int:
             by_j = defaultdict(list)
             # regenerate per-judge so two distinct judge ids exist
             for sd, jid in ((10, "j10"), (11, "j11")):
-                vj = _synthetic_verdicts(gold, noise, flip, seed=sd + hash(fam) % 7)
+                vj = _synthetic_verdicts(gold, noise, flip, seed=sd + _stable_small_int(fam, 7))
                 for r in gold:
                     v = vj.get(r["item_id"])
                     if v:

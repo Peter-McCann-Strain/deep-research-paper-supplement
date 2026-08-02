@@ -15,6 +15,10 @@ Many read optional raw result directories such as `results/experiments/`,
 `checkpoints/experiments/`, or benchmark corpora that are intentionally not part
 of the GitHub tree.
 
+Every shipped top-level `.py`, `.sh`, and `.js` script is classified in
+`repro/SCRIPT_CATALOG.csv`; `repro/SCRIPT_CATALOG.md` defines the status labels.
+If a script is added without a catalog row, the public docs contract test fails.
+
 Use this map when navigating the folder:
 
 | Family | Examples | Public status |

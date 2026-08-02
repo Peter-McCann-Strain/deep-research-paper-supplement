@@ -783,8 +783,7 @@ def write_data_dictionary(out_path: Path) -> None:
     content = """# Data Dictionary — data/analysis/*.parquet
 
 This dictionary documents every column in every parquet file produced by
-`scripts/build_analysis_dataframes.py`. Intended as COLM/EMNLP supplementary
-material.
+`scripts/build_analysis_dataframes.py` for the public paper supplement.
 
 ## Conventions
 
@@ -792,7 +791,11 @@ material.
 - `pattern_family`: `"base"`, `"ablation"`, `"protocol_a"`, `"variance"`, or `"disentanglement"`.
 - `pattern_short`: suffix after `base_` / `ablation_`, e.g. `p4`, `p3_no_quality_eval`.
 - `query_id`: unique id from `data/eval_queries_v2.json`.
-- `judge`: one of `gpt52`, `claude_opus`, `claude_sonnet`, `claude_code`.
+- `judge`: archived provider/model label such as `gpt52`, `claude_opus`,
+  `claude_sonnet`, or `claude_code`. The `claude_code` label is retained only
+  for frozen-data provenance; the supported public judge workflow calls the
+  Anthropic API directly and does not require Claude Code or local assistant
+  sessions.
 - `dimension`: one of the 9 rubric-v2 dimensions listed below.
 
 ## Rubric v2 dimensions
@@ -831,7 +834,7 @@ One row per (pattern × query_id) whether or not a report exists.
 | sections | float64 | Report section count | checkpoint |
 | citations | float64 | Citations emitted | checkpoint |
 | timestamp | datetime64 | Run timestamp | checkpoint |
-| report_path | str \\| null | Absolute path to the `.md` report when it exists | filesystem |
+| report_path | str \\| null | Repository-relative historical pointer to the `.md` report in the unshipped raw artifact layout | provenance |
 | report_exists | bool | True iff `.md` report file is present | filesystem |
 | word_count_is_present | bool | Alias of `report_exists` for explicit gating | filesystem |
 | report_word_count | float64 | Word count of `.md`; **NaN when report is missing** (not 0) | filesystem |
@@ -867,7 +870,7 @@ One row per (pattern × query × judge).
 | overall_score | float64 | Stored top-level overall score | judge JSON |
 | overall_score_recomputed | float64 | Recomputed using `DIMENSION_WEIGHTS_BY_SOURCE[query.source]` applied to per-dimension scores (falls back to met/total when score is missing) | derived |
 | overall_score_per_query_weights | float64 | Recomputed using the per-query `rubric.dimension_weights` from the manifest | derived |
-| overall_score_trustworthy | bool | **False for claude_sonnet** — its stored `overall_score` is upstream-corrupted. Downstream analyses MUST use `overall_score_recomputed` or `overall_score_per_query_weights` for those rows. True for gpt52, claude_opus, claude_code. | policy |
+| overall_score_trustworthy | bool | **False for claude_sonnet** — its stored `overall_score` is upstream-corrupted. Downstream analyses MUST use `overall_score_recomputed` or `overall_score_per_query_weights` for those rows. True for gpt52, claude_opus, and the archived `claude_code` provenance label. | policy |
 | n_criteria | Int64 | Criteria total across dimensions | judge JSON |
 | n_satisfied | Int64 | Criteria satisfied across dimensions | judge JSON |
 | judge_tokens | Int64 | Tokens consumed by the judge (gpt52 only) | judge JSON |

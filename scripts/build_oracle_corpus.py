@@ -9,7 +9,7 @@ strings (leakage mitigation), rank by pool-frequency, and cap at N docs.
 Out: data/oracle_corpus_t1.json  ->  {query_id: [Document-dict, ...]}
 Run: ./venv/bin/python scripts/build_oracle_corpus.py [--subset variance|all] [--cap 30]
 """
-import argparse, json, re, warnings
+import argparse, hashlib, json, re, warnings
 from collections import Counter
 from pathlib import Path
 import pandas as pd
@@ -20,6 +20,10 @@ A = ROOT / "data" / "analysis"
 
 def norm_url(u: str) -> str:
     return (u or "").strip().rstrip("/")
+
+
+def stable_url_id(url: str) -> str:
+    return "oracle_" + hashlib.sha256(url.encode("utf-8")).hexdigest()[:12]
 
 def main():
     ap = argparse.ArgumentParser()
@@ -62,7 +66,7 @@ def main():
             if gstr and len(gstr) > 8:  # leakage mitigation: strip gold-answer strings
                 content = re.sub(re.escape(gstr), "[redacted]", content, flags=re.I)
             docs.append({
-                "id": f"oracle_{abs(hash(u)) % (10**12)}",
+                "id": stable_url_id(u),
                 "title": rec.get("title", "") or titles.get(u, ""),
                 "content": content,
                 "url": u,

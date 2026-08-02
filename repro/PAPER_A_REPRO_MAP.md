@@ -39,6 +39,8 @@ The public manifest has 90 queries. `n_queries` in the compact metrics CSV is th
 - `data/analysis/`: compact derived analysis tables used by the public paper rebuild.
 - `data/public_judge_criteria.json`: small standalone judge-smoke criteria; integrated `--judge` uses each query's full bundled rubric.
 - `data/README.md` and `data/DATA_DICTIONARY.md`: sources, licenses, and field definitions.
+- `repro/SCRIPT_CATALOG.csv`: one-row-per-script map explaining whether each top-level `scripts/` file is a supported helper, optional workflow, historical analysis helper, local-model/GPU workflow, external download, worker, or raw-artifact rebuild helper.
+- `repro/PAPER_A_ARTIFACT_INDEX.md`: one-page map from the manuscript to the shipped tables, figures, producers, and derived data files.
 
 ## Public Paper Rebuild
 
@@ -48,13 +50,15 @@ The public manifest has 90 queries. `n_queries` in the compact metrics CSV is th
 - `paper_rebuild/paper_a_bounded_returns/figures/` and `tables/`: generated assets consumed by the manuscript.
 - `papers/paper_a_bounded_returns/main.pdf`: checked final PDF for convenient citation and browsing.
 
+For a table/figure-level map, start from `repro/PAPER_A_ARTIFACT_INDEX.md`. It also points to `data/analysis/coverage_report.md`, which explains known missing archived cells and why some scored-observation counts differ from the 90 public queries.
+
 ## Excluded From Public GitHub
 
 Private notes, local agent memory, generated report forests, raw judge verdict trees, caches, model weights, checkpoints, paper drafts, submission bundles, and outreach material stay out of GitHub. The final manuscript source needed for artifact rebuilds is included under `paper_rebuild/`. `deep-research export-public` enforces the allowlist and writes `PUBLIC_EXPORT_REPORT.json` with file hashes and provenance.
 
 ## Source Scope
 
-The source tree ships the API-backed reproduction, judging, comparison, export, audit, settings, compact inputs, tests, final PDF, pattern implementations, evaluation modules, and paper artifact rebuild package. Optional local-model and GPU experiment code is included for provenance, but the supported public reproduction path is no-model-download and API-only unless a user deliberately opts into optional local experiments.
+The source tree ships the API-backed reproduction, judging, comparison, export, audit, settings, compact inputs, tests, final PDF, pattern implementations, evaluation modules, script catalog, and paper artifact rebuild package. Optional local-model and GPU experiment code is included for provenance, but the supported public reproduction path is no-model-download and API-only unless a user deliberately opts into optional local experiments.
 
 ## Comparable Candidate Schema
 

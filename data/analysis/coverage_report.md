@@ -4,6 +4,10 @@
 - Patterns discovered: **73** (base + ablation + protocol_a + variance + disentanglement)
 - Judges: claude_code, claude_opus, claude_sonnet, gpt52
 
+`claude_code` is an archived frozen-data label retained for provenance. The
+supported public judge workflow uses direct provider APIs and does not require
+Claude Code or local assistant sessions.
+
 ## Post-fix anomaly summary
 
 - Rubric-drift groups (same (pattern,query,dim) with different criterion sets across judges): **349**

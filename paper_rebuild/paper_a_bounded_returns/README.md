@@ -39,5 +39,8 @@ Directory map:
 | `reports/` | Curated compact statistical/failure-analysis summaries; not raw judge output. |
 | `supporting_analysis/` | Small helper scripts and staged blobs that support specific appendix claims. |
 
+For the cross-repository map from manuscript tables/figures to producers and
+derived data, see `repro/PAPER_A_ARTIFACT_INDEX.md` at the repository root.
+
 For raw API reruns, start from the repository-level reproducibility guide rather
 than this directory.

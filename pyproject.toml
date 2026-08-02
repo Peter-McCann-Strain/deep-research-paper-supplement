@@ -12,10 +12,22 @@ license = {text = "Apache-2.0"}
 authors = [{name = "Peter McCann Strain"}]
 dependencies = [
     "python-dotenv>=1.0.0",
+    "pydantic>=2.7.0",
+    "structlog>=24.1.0",
 ]
 
 [project.optional-dependencies]
-api = ["openai>=2.24.0", "anthropic>=0.40.0", "httpx>=0.27.0"]
+api = [
+    "openai>=2.24.0",
+    "anthropic>=0.40.0",
+    "httpx>=0.27.0",
+    "aiolimiter>=1.1.0",
+    "aiohttp>=3.9.0",
+    "arxiv>=2.1.0",
+    "beautifulsoup4>=4.12.0",
+    "tavily-python>=0.7.0",
+    "trafilatura>=2.0.0",
+]
 paper = [
     "numpy>=1.26.0",
     "pandas>=2.3.0",

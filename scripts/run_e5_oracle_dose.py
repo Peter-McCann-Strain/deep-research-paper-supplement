@@ -62,6 +62,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import hashlib
 import importlib
 import json
 import os
@@ -93,6 +94,11 @@ GOLD_FRACTIONS = [0.0, 0.25, 0.50, 0.75, 1.00]  # graded dose tiers
 INTERLEAVED_CELL = "interleaved"  # 6th cell: 100% gold, delivered progressively
 DOCS_PER_CELL = 12  # total docs held fixed across tiers (gold + hard-neg mix)
 DEFAULT_SEED = 7    # match variance_stratified.json seed
+
+
+def stable_url_id(prefix: str, url: str) -> str:
+    digest = hashlib.sha256(url.encode("utf-8")).hexdigest()[:12]
+    return f"{prefix}_{digest}"
 
 PATTERNS = {
     "p0": "deep_research.patterns.p0_baseline.pipeline",
@@ -241,7 +247,7 @@ def build_dose_corpora(limit: int | None = None, verbose: bool = True) -> dict:
         if gstr and len(gstr) > 8:
             content = re.sub(re.escape(gstr), "[redacted]", content, flags=re.I)
         return {
-            "id": f"e5_{'gold' if is_gold else 'neg'}_{abs(hash(url)) % (10 ** 12)}",
+            "id": stable_url_id(f"e5_{'gold' if is_gold else 'neg'}", url),
             "title": rec.get("title", "") or "",
             "content": content,
             "url": url,

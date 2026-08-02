@@ -11,11 +11,11 @@ Implements:
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 import random
 import time
-from dataclasses import dataclass, field
-from typing import Optional
+from dataclasses import dataclass
 
 import httpx
 import numpy as np
@@ -31,11 +31,15 @@ from deep_research.config import (
 )
 from deep_research.evaluation.rubric_v2 import (
     RubricV2,
-    rubric_to_judge_prompt,
     rubric_to_judge_prompt_with_mapping,
 )
 
 log = structlog.get_logger()
+
+
+def _stable_seed(*parts: object) -> int:
+    payload = "|".join(str(part) for part in parts).encode("utf-8")
+    return int.from_bytes(hashlib.sha256(payload).digest()[:4], "big") & 0x7FFFFFFF
 
 
 # ── Data types ───────────────────────────────────────────────────────────────
@@ -255,7 +259,7 @@ def krippendorffs_alpha_binary(data: np.ndarray) -> float:
     if data.ndim != 2:
         raise ValueError("data must be 2-dimensional (n_raters, n_items)")
 
-    n_raters, n_items = data.shape
+    _n_raters, n_items = data.shape
     if n_items == 0:
         return 0.0
 
@@ -414,7 +418,7 @@ class MultiJudge:
             ),
         )
 
-        shuffle_seed = hash((judge.label, pass_number, query_id)) & 0x7FFFFFFF
+        shuffle_seed = _stable_seed(judge.label, pass_number, query_id)
         criteria_prompt, criterion_mapping = rubric_to_judge_prompt_with_mapping(
             rubric, seed=shuffle_seed
         )
@@ -479,13 +483,13 @@ class MultiJudge:
     ) -> str:
         """Make a judge API call with rate limiting and retry."""
         from openai import (
-            RateLimitError,
             APIConnectionError,
             APITimeoutError,
             InternalServerError,
+            RateLimitError,
         )
 
-        last_exc: Optional[Exception] = None
+        last_exc: Exception | None = None
 
         for attempt in range(_MAX_RETRIES):
             async with self._semaphore:
@@ -681,8 +685,6 @@ class MultiJudge:
         if not all_passes:
             return 0.0, {}
 
-        n_passes = len(all_passes)
-
         # Map criterion_text -> list of satisfied bools across all passes
         criterion_votes: dict[str, list[bool]] = {}
         for pass_result in all_passes:
@@ -822,7 +824,6 @@ class MultiJudge:
             return cohens_kappa(rater_a, rater_b)
         else:
             # Fleiss' kappa for 3+ judges
-            n_raters = len(judge_labels)
             # Build ratings_matrix: (n_items, 2) where columns are [NOT_SATISFIED, SATISFIED]
             ratings = np.zeros((len(criteria_list), 2))
             for i, crit in enumerate(criteria_list):

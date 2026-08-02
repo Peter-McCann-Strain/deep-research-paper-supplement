@@ -1,9 +1,46 @@
 #!/usr/bin/env bash
-# One command to regenerate every canonical number, figure, and LaTeX table in a
-# consistent order, so the paper can never drift from the released parquets.
-# Run:  bash paper_rebuild/paper_a_bounded_returns/analysis/rebuild_all.sh
+# Archival full-corpus rebuild script.
+#
+# This is kept for method provenance and for maintainers who have the private raw
+# generated-report forests, raw judge verdict trees, and optional local-model/GPU
+# outputs. It is not the public reproduction entry point. Public users should run:
+#
+#   deep-research paper rebuild paper-a --check-only
+#   deep-research paper rebuild paper-a --skip-compile
+#   deep-research paper rebuild paper-a
+#
+# To run this archival script deliberately, set:
+#
+#   DEEP_RESEARCH_ALLOW_ARCHIVAL_REBUILD=1 bash paper_rebuild/paper_a_bounded_returns/analysis/rebuild_all.sh
 set -e
 cd "$(dirname "$0")/../../.."
+
+if [ "${DEEP_RESEARCH_ALLOW_ARCHIVAL_REBUILD:-}" != "1" ]; then
+  cat >&2 <<'EOF'
+This archival full-corpus rebuild needs raw artifacts that are intentionally not
+shipped in the public GitHub release. Use the supported public rebuild instead:
+
+  deep-research paper rebuild paper-a --skip-compile
+
+Maintainers with the private archival stores can opt in with:
+
+  DEEP_RESEARCH_ALLOW_ARCHIVAL_REBUILD=1 bash paper_rebuild/paper_a_bounded_returns/analysis/rebuild_all.sh
+EOF
+  exit 2
+fi
+
+missing=0
+for required in results/experiments data/analysis/df_runs.parquet data/analysis/df_verdicts.parquet; do
+  if [ ! -e "$required" ]; then
+    echo "missing archival rebuild input: $required" >&2
+    missing=1
+  fi
+done
+if [ "$missing" -ne 0 ]; then
+  echo "archival rebuild aborted; required raw/derived inputs are unavailable" >&2
+  exit 2
+fi
+
 [ -f venv/bin/activate ] && source venv/bin/activate
 A=paper_rebuild/paper_a_bounded_returns/analysis
 echo "[1/9] build_numbers";            python $A/build_numbers.py            >/dev/null

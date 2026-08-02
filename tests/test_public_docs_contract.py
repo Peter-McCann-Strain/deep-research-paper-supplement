@@ -2,8 +2,12 @@
 
 from __future__ import annotations
 
+import csv
 import json
 from pathlib import Path
+
+from deep_research.evaluation.multi_judge import _stable_seed as stable_judge_seed
+from deep_research.evaluation.pairwise_arena import _stable_seed as stable_pairwise_seed
 
 
 def test_public_query_manifest_records_redacted_rows_without_private_sentinels():
@@ -31,3 +35,94 @@ def test_protocol_doc_describes_expanded_public_scope_without_raw_artifacts():
     assert "raw generated report forests" in doc
     assert "raw judge-verdict packet" in doc
     assert "not raw evaluator packets" in human_doc
+
+
+def test_script_catalog_covers_every_top_level_public_script():
+    catalog_path = Path("repro/SCRIPT_CATALOG.csv")
+    rows = list(csv.DictReader(catalog_path.read_text().splitlines()))
+    expected = {
+        path.name
+        for path in Path("scripts").iterdir()
+        if path.is_file() and path.suffix in {".py", ".sh", ".js"}
+    }
+    actual = {row["script"] for row in rows}
+
+    assert actual == expected
+    assert "compile_portfolio_pdf.py" not in actual
+
+    allowed_statuses = {
+        "prefer public CLI wrapper",
+        "supported public helper",
+        "optional non-default workflow",
+        "optional external download",
+        "optional GPU/local-model workflow",
+        "requires non-public raw artifacts",
+        "historical analysis helper",
+        "internal worker helper",
+    }
+    for row in rows:
+        assert row["public_status"] in allowed_statuses
+        assert row["family"].strip()
+        assert row["required_inputs_or_services"].strip()
+        assert row["expected_outputs"].strip()
+        assert row["summary"].strip()
+
+
+def test_script_docs_point_to_maintained_catalog():
+    script_readme = Path("scripts/README.md").read_text()
+    repro_map = Path("repro/PAPER_A_REPRO_MAP.md").read_text()
+
+    assert "repro/SCRIPT_CATALOG.csv" in script_readme
+    assert "repro/SCRIPT_CATALOG.csv" in repro_map
+    assert "one-row-per-script" in repro_map
+
+
+def test_paper_artifact_index_links_manuscript_assets_and_coverage():
+    index = Path("repro/PAPER_A_ARTIFACT_INDEX.md").read_text()
+    paper_readme = Path("paper_rebuild/paper_a_bounded_returns/README.md").read_text()
+    readme = Path("README.md").read_text()
+
+    for required in (
+        "paper_rebuild/paper_a_bounded_returns/main.tex",
+        "figures/fig1_money.pdf",
+        "figures/fig_oracle.pdf",
+        "tables/tab_headline_means.tex",
+        "tables/tab_bestofn_decoupled.tex",
+        "data/analysis/coverage_report.md",
+    ):
+        assert required in index
+    assert "PAPER_A_ARTIFACT_INDEX.md" in paper_readme
+    assert "PAPER_A_ARTIFACT_INDEX.md" in readme
+
+
+def test_data_docs_describe_included_analysis_tables_without_absolute_paths():
+    top_dictionary = Path("data/DATA_DICTIONARY.md").read_text()
+    analysis_dictionary = Path("data/analysis/DATA_DICTIONARY.md").read_text()
+    data_readme = Path("data/README.md").read_text()
+
+    assert "Compact derived parquet/metadata tables" in top_dictionary
+    assert "not absolute local paths" in analysis_dictionary
+    assert "df_citations.parquet" in analysis_dictionary
+    assert "df_e14_oracle_verdicts.parquet" in analysis_dictionary
+    assert "retained only" in analysis_dictionary
+    assert "Anthropic API directly" in analysis_dictionary
+    assert "No Downloads Required" in data_readme
+    assert "does not regenerate the selected 90-query Paper A manifest" in data_readme
+    assert "Absolute path to the `.md` report" not in analysis_dictionary
+    assert "COLM/EMNLP" not in analysis_dictionary
+
+
+def test_public_evaluation_seeds_are_process_stable():
+    assert stable_judge_seed("judge", 1, "q1") == 1300634655
+    assert stable_pairwise_seed("q1", "system_a", "system_b") == 1325890070
+
+
+def test_public_config_and_types_restore_reusable_source_contract():
+    from deep_research.config import DEFAULT_MODEL, JUDGE_MODEL, MODELS, PROJECT_ROOT
+    from deep_research.types import Document, ResearchReport, SourceType
+
+    assert PROJECT_ROOT == Path.cwd()
+    assert DEFAULT_MODEL in MODELS
+    assert JUDGE_MODEL in MODELS
+    assert Document(title="Example", source_type=SourceType.WEB).model_dump()["title"] == "Example"
+    assert ResearchReport(query="Q", title="T").full_text().startswith("# T")

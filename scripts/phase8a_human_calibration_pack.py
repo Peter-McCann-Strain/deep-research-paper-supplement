@@ -196,7 +196,8 @@ Two annotators required for inter-annotator reliability.
 - DO NOT consult the LLM judge scores; they are blinded for this purpose
 
 ## After annotation
-Send your completed scoresheet to: research@<lab-domain>
+Return your completed scoresheet through the private study-coordination channel
+provided with the evaluator packet.
 
 ## Stratification
 The 30 reports are sampled to span:

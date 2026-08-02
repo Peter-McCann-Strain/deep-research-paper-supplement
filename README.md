@@ -45,7 +45,7 @@ python -m pytest -q -p no:cacheprovider
 ruff check --no-cache deep_research tests
 ```
 
-`quickstart-check`, `smoke`, `reference`, and `provenance` make no paid API calls. `quickstart-check` runs the full offline first-run path in one command. The reference command prints the compact public headline ordering and comparison policy from `repro/reference/paper_a_headline_numbers.json`. `repro/reference/paper_a_pattern_metrics.csv` gives a compact pattern-by-judge audit table, and `repro/reference/PATTERN_DICTIONARY.csv` maps every frozen `base_p*` identifier to the public reference table. `repro/PAPER_A_REPRO_MAP.md` maps every public command to its paper artifact and states whether it is comparable to the frozen paper metrics.
+`quickstart-check`, `smoke`, `reference`, and `provenance` make no paid API calls. `quickstart-check` runs the full offline first-run path in one command. The reference command prints the compact public headline ordering and comparison policy from `repro/reference/paper_a_headline_numbers.json`. `repro/reference/paper_a_pattern_metrics.csv` gives a compact pattern-by-judge audit table, and `repro/reference/PATTERN_DICTIONARY.csv` maps every frozen `base_p*` identifier to the public reference table. `repro/PAPER_A_REPRO_MAP.md` maps every public command to its paper artifact and states whether it is comparable to the frozen paper metrics. `repro/PAPER_A_ARTIFACT_INDEX.md` maps the manuscript, tables, figures, scripts, and derived data files one by one.
 
 ## What This Reproduces
 
@@ -70,7 +70,7 @@ deep-research paper rebuild paper-a
 
 Use `--skip-compile` if you do not have `tectonic` installed. The command still regenerates the tables and figures consumed by the manuscript source.
 
-For the best-effort API path, fill in standard OpenAI credentials or the Azure OpenAI deployment settings from `.env.example`; add `ANTHROPIC_API_KEY` for the full judge panel.
+For the best-effort API path, fill in standard OpenAI credentials or the Azure OpenAI deployment settings from `.env.example`; add `ANTHROPIC_API_KEY` for the full judge panel. The public CLI uses `OPENAI_MODEL` and `OPENAI_JUDGE_MODEL`. Older archival scripts that import `deep_research.config` still honor `DEFAULT_MODEL` and `JUDGE_MODEL` for backward compatibility.
 
 No-call configuration and budget checks:
 
@@ -143,11 +143,11 @@ Azure hosted search is backed by Bing grounding. Check your Azure region, compli
 |---|---|
 | `deep_research/` | Public package: CLI, API judges, reproduction, pattern implementations, evaluation code, tools, benchmarks, export, audit, and settings |
 | `tests/` | Offline tests for release hygiene, docs, comparison, judging, and API request shapes |
-| `repro/` | Reference tables, expected outputs, and paper-to-command mapping |
+| `repro/` | Reference tables, expected outputs, paper-to-command mapping, and the Paper A artifact index |
 | `docs/` | Method and human-evaluation documentation |
 | `data/` | Compact reusable inputs, query/rubric manifests, and derived analysis tables |
 | `paper_rebuild/` | Paper A LaTeX source, bibliography, analysis scripts, generated figures/tables, and compact statistical summaries |
-| `scripts/` | Historical execution, analysis, data-preparation, and diagnostic scripts, documented by `scripts/README.md` |
+| `scripts/` | Historical execution, analysis, data-preparation, and diagnostic scripts, documented by `scripts/README.md` and classified one-by-one in `repro/SCRIPT_CATALOG.csv` |
 | `papers/paper_a_bounded_returns/main.pdf` | Final paper PDF only |
 | `artifacts/` | Local generated outputs only; not part of public GitHub |
 

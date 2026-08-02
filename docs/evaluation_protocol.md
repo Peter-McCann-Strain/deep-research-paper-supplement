@@ -316,7 +316,7 @@ The primary quality measurement used a historical LLM-as-judge ensemble to addre
 
 #### 7.1.1 Architecture
 
-- **Judge model:** GPT-5.2 on Azure (standard deployment, not PTU), configured via `JUDGE_MODEL`.
+- **Judge model:** the archived paper run used GPT-5.2 on Azure (standard deployment, not PTU), configured via `JUDGE_MODEL` in the legacy experiment code. The public current-API workflow uses `OPENAI_JUDGE_MODEL` from `.env.example` and records the exact model ID used in each rerun.
 - **Ensemble configuration:** Multiple judge instances (potentially different models or endpoints) each execute multiple passes.
 - **Passes per judge:** 3 (configurable via `EVAL_PIPELINE.passes_per_judge`).
 - **Total evaluations per report:** n_judges * passes_per_judge (e.g., 2 judges * 3 passes = 6 evaluations).
@@ -345,7 +345,7 @@ Negative-weight criteria (DRACO critical failures) are handled with inverted log
 
 Criteria order is randomized per judge pass to mitigate position bias (Zheng et al., 2023):
 
-- A deterministic seed is computed from `hash((judge_label, pass_number, query_id))`.
+- A deterministic seed is computed from SHA-256 over `(judge_label, pass_number, query_id)`; Python's process-randomized `hash()` is not used.
 - The criteria list is shuffled using this seed before building the judge prompt.
 - A mapping from shuffled index to original criterion index is maintained for verdict parsing.
 - Different passes see different criteria orderings, ensuring that no criterion is systematically advantaged or disadvantaged by its position.
@@ -718,7 +718,7 @@ The historical private judge pipeline orchestrated multi-judge evaluation of all
 |---------|---------------|
 | Random seeds | Fixed seed 42 for all sampling, stratification, and difficulty classification |
 | Query manifest | `data/eval_queries_v2.json` locked after generation; must not be regenerated between runs |
-| Criterion shuffling | Deterministic per-pass shuffle seeds via `hash((judge_label, pass_number, query_id))` |
+| Criterion shuffling | Deterministic per-pass shuffle seeds via SHA-256 over `(judge_label, pass_number, query_id)` |
 | Environment capture | `get_environment_metadata()` records Python version, platform, timestamp, model deployments |
 | Checkpoint versioning | JSON checkpoints include timestamp and metadata for auditability |
 

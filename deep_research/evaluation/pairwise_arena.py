@@ -7,6 +7,7 @@ Supports Elo rating and Bradley-Terry model for ranking.
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import random
 from dataclasses import dataclass
 from itertools import combinations
@@ -18,6 +19,11 @@ from deep_research.config import DEFAULT_MODEL, JUDGE
 from deep_research.tools.llm_caller import LLMCaller
 
 log = structlog.get_logger()
+
+
+def _stable_seed(*parts: object) -> int:
+    payload = "|".join(str(part) for part in parts).encode("utf-8")
+    return int.from_bytes(hashlib.sha256(payload).digest()[:4], "big") & 0x7FFFFFFF
 
 
 # ── Dimensions used for per-dimension comparison ────────────────────────────
@@ -130,8 +136,8 @@ async def pairwise_comparison(
     Returns:
         PairwiseVerdict with winner expressed in terms of original system_a/system_b.
     """
-    # Deterministic swap based on hash of inputs
-    swap_hash = hash(query_id + system_a + system_b) & 0x7FFFFFFF
+    # Deterministic swap based on a process-stable hash of inputs.
+    swap_hash = _stable_seed(query_id, system_a, system_b)
     swapped = swap_hash % 2 == 1
 
     if swapped:
@@ -153,7 +159,7 @@ async def pairwise_comparison(
             temperature=0.1,
             max_tokens=JUDGE.max_tokens,
         )
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 - evaluator fallback returns a conservative tie.
         log.error(
             "pairwise_comparison_failed",
             query_id=query_id,

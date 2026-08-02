@@ -100,6 +100,53 @@ def test_release_audit_flags_vcs_metadata(tmp_path):
     assert any(finding.path == ".git/config" for finding in result.findings)
 
 
+def test_release_audit_requires_catalog_for_shipped_scripts(tmp_path):
+    scripts = tmp_path / "scripts"
+    scripts.mkdir()
+    (scripts / "uncataloged.py").write_text("print('x')\n")
+    (tmp_path / "PUBLIC_MANIFEST.json").write_text(
+        json.dumps(
+            {
+                "include_globs": ["PUBLIC_MANIFEST.json", "scripts/*.py"],
+                "exclude_globs": [],
+                "required_paths": ["PUBLIC_MANIFEST.json"],
+            }
+        )
+    )
+
+    result = audit_release_tree(tmp_path)
+
+    assert result.ok is False
+    assert any("script catalog missing" in finding.message for finding in result.findings)
+
+
+def test_release_audit_flags_uncataloged_script_rows(tmp_path):
+    scripts = tmp_path / "scripts"
+    scripts.mkdir()
+    (scripts / "covered.py").write_text("print('x')\n")
+    (scripts / "missing.py").write_text("print('y')\n")
+    repro = tmp_path / "repro"
+    repro.mkdir()
+    (repro / "SCRIPT_CATALOG.csv").write_text(
+        "script,family,public_status,required_inputs_or_services,expected_outputs,summary\n"
+        "covered.py,validation,supported public helper,public files,console report,covered helper\n"
+    )
+    (tmp_path / "PUBLIC_MANIFEST.json").write_text(
+        json.dumps(
+            {
+                "include_globs": ["PUBLIC_MANIFEST.json", "scripts/*.py", "repro/*.csv"],
+                "exclude_globs": [],
+                "required_paths": ["PUBLIC_MANIFEST.json"],
+            }
+        )
+    )
+
+    result = audit_release_tree(tmp_path)
+
+    assert result.ok is False
+    assert any(finding.path == "scripts/missing.py" for finding in result.findings)
+
+
 def test_release_audit_flags_redaction_leak_phrases(tmp_path):
     (tmp_path / "README.md").write_text("mentions a " + "private" + " planning " + "board\n")
 
@@ -152,7 +199,12 @@ def test_notice_and_pattern_metrics_are_manifested():
 
     assert Path("NOTICE").exists()
     assert "NOTICE" in manifest["required_paths"]
+    assert "deep_research/config.py" in manifest["required_paths"]
+    assert "deep_research/types.py" in manifest["required_paths"]
     assert "repro/reference/paper_a_pattern_metrics.csv" in manifest["required_paths"]
+    assert "repro/PAPER_A_ARTIFACT_INDEX.md" in manifest["required_paths"]
+    assert "repro/SCRIPT_CATALOG.csv" in manifest["required_paths"]
+    assert "repro/SCRIPT_CATALOG.md" in manifest["required_paths"]
     assert "Apache-2.0 applies to code" in Path("README.md").read_text()
     assert "mixed-license" in Path("NOTICE").read_text()
 
@@ -160,10 +212,16 @@ def test_notice_and_pattern_metrics_are_manifested():
 def test_public_dependency_profile_uses_api_and_paper_without_local_model_stack():
     project = tomllib.loads(Path("pyproject.toml").read_text())
 
-    assert project["project"]["dependencies"] == ["python-dotenv>=1.0.0"]
+    base_deps = project["project"]["dependencies"]
+    assert "python-dotenv>=1.0.0" in base_deps
+    assert any(dep.startswith("pydantic") for dep in base_deps)
+    assert any(dep.startswith("structlog") for dep in base_deps)
     api_extra = project["project"]["optional-dependencies"]["api"]
     assert any(dep.startswith("openai") for dep in api_extra)
     assert any(dep.startswith("anthropic") for dep in api_extra)
+    assert any(dep.startswith("aiolimiter") for dep in api_extra)
+    assert any(dep.startswith("trafilatura") for dep in api_extra)
+    assert any(dep.startswith("tavily-python") for dep in api_extra)
     requirements = Path("requirements.txt").read_text()
     assert ".[api,paper]" in requirements
     assert ("tor" + "ch") not in Path("constraints-public.txt").read_text().lower()
