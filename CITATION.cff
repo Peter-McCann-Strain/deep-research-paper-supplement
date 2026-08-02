@@ -5,9 +5,9 @@ authors:
   - family-names: "McCann Strain"
     given-names: "Peter"
 license: "Apache-2.0"
-repository-code: "https://github.com/Peter-McCann-Strain/Deep-Research"
+repository-code: "https://github.com/Peter-McCann-Strain/deep-research-paper-supplement"
 version: "0.1.0"
-date-released: "2026-07-31"
+date-released: "2026-08-02"
 abstract: "Executable public supplement for no-download, API-backed reproduction checks and reference comparisons for a bounded-returns deep-research orchestration study."
 keywords:
   - deep research
