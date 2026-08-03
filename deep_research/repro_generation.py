@@ -146,6 +146,7 @@ async def _generate_report(
             tools=[{"type": tool_type}],
             tool_choice="required",
             max_output_tokens=4096,
+            store=False,
         )
         response_output_types = _response_output_types(response)
         web_search_used = _response_used_web_search(response)

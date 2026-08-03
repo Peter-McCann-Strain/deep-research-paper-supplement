@@ -1,0 +1,17 @@
+% Citation faithfulness via LOSO entailment replay (cf.\ arXiv:2412.18004, $\sim$57\% post-hoc). Strict LOSO is data_insufficient on disk; reported here is the on-disk own-chunk non-entailment PROXY: a LOWER BOUND on post-rationalisation (UPPER BOUND on faithfulness), NOT the headline metric. From canonical citation_faithfulness.proxy_lowerbound.
+\begin{tabular}{lrrr}
+\toprule
+Pattern & $n_{\mathrm{cited}}$ & Post-rat.\ rate (LB) & Faithful (UB)\\
+\midrule
+P0 Single-pass & 4 & 0.250 & 0.750\\
+P1 Iterative RAG & 10 & 0.400 & 0.600\\
+P10 DeepResearcher & 29 & 0.483 & 0.517\\
+P11 ReAct & 6 & 0.500 & 0.500\\
+P9 Qwen2.5-7B & 30 & 0.733 & 0.267\\
+P5 Hier.\ W\&D & 14 & 0.857 & 0.143\\
+P4 STORM & 63 & 0.968 & 0.032\\
+P8 Beam & 20 & 1.000 & 0.000\\
+\midrule
+Pooled & 176 & 0.778 & 0.222\\
+\bottomrule
+\end{tabular}

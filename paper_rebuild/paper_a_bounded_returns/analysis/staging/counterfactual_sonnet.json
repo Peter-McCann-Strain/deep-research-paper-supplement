@@ -1,0 +1,44 @@
+{
+  "experiment": "counterfactual_sonnet_crosscheck",
+  "date": "2026-07-27",
+  "judge_model": "claude-sonnet-5",
+  "judge_source": "counterfactual_j10",
+  "note": "Current-Claude (Sonnet 5 only) cross-family replication of the banked GPT-5.2 `frozen_defence.counterfactual` evidence-faithfulness scores. The rule-based override-rate is judge-independent and not recomputed here -- see `frozen_defence.counterfactual.override_rate_probe_class` (unchanged). 29 reports (82de3e92 quarantined).",
+  "coverage": {
+    "got": 29,
+    "expected": 29
+  },
+  "sonnet_faithfulness": {
+    "factual_accuracy": {
+      "mean": 0.5905,
+      "ci95": [
+        0.4828,
+        0.7026
+      ],
+      "n": 29
+    },
+    "attribution_quality": {
+      "mean": 0.6379,
+      "ci95": [
+        0.5,
+        0.7586
+      ],
+      "n": 29
+    },
+    "overall": {
+      "mean": 0.7412,
+      "ci95": [
+        0.6787,
+        0.8025
+      ],
+      "n": 29
+    }
+  },
+  "cross_family_verdict": {
+    "gpt52_factual_accuracy_mean": 0.2625,
+    "sonnet_factual_accuracy_mean": 0.5905,
+    "gpt52_attribution_quality_mean": 0.0,
+    "sonnet_attribution_quality_mean": 0.6379,
+    "both_judges_high_faithfulness": false
+  }
+}

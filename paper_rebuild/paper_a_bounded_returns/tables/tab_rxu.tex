@@ -1,0 +1,18 @@
+% R x U|R conditional utilisation (DeepResearch-Slice, arXiv:2601.03261), 9 patterns with saved C0 NLI snapshots. Support = $\overline{R}\cdot\overline{U|R}$. High $\overline{R}$ with low $\overline{U|R}$ = utilisation-bound. From canonical oracle.rxu_conditional.
+\begin{tabular}{lrrrrr}
+\toprule
+Pattern & $n_{\mathrm{claims}}$ & $\overline{R}$ & $\overline{U\mid R}$ & $\overline{U\mid R}$ 95\% CI & Support\\
+\midrule
+P8 Beam & 360 & 1.000 & 0.164 & $[0.106,\,0.225]$ & 0.164\\
+P4 STORM & 360 & 0.997 & 0.170 & $[0.103,\,0.248]$ & 0.169\\
+P5 Hier.\ W\&D & 360 & 1.000 & 0.203 & $[0.133,\,0.275]$ & 0.203\\
+P7 Graph & 348 & 1.000 & 0.241 & $[0.172,\,0.316]$ & 0.241\\
+P11 ReAct & 300 & 0.920 & 0.319 & $[0.219,\,0.417]$ & 0.293\\
+P0 Single-pass & 354 & 0.983 & 0.325 & $[0.244,\,0.411]$ & 0.319\\
+P1 Iterative RAG & 360 & 1.000 & 0.328 & $[0.247,\,0.408]$ & 0.328\\
+P10 DeepResearcher & 360 & 0.833 & 0.383 & $[0.264,\,0.500]$ & 0.319\\
+P9 Qwen2.5-7B & 294 & 0.980 & 0.417 & $[0.304,\,0.531]$ & 0.408\\
+\midrule
+Cluster mean support & & & & & 0.272 $[0.221,\,0.321]$\\
+\bottomrule
+\end{tabular}

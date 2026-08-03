@@ -1,0 +1,13 @@
+\begin{tabular}{llrrrc}
+\toprule
+Judge & Dimension & $n$ & AUC & $\Delta$(score) & 95\% boot CI\\
+\midrule
+GPT-5.2 (OpenAI) & Factual & 322 & 0.659 & +0.0727$^{*}$ & [0.024, 0.107] \\
+GPT-5.2 (OpenAI) & Citation & 322 & 0.643 & +0.1689$^{*}$ & [0.083, 0.260] \\
+Opus (Anthropic) & Factual & 259 & 0.541 & +0.0426 & [-0.047, 0.126] \\
+Opus (Anthropic) & Citation & 259 & 0.522 & +0.0187 & [-0.097, 0.126] \\
+Sonnet (Anthropic) & Factual & 290 & 0.503 & +0.0321 & [-0.050, 0.112] \\
+Sonnet (Anthropic) & Citation & 290 & 0.522 & +0.0170 & [-0.073, 0.102] \\
+\bottomrule
+\multicolumn{6}{l}{\footnotesize $^{*}$ bootstrap gap CI excludes 0. Slice: 27 verifiable-answer queries, 11 signal-bearing clusters.} \\
+\end{tabular}

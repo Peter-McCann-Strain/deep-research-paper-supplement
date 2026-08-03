@@ -1,0 +1,86 @@
+{
+  "experiment": "e10_noise_rl_3family",
+  "date": "2026-07-12",
+  "anchor": "gpt52 (matches banked e10_noise_rl); opus48/sonnet5 are current-Claude labelled cohort",
+  "method": "held-out eval queries per adapter; B-C two-level seed x paired-query bootstrap, D-A paired-query bootstrap; N=10000 seed=20260623; quarantine 82de3e92 excluded (identical to e10_noise_rl)",
+  "per_family": {
+    "gpt52": {
+      "n_common_heldout_qids": 37,
+      "held_out_mean": {
+        "A": 0.1772,
+        "B": 0.1798,
+        "C": 0.1786,
+        "D": 0.1839
+      },
+      "delta_B_minus_C": 0.0012,
+      "delta_B_minus_C_ci95": [
+        -0.0152,
+        0.0184
+      ],
+      "delta_D_minus_A": 0.0067,
+      "delta_D_minus_A_ci95": [
+        -0.0177,
+        0.0308
+      ],
+      "h1_B_lt_C_supported": false,
+      "bc_ci_spans_zero": true,
+      "da_ci_spans_zero": true
+    },
+    "opus48": {
+      "n_common_heldout_qids": 37,
+      "held_out_mean": {
+        "A": 0.4149,
+        "B": 0.3728,
+        "C": 0.3969,
+        "D": 0.3506
+      },
+      "delta_B_minus_C": -0.0241,
+      "delta_B_minus_C_ci95": [
+        -0.0812,
+        0.0394
+      ],
+      "delta_D_minus_A": -0.0643,
+      "delta_D_minus_A_ci95": [
+        -0.0907,
+        -0.0345
+      ],
+      "h1_B_lt_C_supported": false,
+      "bc_ci_spans_zero": true,
+      "da_ci_spans_zero": false
+    },
+    "sonnet5": {
+      "n_common_heldout_qids": 37,
+      "held_out_mean": {
+        "A": 0.3093,
+        "B": 0.2765,
+        "C": 0.273,
+        "D": 0.2376
+      },
+      "delta_B_minus_C": 0.0035,
+      "delta_B_minus_C_ci95": [
+        -0.0275,
+        0.0325
+      ],
+      "delta_D_minus_A": -0.0718,
+      "delta_D_minus_A_ci95": [
+        -0.1108,
+        -0.0352
+      ],
+      "h1_B_lt_C_supported": false,
+      "bc_ci_spans_zero": true,
+      "da_ci_spans_zero": false
+    }
+  },
+  "cross_family_agreement": {
+    "h1_falsified_all_families": true,
+    "bc_spans_zero_all_families": true,
+    "da_spans_zero_all_families": false,
+    "bc_sign": {
+      "gpt52": 1,
+      "opus48": -1,
+      "sonnet5": 1
+    },
+    "reading": "All three judge families agree with the GPT-5.2 anchor: structured (B) is NOT worse than random (C) at matched marginal flip (H1 falsified), and no family shows a large clean-vs-corrected gap. Cross-family robustness of Paper 4's Framing 2."
+  },
+  "judge_version_note": "within-arm (B-C, D-A) contrasts cancel any per-judge offset; judge_version_bridge offsets apply only to absolute levels."
+}

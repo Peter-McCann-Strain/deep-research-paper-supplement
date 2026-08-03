@@ -1,0 +1,381 @@
+{
+  "crosstab": {
+    "base_p0": {
+      "simple": 2,
+      "moderate": 2,
+      "complex": 2
+    },
+    "base_p1": {
+      "simple": 2,
+      "moderate": 2,
+      "complex": 2
+    },
+    "base_p10": {
+      "simple": 1,
+      "moderate": 1,
+      "complex": 2
+    },
+    "base_p2": {
+      "simple": 1,
+      "moderate": 1,
+      "complex": 1
+    },
+    "base_p3": {
+      "simple": 1,
+      "moderate": 1,
+      "complex": 1
+    },
+    "base_p4": {
+      "simple": 1,
+      "moderate": 1,
+      "complex": 1
+    },
+    "base_p5": {
+      "simple": 1,
+      "moderate": 1,
+      "complex": 1
+    },
+    "base_p6": {
+      "simple": 1,
+      "moderate": 1,
+      "complex": 1
+    },
+    "base_p7": {
+      "simple": 1,
+      "moderate": 1,
+      "complex": 1
+    },
+    "base_p8": {
+      "simple": 1,
+      "moderate": 1,
+      "complex": 1
+    },
+    "base_p9": {
+      "simple": 1,
+      "moderate": 1,
+      "complex": 1
+    }
+  },
+  "staged": [
+    {
+      "stem": "base_p0__10cece36-a507-4a93-9600-13f3e0e677f8",
+      "pattern": "base_p0",
+      "query_id": "10cece36-a507-4a93-9600-13f3e0e677f8",
+      "n_criteria": 44,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p0__174539438039017258-s17",
+      "pattern": "base_p0",
+      "query_id": "174539438039017258-s17",
+      "n_criteria": 46,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p0__174539439157207885-s3",
+      "pattern": "base_p0",
+      "query_id": "174539439157207885-s3",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p0__6aa10957-bdd9-4dab-a4e1-234a17cb87dd",
+      "pattern": "base_p0",
+      "query_id": "6aa10957-bdd9-4dab-a4e1-234a17cb87dd",
+      "n_criteria": 44,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p0__b02ede76-2353-40f3-9da9-d319c617ab0d",
+      "pattern": "base_p0",
+      "query_id": "b02ede76-2353-40f3-9da9-d319c617ab0d",
+      "n_criteria": 39,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p0__e15a37b4-cd7f-4f52-ba81-9f33b24aabe9",
+      "pattern": "base_p0",
+      "query_id": "e15a37b4-cd7f-4f52-ba81-9f33b24aabe9",
+      "n_criteria": 61,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p1__10cece36-a507-4a93-9600-13f3e0e677f8",
+      "pattern": "base_p1",
+      "query_id": "10cece36-a507-4a93-9600-13f3e0e677f8",
+      "n_criteria": 34,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p1__174539435612599314-s20",
+      "pattern": "base_p1",
+      "query_id": "174539435612599314-s20",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p1__174539439157207885-s3",
+      "pattern": "base_p1",
+      "query_id": "174539439157207885-s3",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p1__a4bae04b-4337-4f28-ab8b-5a518cf58fe0",
+      "pattern": "base_p1",
+      "query_id": "a4bae04b-4337-4f28-ab8b-5a518cf58fe0",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p1__aca95495-b0fe-4330-90fc-d2fd1e2c709e",
+      "pattern": "base_p1",
+      "query_id": "aca95495-b0fe-4330-90fc-d2fd1e2c709e",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p1__dsqa_0710",
+      "pattern": "base_p1",
+      "query_id": "dsqa_0710",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p10__174539435410626618-s2",
+      "pattern": "base_p10",
+      "query_id": "174539435410626618-s2",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p10__939cd89c-32e3-4ba3-a9c2-734a9f3b80d1",
+      "pattern": "base_p10",
+      "query_id": "939cd89c-32e3-4ba3-a9c2-734a9f3b80d1",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p10__f6de7687-7cff-4f68-93ea-f632bf6266af",
+      "pattern": "base_p10",
+      "query_id": "f6de7687-7cff-4f68-93ea-f632bf6266af",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p10__q1_bert_vs_gpt",
+      "pattern": "base_p10",
+      "query_id": "q1_bert_vs_gpt",
+      "n_criteria": 45,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p2__10cece36-a507-4a93-9600-13f3e0e677f8",
+      "pattern": "base_p2",
+      "query_id": "10cece36-a507-4a93-9600-13f3e0e677f8",
+      "n_criteria": 34,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p2__dsqa_0058",
+      "pattern": "base_p2",
+      "query_id": "dsqa_0058",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p2__dsqa_0593",
+      "pattern": "base_p2",
+      "query_id": "dsqa_0593",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p3__6aa10957-bdd9-4dab-a4e1-234a17cb87dd",
+      "pattern": "base_p3",
+      "query_id": "6aa10957-bdd9-4dab-a4e1-234a17cb87dd",
+      "n_criteria": 34,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p3__dsqa_0109",
+      "pattern": "base_p3",
+      "query_id": "dsqa_0109",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p3__dsqa_0458",
+      "pattern": "base_p3",
+      "query_id": "dsqa_0458",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p4__174539435612599314-s20",
+      "pattern": "base_p4",
+      "query_id": "174539435612599314-s20",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p4__49d841f1-0c95-4a87-9b62-5e2a54e8e1a8",
+      "pattern": "base_p4",
+      "query_id": "49d841f1-0c95-4a87-9b62-5e2a54e8e1a8",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p4__q2_rag_vs_finetuning",
+      "pattern": "base_p4",
+      "query_id": "q2_rag_vs_finetuning",
+      "n_criteria": 45,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p5__174539438140586950-s4",
+      "pattern": "base_p5",
+      "query_id": "174539438140586950-s4",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p5__4f36f602-6c14-4c23-a37d-e5ee92ed4552",
+      "pattern": "base_p5",
+      "query_id": "4f36f602-6c14-4c23-a37d-e5ee92ed4552",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p5__d65103ae-c881-4116-a0a7-1b233eb6275a",
+      "pattern": "base_p5",
+      "query_id": "d65103ae-c881-4116-a0a7-1b233eb6275a",
+      "n_criteria": 34,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p6__d65103ae-c881-4116-a0a7-1b233eb6275a",
+      "pattern": "base_p6",
+      "query_id": "d65103ae-c881-4116-a0a7-1b233eb6275a",
+      "n_criteria": 34,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p6__dsqa_0458",
+      "pattern": "base_p6",
+      "query_id": "dsqa_0458",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p6__dsqa_0788",
+      "pattern": "base_p6",
+      "query_id": "dsqa_0788",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p7__b02ede76-2353-40f3-9da9-d319c617ab0d",
+      "pattern": "base_p7",
+      "query_id": "b02ede76-2353-40f3-9da9-d319c617ab0d",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p7__d65103ae-c881-4116-a0a7-1b233eb6275a",
+      "pattern": "base_p7",
+      "query_id": "d65103ae-c881-4116-a0a7-1b233eb6275a",
+      "n_criteria": 34,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p7__dsqa_0788",
+      "pattern": "base_p7",
+      "query_id": "dsqa_0788",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p8__174539435612599314-s20",
+      "pattern": "base_p8",
+      "query_id": "174539435612599314-s20",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p8__c2a1a24b-8a83-453f-9892-d17b533ffe93",
+      "pattern": "base_p8",
+      "query_id": "c2a1a24b-8a83-453f-9892-d17b533ffe93",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p8__dsqa_0109",
+      "pattern": "base_p8",
+      "query_id": "dsqa_0109",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p9__174539438444028587-s6",
+      "pattern": "base_p9",
+      "query_id": "174539438444028587-s6",
+      "n_criteria": 38,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p9__2c05315d-6898-4667-b454-d99b7381bedb",
+      "pattern": "base_p9",
+      "query_id": "2c05315d-6898-4667-b454-d99b7381bedb",
+      "n_criteria": 34,
+      "n_dims": 9,
+      "dims_ok": true
+    },
+    {
+      "stem": "base_p9__6aa10957-bdd9-4dab-a4e1-234a17cb87dd",
+      "pattern": "base_p9",
+      "query_id": "6aa10957-bdd9-4dab-a4e1-234a17cb87dd",
+      "n_criteria": 34,
+      "n_dims": 9,
+      "dims_ok": true
+    }
+  ]
+}

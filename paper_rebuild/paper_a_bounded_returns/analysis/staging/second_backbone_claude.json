@@ -1,0 +1,77 @@
+{
+  "experiment": "second_backbone_gpt41_claude_robustness",
+  "date": "2026-07-14",
+  "note": "current-Claude robustness cohort for `second_backbone`; 235/237 per judge (82de3e92 AUP quarantine on p0+p4). Same mean-of-pattern-means basis. J0 offset NOT applied (within-arm cluster-vs-P0 cancels it).",
+  "anchor_gpt52_gap": {
+    "gap": 0.056,
+    "ci95": [
+      0.0196,
+      0.0929
+    ]
+  },
+  "claude_families": {
+    "opus48": {
+      "judge_model": "claude-opus-4-8",
+      "per_pattern_mean": {
+        "p0": 0.891,
+        "p1": 0.9402,
+        "p4": 0.8958,
+        "p5": 0.9573,
+        "p6": 0.9721,
+        "p7": 0.9389,
+        "p8": 0.9446
+      },
+      "per_pattern_n": {
+        "p0": 58,
+        "p1": 30,
+        "p4": 40,
+        "p5": 21,
+        "p6": 30,
+        "p7": 26,
+        "p8": 30
+      },
+      "cluster_minus_p0_gap": 0.0505,
+      "cluster_minus_p0_ci95": [
+        0.0157,
+        0.089
+      ],
+      "cluster_gt_p0": true
+    },
+    "sonnet5": {
+      "judge_model": "claude-sonnet-5",
+      "per_pattern_mean": {
+        "p0": 0.7883,
+        "p1": 0.8737,
+        "p4": 0.8091,
+        "p5": 0.8815,
+        "p6": 0.9155,
+        "p7": 0.858,
+        "p8": 0.862
+      },
+      "per_pattern_n": {
+        "p0": 58,
+        "p1": 30,
+        "p4": 40,
+        "p5": 21,
+        "p6": 30,
+        "p7": 26,
+        "p8": 30
+      },
+      "cluster_minus_p0_gap": 0.0783,
+      "cluster_minus_p0_ci95": [
+        0.027,
+        0.1318
+      ],
+      "cluster_gt_p0": true
+    }
+  },
+  "three_family_verdict": {
+    "cluster_gt_p0_all_families": true,
+    "gaps": {
+      "gpt52": 0.056,
+      "opus48": 0.0505,
+      "sonnet5": 0.0783
+    },
+    "reading": "Cross-family robustness of the second-backbone finding: the cluster-over-P0 orchestration premium on gpt-4.1 holds under the GPT-5.2 anchor AND both current Claude judges iff all three gap CIs exclude 0. Claude runs more lenient in absolute level (J0) but the within-arm gap is offset-invariant."
+  }
+}

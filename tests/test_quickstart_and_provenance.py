@@ -63,6 +63,8 @@ def test_expected_outputs_commands_parse():
         "deep-research reproduce paper-a --mode smoke",
         "deep-research reproduce paper-a --mode reference",
         "deep-research reproduce paper-a --mode provenance",
+        "deep-research paper rebuild paper-a --check-only",
+        "deep-research paper rebuild paper-a --skip-compile",
         "deep-research compare paper-a --run-summary repro/reference/paper_a_pattern_metrics.csv",
     ]
     parser = build_parser()

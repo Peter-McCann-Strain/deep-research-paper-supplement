@@ -1,9 +1,10 @@
 # Public Evaluation Data
 
-This directory contains the compact inputs needed by the public CLI. Generated
-reports, live-search caches, human-label packets, training data, analysis tables,
-and upstream benchmark caches stay out of GitHub; `DATA_LICENSES.md` is the
-canonical place for those release boundaries.
+This directory contains the compact inputs and derived public analysis tables
+needed by the public CLI and Paper A rebuild. Generated reports, live-search
+caches, raw human-label packets, training data, and upstream benchmark caches
+stay out of GitHub; `DATA_LICENSES.md` is the canonical place for those release
+boundaries.
 
 ## Included Files
 
@@ -13,7 +14,14 @@ canonical place for those release boundaries.
 - `protocol_a_stratified_v2.json`: 29-query Protocol A stratification manifest.
 - `variance_stratified.json`: 30-query variance experiment stratification manifest.
 - `public_judge_criteria.json`: small public criteria file for API judge smoke tests and examples.
+- `analysis/`: compact derived parquet/metadata tables used by the public Paper A rebuild.
 - `DATA_DICTIONARY.md`: data inventory for the public export.
+
+## No Downloads Required / Optional Upstream Inspection
+
+The public Paper A reproduction starts from `data/eval_queries_v2.json` and the
+compact derived tables in `data/analysis/`. `scripts/download_benchmarks.py` is
+for optional inspection of upstream benchmark sources; it does not regenerate the selected 90-query Paper A manifest without the historical selection and review procedure.
 
 ## Query Manifest Schema
 

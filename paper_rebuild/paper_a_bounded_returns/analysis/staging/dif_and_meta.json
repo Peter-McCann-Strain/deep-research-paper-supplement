@@ -1,0 +1,1249 @@
+{
+ "_meta": {
+  "title": "IRT-DIF + cross-experiment meta-analysis (staging)",
+  "generated": "2026-07-04 pure-CPU re-analysis; NO API, NO canonical write",
+  "substrate": "data/analysis/df_verdicts.parquet (DIF) + analysis/canonical_numbers.json (meta, read-only)",
+  "canonical_untouched": true,
+  "note": "Staging only. DIF refit reproduces landed irt_tensor exactly (AUC 0.8787, judge severities to 4dp)."
+ },
+ "irt_dif": {
+  "_what": "IRT differential-item-functioning (DIF): per-criterion judge x criterion interaction after controlling for report ability. Sharpens 'rating indeterminacy' from a global severity story to specific rubric ITEMS the judges read differently.",
+  "method": "Two-stage anchored MFRM-DIF, pure CPU. Stage 1: refit the canonical 1PL many-facet Rasch model logit P(satisfied)=theta_report - b_criterion - s_judge on the same tensor (11 base patterns base_p0..base_p10, 3 core judges gpt52/claude_opus/claude_sonnet, satisfied_is_known, non-empty criteria; R=985, C=673, N=111869). This refit REPRODUCES the landed irt_tensor exactly (see reproduces_canonical). Stage 2: for each well-observed criterion (graded by all 3 judges, >=20 verdicts/judge; 38 general DRACO items, 108567 verdicts) estimate each judge's criterion-specific severity with report ability theta held FIXED as an offset (matched design: general criteria are graded by all 3 judges on the same reports, so judge severity is identified within-item). DIF_jc = criterion-specific severity minus that judge's GLOBAL severity; criterion DIF magnitude = across-judge range/rms of DIF_jc. Significance: unpenalised likelihood-ratio test H0(judge severities fixed at global) vs H1(free), df=2. Effect-size points use a MAP fit with a weak Gaussian prior (SD=2 logits) shrinking severities toward the global pattern, which bounds quasi-separation (e.g. gpt52 passes item a1deaebb52c2 0/985 times) and is CONSERVATIVE. BH-FDR across the 38 items.",
+  "reproduces_canonical": {
+   "refit_auc": 0.8787,
+   "canonical_irt_1PL_auc": 0.8787,
+   "refit_accuracy": 0.8007,
+   "canonical_accuracy": 0.8007,
+   "refit_judge_severity": {
+    "gpt52": 1.0947,
+    "claude_opus": -0.1542,
+    "claude_sonnet": -0.9405
+   },
+   "canonical_judge_severity": {
+    "gpt52": 1.0948,
+    "claude_opus": -0.1543,
+    "claude_sonnet": -0.9405
+   },
+   "note": "independent refit matches the landed irt_tensor to 4 dp => Stage-1 anchor validated."
+  },
+  "n_wellobserved_criteria": 38,
+  "n_verdicts_wellobserved": 108567,
+  "units": "logits (many-facet Rasch); higher judge severity = satisfies less. DIF range = max-min of judge deviations from their own global severity.",
+  "global_judge_severity": {
+   "gpt52": 1.0947,
+   "claude_opus": -0.1542,
+   "claude_sonnet": -0.9405
+  },
+  "dimension_dif_ranking": [
+   {
+    "dimension": "attribution_quality",
+    "n_wellobs_criteria": 2,
+    "mean_dif_range_logits": 2.682,
+    "mean_dif_rms_logits": 1.224,
+    "max_dif_range_logits": 4.448,
+    "mean_raw_passrate_range": 0.431,
+    "n_sig_dif_bh05": 2,
+    "n_separation_items": 1,
+    "irr_krippendorff_alpha": -0.102,
+    "irt_neff_dim": 2.698
+   },
+   {
+    "dimension": "citation_quality",
+    "n_wellobs_criteria": 4,
+    "mean_dif_range_logits": 2.549,
+    "mean_dif_rms_logits": 1.11,
+    "max_dif_range_logits": 5.291,
+    "mean_raw_passrate_range": 0.366,
+    "n_sig_dif_bh05": 4,
+    "n_separation_items": 0,
+    "irr_krippendorff_alpha": 0.542,
+    "irt_neff_dim": 1.952
+   },
+   {
+    "dimension": "information_recall",
+    "n_wellobs_criteria": 4,
+    "mean_dif_range_logits": 2.145,
+    "mean_dif_rms_logits": 0.986,
+    "max_dif_range_logits": 5.374,
+    "mean_raw_passrate_range": 0.498,
+    "n_sig_dif_bh05": 3,
+    "n_separation_items": 2,
+    "irr_krippendorff_alpha": 0.106,
+    "irt_neff_dim": 1.698
+   },
+   {
+    "dimension": "logical_coherence",
+    "n_wellobs_criteria": 3,
+    "mean_dif_range_logits": 1.995,
+    "mean_dif_rms_logits": 0.885,
+    "max_dif_range_logits": 3.633,
+    "mean_raw_passrate_range": 0.456,
+    "n_sig_dif_bh05": 3,
+    "n_separation_items": 1,
+    "irr_krippendorff_alpha": 0.097,
+    "irt_neff_dim": 1.826
+   },
+   {
+    "dimension": "factual_accuracy",
+    "n_wellobs_criteria": 8,
+    "mean_dif_range_logits": 1.848,
+    "mean_dif_rms_logits": 0.817,
+    "max_dif_range_logits": 3.968,
+    "mean_raw_passrate_range": 0.418,
+    "n_sig_dif_bh05": 8,
+    "n_separation_items": 4,
+    "irr_krippendorff_alpha": 0.135,
+    "irt_neff_dim": 1.668
+   },
+   {
+    "dimension": "instruction_following",
+    "n_wellobs_criteria": 4,
+    "mean_dif_range_logits": 1.64,
+    "mean_dif_rms_logits": 0.695,
+    "max_dif_range_logits": 1.69,
+    "mean_raw_passrate_range": 0.443,
+    "n_sig_dif_bh05": 4,
+    "n_separation_items": 0,
+    "irr_krippendorff_alpha": 0.276,
+    "irt_neff_dim": 1.858
+   },
+   {
+    "dimension": "coverage",
+    "n_wellobs_criteria": 5,
+    "mean_dif_range_logits": 1.487,
+    "mean_dif_rms_logits": 0.646,
+    "max_dif_range_logits": 2.923,
+    "mean_raw_passrate_range": 0.317,
+    "n_sig_dif_bh05": 5,
+    "n_separation_items": 0,
+    "irr_krippendorff_alpha": 0.542,
+    "irt_neff_dim": 1.603
+   },
+   {
+    "dimension": "organization",
+    "n_wellobs_criteria": 4,
+    "mean_dif_range_logits": 1.393,
+    "mean_dif_rms_logits": 0.6,
+    "max_dif_range_logits": 1.975,
+    "mean_raw_passrate_range": 0.057,
+    "n_sig_dif_bh05": 4,
+    "n_separation_items": 0,
+    "irr_krippendorff_alpha": 0.841,
+    "irt_neff_dim": 1.306
+   },
+   {
+    "dimension": "analytical_depth",
+    "n_wellobs_criteria": 4,
+    "mean_dif_range_logits": 1.056,
+    "mean_dif_rms_logits": 0.456,
+    "max_dif_range_logits": 1.683,
+    "mean_raw_passrate_range": 0.197,
+    "n_sig_dif_bh05": 4,
+    "n_separation_items": 0,
+    "irr_krippendorff_alpha": 0.572,
+    "irt_neff_dim": 1.544
+   }
+  ],
+  "prediction_test": {
+   "predicted": "attribution/citation carry the most DIF (dimensions where inter-judge alpha was low/negative)",
+   "result": "CONFIRMED. attribution_quality is #1 (mean DIF range 2.68 logits, Krippendorff alpha -0.102) and citation_quality is #2 (2.55). analytical_depth carries the least (1.06, alpha 0.572).",
+   "dif_vs_interjudge_alpha_spearman": -0.8,
+   "dif_vs_alpha_spearman_p": 0.0096,
+   "dif_vs_interjudge_alpha_pearson": -0.615,
+   "dif_vs_alpha_pearson_p": 0.0781,
+   "interpretation": "Dimension DIF magnitude is strongly INVERSELY related to inter-judge reliability (Spearman -0.80, p=0.010): the low/negative-alpha dimensions (attribution -0.10, logical_coherence 0.10, information_recall 0.11, factual 0.13) are largely the high-DIF dimensions. So low reliability there is not merely different global strictness -- the judges disagree about what specific criteria MEAN. citation_quality is the informative exception: moderate overall alpha (0.54) but #2 DIF, because its items are BIMODAL -- some consensual, some (below) reverse the judge ordering."
+  },
+  "sign_reversal_items": {
+   "_what": "Sharpest DIF: criteria on which gpt52 (globally the SEVEREST judge, s=+1.09) becomes MORE LENIENT than claude_sonnet (globally the MOST lenient, s=-0.94) -- the global severity ordering FLIPS, i.e. the item means something different to each judge.",
+   "n_items": 3,
+   "items": [
+    {
+     "criterion_id": "fd303255bd5e",
+     "dimension": "citation_quality",
+     "text": "Different sections draw from different sources rather than relying on a single source",
+     "n_verdicts": 2926,
+     "lr_chi2_df2": 2619.2,
+     "p_bh": 0.0,
+     "sig_dif_bh05": true,
+     "separation_affected": false,
+     "dif_range_logits": 5.291,
+     "judge_severity_on_item": {
+      "gpt52": -1.981,
+      "claude_opus": 0.706,
+      "claude_sonnet": 1.275
+     },
+     "dif_vs_global": {
+      "gpt52": -3.075,
+      "claude_opus": 0.86,
+      "claude_sonnet": 2.215
+     },
+     "raw_pass_rate": {
+      "gpt52": 0.735,
+      "claude_opus": 0.242,
+      "claude_sonnet": 0.158
+     }
+    },
+    {
+     "criterion_id": "e4cf9024e1b5",
+     "dimension": "citation_quality",
+     "text": "The number of distinct sources cited is appropriate for the topic scope (minimum 5)",
+     "n_verdicts": 2926,
+     "lr_chi2_df2": 994.5,
+     "p_bh": 2.16706437e-215,
+     "sig_dif_bh05": true,
+     "separation_affected": false,
+     "dif_range_logits": 3.131,
+     "judge_severity_on_item": {
+      "gpt52": -0.909,
+      "claude_opus": 0.721,
+      "claude_sonnet": 0.187
+     },
+     "dif_vs_global": {
+      "gpt52": -2.003,
+      "claude_opus": 0.876,
+      "claude_sonnet": 1.128
+     },
+     "raw_pass_rate": {
+      "gpt52": 0.773,
+      "claude_opus": 0.501,
+      "claude_sonnet": 0.6
+     }
+    },
+    {
+     "criterion_id": "d64f9d9df81f",
+     "dimension": "coverage",
+     "text": "Practical implications or applications are addressed",
+     "n_verdicts": 2440,
+     "lr_chi2_df2": 603.8,
+     "p_bh": 7.158892222000001e-131,
+     "sig_dif_bh05": true,
+     "separation_affected": false,
+     "dif_range_logits": 2.923,
+     "judge_severity_on_item": {
+      "gpt52": -0.658,
+      "claude_opus": 0.428,
+      "claude_sonnet": 0.23
+     },
+     "dif_vs_global": {
+      "gpt52": -1.753,
+      "claude_opus": 0.583,
+      "claude_sonnet": 1.17
+     },
+     "raw_pass_rate": {
+      "gpt52": 0.77,
+      "claude_opus": 0.61,
+      "claude_sonnet": 0.639
+     }
+    }
+   ]
+  },
+  "top_dif_criteria": [
+   {
+    "criterion_id": "a1deaebb52c2",
+    "dimension": "information_recall",
+    "text": "No critical pieces of widely-available evidence on the topic are omitted",
+    "n_verdicts": 2908,
+    "lr_chi2_df2": 269.1,
+    "p_bh": 2.026217336e-58,
+    "sig_dif_bh05": true,
+    "separation_affected": true,
+    "dif_range_logits": 5.374,
+    "judge_severity_on_item": {
+     "gpt52": 4.605,
+     "claude_opus": -1.801,
+     "claude_sonnet": -2.804
+    },
+    "dif_vs_global": {
+     "gpt52": 3.51,
+     "claude_opus": -1.647,
+     "claude_sonnet": -1.863
+    },
+    "raw_pass_rate": {
+     "gpt52": 0.0,
+     "claude_opus": 0.309,
+     "claude_sonnet": 0.505
+    }
+   },
+   {
+    "criterion_id": "fd303255bd5e",
+    "dimension": "citation_quality",
+    "text": "Different sections draw from different sources rather than relying on a single source",
+    "n_verdicts": 2926,
+    "lr_chi2_df2": 2619.2,
+    "p_bh": 0.0,
+    "sig_dif_bh05": true,
+    "separation_affected": false,
+    "dif_range_logits": 5.291,
+    "judge_severity_on_item": {
+     "gpt52": -1.981,
+     "claude_opus": 0.706,
+     "claude_sonnet": 1.275
+    },
+    "dif_vs_global": {
+     "gpt52": -3.075,
+     "claude_opus": 0.86,
+     "claude_sonnet": 2.215
+    },
+    "raw_pass_rate": {
+     "gpt52": 0.735,
+     "claude_opus": 0.242,
+     "claude_sonnet": 0.158
+    }
+   },
+   {
+    "criterion_id": "37afd4a222b0",
+    "dimension": "attribution_quality",
+    "text": "Each major claim or finding is traceable to a named source",
+    "n_verdicts": 2924,
+    "lr_chi2_df2": 208.4,
+    "p_bh": 1.390000883e-45,
+    "sig_dif_bh05": true,
+    "separation_affected": true,
+    "dif_range_logits": 4.448,
+    "judge_severity_on_item": {
+     "gpt52": 3.987,
+     "claude_opus": -1.492,
+     "claude_sonnet": -2.495
+    },
+    "dif_vs_global": {
+     "gpt52": 2.893,
+     "claude_opus": -1.338,
+     "claude_sonnet": -1.555
+    },
+    "raw_pass_rate": {
+     "gpt52": 0.001,
+     "claude_opus": 0.265,
+     "claude_sonnet": 0.454
+    }
+   },
+   {
+    "criterion_id": "9f90b20f62a6",
+    "dimension": "factual_accuracy",
+    "text": "Factual claims are accurate and consistent with current knowledge",
+    "n_verdicts": 2932,
+    "lr_chi2_df2": 870.2,
+    "p_bh": 1.3574649229999999e-188,
+    "sig_dif_bh05": true,
+    "separation_affected": true,
+    "dif_range_logits": 3.968,
+    "judge_severity_on_item": {
+     "gpt52": 3.729,
+     "claude_opus": -1.455,
+     "claude_sonnet": -2.274
+    },
+    "dif_vs_global": {
+     "gpt52": 2.634,
+     "claude_opus": -1.3,
+     "claude_sonnet": -1.334
+    },
+    "raw_pass_rate": {
+     "gpt52": 0.028,
+     "claude_opus": 0.741,
+     "claude_sonnet": 0.831
+    }
+   },
+   {
+    "criterion_id": "0f9b2e5aa7db",
+    "dimension": "logical_coherence",
+    "text": "Comparative claims and causal arguments are supported by valid reasoning",
+    "n_verdicts": 2905,
+    "lr_chi2_df2": 603.0,
+    "p_bh": 8.541143532e-131,
+    "sig_dif_bh05": true,
+    "separation_affected": true,
+    "dif_range_logits": 3.633,
+    "judge_severity_on_item": {
+     "gpt52": 3.403,
+     "claude_opus": -1.138,
+     "claude_sonnet": -2.265
+    },
+    "dif_vs_global": {
+     "gpt52": 2.308,
+     "claude_opus": -0.983,
+     "claude_sonnet": -1.325
+    },
+    "raw_pass_rate": {
+     "gpt52": 0.024,
+     "claude_opus": 0.608,
+     "claude_sonnet": 0.778
+    }
+   },
+   {
+    "criterion_id": "e4cf9024e1b5",
+    "dimension": "citation_quality",
+    "text": "The number of distinct sources cited is appropriate for the topic scope (minimum 5)",
+    "n_verdicts": 2926,
+    "lr_chi2_df2": 994.5,
+    "p_bh": 2.16706437e-215,
+    "sig_dif_bh05": true,
+    "separation_affected": false,
+    "dif_range_logits": 3.131,
+    "judge_severity_on_item": {
+     "gpt52": -0.909,
+     "claude_opus": 0.721,
+     "claude_sonnet": 0.187
+    },
+    "dif_vs_global": {
+     "gpt52": -2.003,
+     "claude_opus": 0.876,
+     "claude_sonnet": 1.128
+    },
+    "raw_pass_rate": {
+     "gpt52": 0.773,
+     "claude_opus": 0.501,
+     "claude_sonnet": 0.6
+    }
+   },
+   {
+    "criterion_id": "d64f9d9df81f",
+    "dimension": "coverage",
+    "text": "Practical implications or applications are addressed",
+    "n_verdicts": 2440,
+    "lr_chi2_df2": 603.8,
+    "p_bh": 7.158892222000001e-131,
+    "sig_dif_bh05": true,
+    "separation_affected": false,
+    "dif_range_logits": 2.923,
+    "judge_severity_on_item": {
+     "gpt52": -0.658,
+     "claude_opus": 0.428,
+     "claude_sonnet": 0.23
+    },
+    "dif_vs_global": {
+     "gpt52": -1.753,
+     "claude_opus": 0.583,
+     "claude_sonnet": 1.17
+    },
+    "raw_pass_rate": {
+     "gpt52": 0.77,
+     "claude_opus": 0.61,
+     "claude_sonnet": 0.639
+    }
+   },
+   {
+    "criterion_id": "34136c5c356d",
+    "dimension": "factual_accuracy",
+    "text": "Comparison claims (X outperforms Y, X predates Y) are supported by cited evidence",
+    "n_verdicts": 2921,
+    "lr_chi2_df2": 310.4,
+    "p_bh": 2.450076579e-67,
+    "sig_dif_bh05": true,
+    "separation_affected": true,
+    "dif_range_logits": 2.622,
+    "judge_severity_on_item": {
+     "gpt52": 2.651,
+     "claude_opus": -0.645,
+     "claude_sonnet": -2.006
+    },
+    "dif_vs_global": {
+     "gpt52": 1.556,
+     "claude_opus": -0.491,
+     "claude_sonnet": -1.065
+    },
+    "raw_pass_rate": {
+     "gpt52": 0.036,
+     "claude_opus": 0.438,
+     "claude_sonnet": 0.69
+    }
+   },
+   {
+    "criterion_id": "51fb785e2bb2",
+    "dimension": "factual_accuracy",
+    "text": "Specific numbers, dates, or benchmarks cited are accurate",
+    "n_verdicts": 2927,
+    "lr_chi2_df2": 249.8,
+    "p_bh": 2.4292458870000002e-54,
+    "sig_dif_bh05": true,
+    "separation_affected": true,
+    "dif_range_logits": 2.276,
+    "judge_severity_on_item": {
+     "gpt52": 2.454,
+     "claude_opus": -0.597,
+     "claude_sonnet": -1.857
+    },
+    "dif_vs_global": {
+     "gpt52": 1.359,
+     "claude_opus": -0.443,
+     "claude_sonnet": -0.916
+    },
+    "raw_pass_rate": {
+     "gpt52": 0.043,
+     "claude_opus": 0.425,
+     "claude_sonnet": 0.664
+    }
+   },
+   {
+    "criterion_id": "a6013dabdb6f",
+    "dimension": "information_recall",
+    "text": "The report identifies and includes the most authoritative or seminal sources on the topic",
+    "n_verdicts": 2906,
+    "lr_chi2_df2": 221.6,
+    "p_bh": 2.351440549e-48,
+    "sig_dif_bh05": true,
+    "separation_affected": true,
+    "dif_range_logits": 1.987,
+    "judge_severity_on_item": {
+     "gpt52": 2.371,
+     "claude_opus": -0.72,
+     "claude_sonnet": -1.652
+    },
+    "dif_vs_global": {
+     "gpt52": 1.276,
+     "claude_opus": -0.565,
+     "claude_sonnet": -0.711
+    },
+    "raw_pass_rate": {
+     "gpt52": 0.05,
+     "claude_opus": 0.467,
+     "claude_sonnet": 0.643
+    }
+   }
+  ],
+  "n_sig_dif_bh05": 37,
+  "n_criteria_tested": 38,
+  "n_separation_affected": 8,
+  "significance_caveat": "37/38 well-observed items reach BH-significant DIF -- expected, because each item carries ~2900 verdicts, so the LR test is near-fully powered and near-universal significance is uninformative. The load-bearing axis is the EFFECT SIZE (DIF range in logits), not the p-value.",
+  "verdict": "DIF is real, large, and concentrated where the paper's reliability is weakest. Ordered by size: attribution_quality (2.68) > citation_quality (2.55) > information_recall (2.14) > logical_coherence (1.99) > factual_accuracy (1.85) > instruction_following (1.64) > coverage (1.49) > organization (1.39) > analytical_depth (1.06). Three citation/coverage items REVERSE the global judge-severity ordering. This localises 'rating indeterminacy' to the attribution and citation rubric items and explains why oracle-selection's largest lift is on citation (a dimension judges cannot agree on) not factual accuracy."
+ },
+ "meta_analysis": {
+  "_what": "Cross-experiment meta-analysis: a forest-plot table of every load-bearing effect (point + 95% CI + excludes-0), a POWER MAP labelling each null informative-vs-underpowered via its MDE80, and flagged tensions. One-glance evidence summary; all numbers PULLED from landed canonical keys (no recompute).",
+  "provenance": "values read from analysis/canonical_numbers.json; canonical_path given per row; nulls' MDE derived from each effect's own 95% CI.",
+  "forest_table": {
+   "n_effects": 32,
+   "meaningful_delta_star": 0.05,
+   "rows": [
+    {
+     "id": "cluster_vs_p0_3judge",
+     "group": "orchestration",
+     "canonical_path": "headline_cluster_gap.three_judge.cluster_minus_p0",
+     "label": "6-pattern orchestrated cluster minus single-pass P0",
+     "point": 0.1454,
+     "ci95": [
+      0.1095,
+      0.1826
+     ],
+     "n": 90,
+     "substrate": "3-judge panel",
+     "excludes_0": true,
+     "note": "headline gain"
+    },
+    {
+     "id": "cluster_vs_p0_gpt52",
+     "group": "orchestration",
+     "canonical_path": "headline_cluster_gap.gpt52.cluster_minus_p0",
+     "label": "cluster minus P0, family-clean GPT-5.2 judge only",
+     "point": 0.0657,
+     "ci95": [
+      0.0378,
+      0.0943
+     ],
+     "n": 90,
+     "substrate": "gpt52",
+     "excludes_0": true,
+     "note": "headline gain, family-independent judge"
+    },
+    {
+     "id": "cluster_vs_p0_gpt41backbone",
+     "group": "orchestration",
+     "canonical_path": "second_backbone_gpt41.contrast_a_bounded_gain",
+     "label": "P4 minus P0 on a SECOND backbone (gpt-4.1)",
+     "point": 0.0861,
+     "ci95": [
+      0.0266,
+      0.1478
+     ],
+     "n": 32,
+     "substrate": "gpt-4.1 gen / gpt52 judge",
+     "excludes_0": true,
+     "note": "replication on 2nd backbone"
+    },
+    {
+     "id": "cluster_vs_p0_lengthadj",
+     "group": "orchestration_null",
+     "canonical_path": "length_adjusted_headline.pooled_ols_kwords.three_judge.cluster_minus_p0",
+     "label": "cluster minus P0 AFTER length adjustment (0.228/kword)",
+     "point": -0.0031,
+     "ci95": [
+      -0.0384,
+      0.0323
+     ],
+     "n": 90,
+     "substrate": "3-judge panel",
+     "excludes_0": false,
+     "note": "NULL: gain vanishes under length control"
+    },
+    {
+     "id": "p0_vs_p9",
+     "group": "scale",
+     "canonical_path": "headline_cluster_gap.three_judge.p0_minus_p9",
+     "label": "GPT-4o single-pass P0 minus local-7B P9 (scale)",
+     "point": 0.2307,
+     "ci95": [
+      0.1929,
+      0.2691
+     ],
+     "n": 90,
+     "substrate": "3-judge panel",
+     "excludes_0": true,
+     "note": "scale effect"
+    },
+    {
+     "id": "cluster_vs_p9",
+     "group": "scale",
+     "canonical_path": "headline_cluster_gap.three_judge.cluster_minus_p9",
+     "label": "orchestrated cluster minus local-7B P9",
+     "point": 0.3761,
+     "ci95": [
+      0.3363,
+      0.4167
+     ],
+     "n": 90,
+     "substrate": "3-judge panel",
+     "excludes_0": true,
+     "note": "scale+orchestration"
+    },
+    {
+     "id": "p0_vs_p9_lengthadj",
+     "group": "scale",
+     "canonical_path": "length_adjusted_headline.pooled_ols_kwords.three_judge.p0_minus_p9",
+     "label": "P0 minus P9 AFTER length adjustment",
+     "point": 0.1132,
+     "ci95": [
+      0.077,
+      0.1511
+     ],
+     "n": 90,
+     "substrate": "3-judge panel",
+     "excludes_0": true,
+     "note": "scale SURVIVES length control"
+    },
+    {
+     "id": "capacity_14b_vs_7b",
+     "group": "scale",
+     "canonical_path": "frozen_vintage.capacity_axis.p17_minus_p9",
+     "label": "Qwen2.5-14B minus Qwen2.5-7B (frozen scaffold, length-adj)",
+     "point": 0.0253,
+     "ci95": [
+      0.0076,
+      0.0427
+     ],
+     "n": 89,
+     "substrate": "gpt52 / frozen corpus",
+     "excludes_0": true,
+     "note": "capacity axis"
+    },
+    {
+     "id": "vintage_qwen3_8b_vs_7b",
+     "group": "scale",
+     "canonical_path": "frozen_vintage.vintage_axis.p13_minus_p9",
+     "label": "Qwen3-8B minus Qwen2.5-7B (vintage)",
+     "point": 0.0773,
+     "ci95": [
+      0.0519,
+      0.1027
+     ],
+     "n": 89,
+     "substrate": "gpt52 / frozen corpus",
+     "excludes_0": true,
+     "note": "vintage/quality axis"
+    },
+    {
+     "id": "vintage_deepseekdistill_vs_7b",
+     "group": "scale",
+     "canonical_path": "frozen_vintage.vintage_axis.p14_minus_p9",
+     "label": "DeepSeek-distill-Qwen-7B minus base Qwen2.5-7B",
+     "point": -0.0551,
+     "ci95": [
+      -0.0738,
+      -0.0364
+     ],
+     "n": 89,
+     "substrate": "gpt52 / frozen corpus",
+     "excludes_0": true,
+     "note": "NEGATIVE: RL-distill worse than base"
+    },
+    {
+     "id": "oracle_lift_p0",
+     "group": "oracle",
+     "canonical_path": "oracle.per_pattern.p0.overall",
+     "label": "oracle (judge-max) rerank lift on P0",
+     "point": 0.0726,
+     "ci95": [
+      0.0246,
+      0.1264
+     ],
+     "n": 30,
+     "substrate": "gpt52",
+     "excludes_0": true,
+     "note": "selection ceiling"
+    },
+    {
+     "id": "oracle_citation",
+     "group": "oracle",
+     "canonical_path": "oracle.cluster_ci_robust.citation_quality.flat_ci",
+     "label": "oracle lift on citation_quality (cluster)",
+     "point": 0.162,
+     "ci95": [
+      0.1229,
+      0.2011
+     ],
+     "n": 30,
+     "substrate": "gpt52",
+     "excludes_0": true,
+     "note": "oracle helps citation"
+    },
+    {
+     "id": "oracle_factual",
+     "group": "oracle_null",
+     "canonical_path": "oracle.cluster_ci_robust.factual_accuracy.block_ci (factual_tost equiv@0.05)",
+     "label": "oracle lift on factual_accuracy (cluster)",
+     "point": -0.007,
+     "ci95": [
+      -0.0382,
+      0.025
+     ],
+     "n": 30,
+     "substrate": "gpt52",
+     "excludes_0": false,
+     "note": "NULL: oracle does NOT lift factual (TOST-equivalent at 0.05)"
+    },
+    {
+     "id": "retrieval_component",
+     "group": "oracle",
+     "canonical_path": "e14_oracle_entail.cluster_retrieval_component",
+     "label": "factual retrieval channel (entailment vfa gain from gold context)",
+     "point": 0.092,
+     "ci95": [
+      0.0304,
+      0.1536
+     ],
+     "n": 30,
+     "substrate": "PTU gpt-4o entailment",
+     "excludes_0": true,
+     "note": "retrieval-vs-utilisation split"
+    },
+    {
+     "id": "utilisation_ceiling",
+     "group": "oracle",
+     "canonical_path": "e14_oracle_entail.cluster_utilisation_ceiling",
+     "label": "factual utilisation ceiling with gold context (<<1.0)",
+     "point": 0.3197,
+     "ci95": [
+      0.2621,
+      0.3784
+     ],
+     "n": 30,
+     "substrate": "PTU gpt-4o entailment",
+     "excludes_0": true,
+     "note": "ceiling far below 1"
+    },
+    {
+     "id": "router_realisable",
+     "group": "oracle_null",
+     "canonical_path": "router_realisable.router_delta_vs_best_fixed",
+     "label": "realisable per-query router minus best-fixed pattern",
+     "point": -0.0066,
+     "ci95": [
+      -0.0274,
+      0.0131
+     ],
+     "n": 85,
+     "substrate": "gpt52 LOOCV",
+     "excludes_0": false,
+     "note": "NULL vs best-fixed; raw oracle headroom 0.056"
+    },
+    {
+     "id": "provenance_to_factual",
+     "group": "mechanism",
+     "canonical_path": "citation_regression.coefs.provenance_rate (iid CI; cluster-pattern p=0.015)",
+     "label": "citation-provenance rate -> factual_accuracy (partial coef)",
+     "point": 0.081,
+     "ci95": [
+      0.0489,
+      0.1131
+     ],
+     "n": 995,
+     "substrate": "3-judge mean",
+     "excludes_0": true,
+     "note": "assoc weakens under pattern clustering"
+    },
+    {
+     "id": "e5_factual_slope",
+     "group": "mechanism_null",
+     "canonical_path": "e5_dose_response.factual_accuracy_slope (one-sided upper 0.027 < margin 0.05)",
+     "label": "gold-fraction -> factual_accuracy slope (dose-response)",
+     "point": -0.0011,
+     "ci95": [
+      -0.035,
+      0.0328
+     ],
+     "n": 450,
+     "substrate": "gpt52",
+     "excludes_0": false,
+     "note": "NULL: factual FLAT (equivalence established)"
+    },
+    {
+     "id": "e5_citation_slope",
+     "group": "mechanism_null",
+     "canonical_path": "e5_dose_response.citation_quality_slope (slope_mde80=0.10)",
+     "label": "gold-fraction -> citation_quality slope",
+     "point": 0.0378,
+     "ci95": [
+      -0.0322,
+      0.1077
+     ],
+     "n": 450,
+     "substrate": "gpt52",
+     "excludes_0": false,
+     "note": "monotone-increase NOT established at this n"
+    },
+    {
+     "id": "e4_family_interaction",
+     "group": "mechanism_null",
+     "canonical_path": "e4_cite_causal.causal.factual_accuracy.interaction",
+     "label": "density->score slope DIFFERENCE Claude vs OpenAI judges",
+     "point": -0.0004,
+     "ci95": null,
+     "n": 1488,
+     "substrate": "3 judges",
+     "excludes_0": null,
+     "note": "NULL: citation effect is CROSS-family, not Claude-specific (both slopes ~0.021, sig)"
+    },
+    {
+     "id": "disent_unmatched",
+     "group": "compute",
+     "canonical_path": "disentanglement.p1_arm.unmatched",
+     "label": "P1 minus P0 overall (unmatched budget)",
+     "point": 0.0677,
+     "ci95": [
+      0.0187,
+      0.119
+     ],
+     "n": 29,
+     "substrate": "gpt52",
+     "excludes_0": true,
+     "note": "raw architecture gain"
+    },
+    {
+     "id": "disent_clamp",
+     "group": "compute_null",
+     "canonical_path": "disentanglement.p1_arm.clamp_effect (wilcoxon p=0.053)",
+     "label": "budget-clamp effect on P1 (matched minus base P1)",
+     "point": -0.027,
+     "ci95": [
+      -0.0643,
+      0.0156
+     ],
+     "n": 29,
+     "substrate": "gpt52",
+     "excludes_0": false,
+     "note": "NULL/borderline: compute contribution"
+    },
+    {
+     "id": "disent_matched",
+     "group": "compute_null",
+     "canonical_path": "disentanglement.p1_arm.matched",
+     "label": "P1 minus P0 overall AFTER matching budget",
+     "point": 0.0407,
+     "ci95": [
+      -0.0155,
+      0.1028
+     ],
+     "n": 29,
+     "substrate": "gpt52",
+     "excludes_0": false,
+     "note": "NULL: residual architecture gain n.s."
+    },
+    {
+     "id": "oracle_bottleneck_gpt41",
+     "group": "oracle",
+     "canonical_path": "second_backbone_gpt41.contrast_b_oracle_bottleneck",
+     "label": "P4 oracle minus P4 base (utilisation bottleneck), gpt-4.1",
+     "point": 0.0788,
+     "ci95": [
+      0.0371,
+      0.1187
+     ],
+     "n": 17,
+     "substrate": "gpt-4.1 / gpt52",
+     "excludes_0": true,
+     "note": "oracle>orchestration replicates"
+    },
+    {
+     "id": "contam_clean_p0p9",
+     "group": "contamination",
+     "canonical_path": "contamination.clean_residual_capability.clean_panel3.p0_minus_p9",
+     "label": "P0 minus P9 on the DEcontaminated 17-query slice",
+     "point": 0.1419,
+     "ci95": [
+      0.0667,
+      0.2237
+     ],
+     "n": 17,
+     "substrate": "3-judge panel",
+     "excludes_0": true,
+     "note": "survives decontamination"
+    },
+    {
+     "id": "contam_clean_clusterp9",
+     "group": "contamination",
+     "canonical_path": "contamination.clean_residual_capability.clean_panel3.cluster_minus_p9",
+     "label": "cluster minus P9 on decontaminated slice",
+     "point": 0.3184,
+     "ci95": [
+      0.2307,
+      0.4075
+     ],
+     "n": 17,
+     "substrate": "3-judge panel",
+     "excludes_0": true,
+     "note": "survives decontamination"
+    },
+    {
+     "id": "e10_struct_vs_random",
+     "group": "rl_null",
+     "canonical_path": "e10_noise_rl.primary.delta_B_minus_C (TOST@0.005 NOT held)",
+     "label": "structured minus matched-random reward noise (RL)",
+     "point": 0.0012,
+     "ci95": [
+      -0.0152,
+      0.0184
+     ],
+     "n": 37,
+     "substrate": "gpt52",
+     "excludes_0": false,
+     "note": "NULL: no structured-noise benefit"
+    },
+    {
+     "id": "e10_rescue",
+     "group": "rl_null",
+     "canonical_path": "e10_noise_rl.primary.delta_D_minus_A",
+     "label": "noise-corrected D minus clean A (rescue)",
+     "point": 0.0067,
+     "ci95": [
+      -0.0177,
+      0.0308
+     ],
+     "n": 37,
+     "substrate": "gpt52",
+     "excludes_0": false,
+     "note": "NULL: rescue not established"
+    },
+    {
+     "id": "e11_vtr_p0",
+     "group": "mechanism",
+     "canonical_path": "e11_vtr.p0",
+     "label": "guided verify-then-refine lift over matched control (P0)",
+     "point": 0.0454,
+     "ci95": [
+      0.0158,
+      0.0769
+     ],
+     "n": 30,
+     "substrate": "gpt52",
+     "excludes_0": true,
+     "note": "VTR helps"
+    },
+    {
+     "id": "e11_vtr_p4",
+     "group": "mechanism",
+     "canonical_path": "e11_vtr.p4",
+     "label": "guided verify-then-refine lift over matched control (P4)",
+     "point": 0.0384,
+     "ci95": [
+      0.0179,
+      0.0595
+     ],
+     "n": 30,
+     "substrate": "gpt52",
+     "excludes_0": true,
+     "note": "VTR helps"
+    },
+    {
+     "id": "judge_gpt52_answersens",
+     "group": "judge_science",
+     "canonical_path": "judge_vs_gold.per_judge.gpt52.factual_accuracy.boot_diff",
+     "label": "GPT-5.2 factual verdict answer-sensitivity vs human gold",
+     "point": 0.0727,
+     "ci95": [
+      0.0238,
+      0.1066
+     ],
+     "n": 322,
+     "substrate": "gpt52 vs gold",
+     "excludes_0": true,
+     "note": "gpt52 tracks gold"
+    },
+    {
+     "id": "judge_opus_answersens",
+     "group": "judge_science_null",
+     "canonical_path": "judge_vs_gold.per_judge.claude_opus.factual_accuracy.boot_diff",
+     "label": "Claude-Opus factual answer-sensitivity vs human gold",
+     "point": 0.041,
+     "ci95": [
+      -0.0471,
+      0.126
+     ],
+     "n": 322,
+     "substrate": "opus vs gold",
+     "excludes_0": false,
+     "note": "NULL: Claude near-chance"
+    }
+   ]
+  },
+  "forest_summary": {
+   "n_total": 32,
+   "n_exclude_0": 21,
+   "n_null_or_ns": 10,
+   "positive_confirmed": [
+    "cluster_vs_p0_3judge",
+    "cluster_vs_p0_gpt52",
+    "cluster_vs_p0_gpt41backbone",
+    "p0_vs_p9",
+    "cluster_vs_p9",
+    "p0_vs_p9_lengthadj",
+    "capacity_14b_vs_7b",
+    "vintage_qwen3_8b_vs_7b",
+    "vintage_deepseekdistill_vs_7b",
+    "oracle_lift_p0",
+    "oracle_citation",
+    "retrieval_component",
+    "utilisation_ceiling",
+    "provenance_to_factual",
+    "disent_unmatched",
+    "oracle_bottleneck_gpt41",
+    "contam_clean_p0p9",
+    "contam_clean_clusterp9",
+    "e11_vtr_p0",
+    "e11_vtr_p4",
+    "judge_gpt52_answersens"
+   ],
+   "nulls": [
+    "cluster_vs_p0_lengthadj",
+    "oracle_factual",
+    "router_realisable",
+    "e5_factual_slope",
+    "e5_citation_slope",
+    "disent_clamp",
+    "disent_matched",
+    "e10_struct_vs_random",
+    "e10_rescue",
+    "judge_opus_answersens"
+   ]
+  },
+  "power_map": {
+   "_method": "MDE80 = (z_.975 + z_.80) * SE, two-sided alpha=0.05, power 0.80; SE = CI95 width / (2*1.96). A null is INFORMATIVE if its 95% CI (in the alternative direction) excludes the meaningful effect delta* (or MDE80 < delta*), else UNDERPOWERED.",
+   "nulls": [
+    {
+     "id": "cluster_vs_p0_lengthadj",
+     "observed": -0.0031,
+     "ci95": [
+      -0.0384,
+      0.0323
+     ],
+     "se": 0.018,
+     "mde80_twosided": 0.0505,
+     "meaningful_delta_star": 0.05,
+     "alt_direction": "pos",
+     "ci_rules_out_delta_star": true,
+     "reference": "raw cluster-P0 gap 0.145",
+     "label": "INFORMATIVE",
+     "note": "CI upper 0.032 rules out the raw 0.145 gap and any >=0.05 residual lead => length adjustment materially removes the cluster>P0 advantage (MDE80~0.050, powered at the 0.05 threshold)."
+    },
+    {
+     "id": "oracle_factual",
+     "observed": -0.007,
+     "ci95": [
+      -0.0382,
+      0.025
+     ],
+     "se": 0.0161,
+     "mde80_twosided": 0.0452,
+     "meaningful_delta_star": 0.05,
+     "alt_direction": "two",
+     "ci_rules_out_delta_star": true,
+     "reference": "factual TOST margin 0.05",
+     "label": "INFORMATIVE",
+     "note": "TOST-equivalent at 0.05 (block CI within +/-0.05); oracle demonstrably does NOT lift factual within a meaningful margin."
+    },
+    {
+     "id": "router_realisable",
+     "observed": -0.0066,
+     "ci95": [
+      -0.0274,
+      0.0131
+     ],
+     "se": 0.0103,
+     "mde80_twosided": 0.0289,
+     "meaningful_delta_star": 0.0561,
+     "alt_direction": "pos",
+     "ci_rules_out_delta_star": true,
+     "reference": "raw oracle headroom 0.056",
+     "label": "INFORMATIVE",
+     "note": "MDE80 0.029 < oracle headroom 0.056: the design could have detected a headroom-sized router gain and found none => the realisable router genuinely cannot capture the selection headroom."
+    },
+    {
+     "id": "e5_factual_slope",
+     "observed": -0.0011,
+     "ci95": [
+      -0.035,
+      0.0328
+     ],
+     "se": 0.0173,
+     "mde80_twosided": 0.0485,
+     "meaningful_delta_star": 0.05,
+     "alt_direction": "two",
+     "ci_rules_out_delta_star": true,
+     "reference": "E5 slope margin 0.05 (MDE80 0.027)",
+     "label": "INFORMATIVE",
+     "note": "one-sided 95% upper bound 0.027 < margin 0.05; factual-flat established as equivalence (MDE80 0.0271)."
+    },
+    {
+     "id": "e5_citation_slope",
+     "observed": 0.0378,
+     "ci95": [
+      -0.0322,
+      0.1077
+     ],
+     "se": 0.0357,
+     "mde80_twosided": 0.1,
+     "meaningful_delta_star": 0.05,
+     "alt_direction": "pos",
+     "ci_rules_out_delta_star": false,
+     "reference": "meaningful slope 0.05 (canonical slope_mde80=0.10)",
+     "label": "UNDERPOWERED",
+     "note": "canonical slope_mde80 is 0.10 (Wald), far above a meaningful ~0.05 slope; observed 0.038 with CI spanning 0 => monotone-increase NOT established at this n (under-powered, not refuted)."
+    },
+    {
+     "id": "disent_clamp",
+     "observed": -0.027,
+     "ci95": [
+      -0.0643,
+      0.0156
+     ],
+     "se": 0.0204,
+     "mde80_twosided": 0.0571,
+     "meaningful_delta_star": 0.05,
+     "alt_direction": "neg",
+     "ci_rules_out_delta_star": false,
+     "reference": "compute share of the 0.068 P1-P0 gap",
+     "label": "UNDERPOWERED",
+     "note": "MDE80 0.057 > 0.05 and CI admits a -0.05 compute contribution: cannot resolve whether compute explains a meaningful fraction of the gain (Wilcoxon p=0.053, borderline)."
+    },
+    {
+     "id": "disent_matched",
+     "observed": 0.0407,
+     "ci95": [
+      -0.0155,
+      0.1028
+     ],
+     "se": 0.0302,
+     "mde80_twosided": 0.0845,
+     "meaningful_delta_star": 0.05,
+     "alt_direction": "pos",
+     "ci_rules_out_delta_star": false,
+     "reference": "P1-P0 architecture residual",
+     "label": "UNDERPOWERED",
+     "note": "MDE80 0.085 > 0.05; matched-budget architecture residual is not distinguishable from 0 OR from ~0.10 -- under-powered at n=29."
+    },
+    {
+     "id": "e10_struct_vs_random",
+     "observed": 0.0012,
+     "ci95": [
+      -0.0152,
+      0.0184
+     ],
+     "se": 0.0086,
+     "mde80_twosided": 0.024,
+     "meaningful_delta_star": 0.005,
+     "alt_direction": "two",
+     "ci_rules_out_delta_star": false,
+     "reference": "prereg equivalence margin 0.005",
+     "label": "UNDERPOWERED",
+     "note": "MDE80 0.024 >> 0.005: under-powered for the tight prereg margin, but rules out |effect|>~0.024 => no LARGE structured-noise reward benefit."
+    },
+    {
+     "id": "e10_rescue",
+     "observed": 0.0067,
+     "ci95": [
+      -0.0177,
+      0.0308
+     ],
+     "se": 0.0124,
+     "mde80_twosided": 0.0347,
+     "meaningful_delta_star": 0.005,
+     "alt_direction": "two",
+     "ci_rules_out_delta_star": false,
+     "reference": "prereg equivalence margin 0.005",
+     "label": "UNDERPOWERED",
+     "note": "MDE80 0.035 >> 0.005: under-powered for the tight margin; bounds large rescue effects only."
+    }
+   ],
+   "n_informative": 4,
+   "n_underpowered": 5,
+   "informative_nulls": [
+    "cluster_vs_p0_lengthadj",
+    "oracle_factual",
+    "router_realisable",
+    "e5_factual_slope"
+   ],
+   "underpowered_nulls": [
+    "e5_citation_slope",
+    "disent_clamp",
+    "disent_matched",
+    "e10_struct_vs_random",
+    "e10_rescue"
+   ]
+  },
+  "tensions": [
+   {
+    "id": "T1_orchestration_length_fragility",
+    "severity": "HIGH",
+    "claim": "The headline orchestration advantage over the single-pass baseline P0 is length/verbosity-confounded.",
+    "evidence": "Raw 3-judge cluster-P0 = 0.145 [0.110,0.183] (excludes 0) collapses to -0.003 [-0.038,0.032] under the paper's own vintage-method length adjustment (slope 0.228/kword) and to +0.025 under query FE; only the log-words spec keeps it positive (+0.049). The GPT-5.2-only raw gap is already smaller (0.066 [0.038,0.094]).",
+    "contrast": "The SCALE gap is length-robust: P0-P9 0.231 -> 0.113 [0.077,0.151] and cluster-P9 0.376 -> 0.110 [0.050,0.168] both stay positive across all length specs. So 'more scale helps' survives length control while 'more orchestration helps' (over P0) does not.",
+    "keys": [
+     "headline_cluster_gap",
+     "length_adjusted_headline"
+    ]
+   },
+   {
+    "id": "T2_bestofN_beats_cluster",
+    "severity": "MEDIUM",
+    "claim": "Repeated sampling of the SIMPLE baseline can match/beat the orchestrated cluster (bounded returns).",
+    "evidence": "best-of-12 on P0 with oracle (judge-max) selection = 0.495, exceeding the orchestrated cluster mean 0.470 by 0.025 (gap_best_of_N_to_cluster = -0.025). The best-of-k curve is almost entirely reproduced by a pure within-query judge-noise model.",
+    "contrast": "The paper's intended bounded-returns point, but in tension with any reading that orchestration is a uniquely valuable source of quality; caveat: oracle selection is an UPPER bound, not realisable (cf. router_realisable null).",
+    "keys": [
+     "best_of_n",
+     "router_realisable",
+     "headline_cluster_gap"
+    ]
+   },
+   {
+    "id": "T3_why_the_gain_exists",
+    "severity": "MEDIUM",
+    "claim": "Three lenses disagree on WHY the P1/cluster>P0 gain exists; jointly it is the most fragile headline claim.",
+    "evidence": "(a) disentanglement: matched-budget clamp shrinks P1-P0 from 0.068 to 0.041 (n.s.), direct clamp effect -0.027 Wilcoxon p=0.053 => ~40% compute with a wide, sign-uncertain CI; (b) second_backbone gpt-4.1: the gain REPLICATES at 0.086 [0.027,0.148] (excludes 0); (c) length_adjusted: the 3-judge gain VANISHES to -0.003.",
+    "contrast": "A backbone swap supports the gain being real; compute-matching and length-adjustment each erode it. The claim survives as directional/qualitative but not as a clean architecture-only effect.",
+    "keys": [
+     "disentanglement",
+     "second_backbone_gpt41",
+     "length_adjusted_headline"
+    ]
+   },
+   {
+    "id": "T4_headline_judge_dependence",
+    "severity": "LOW",
+    "claim": "The family-clean headline leans on GPT-5.2, the ONLY panel judge validated against human gold -- but also the severest and the DIF driver.",
+    "evidence": "judge_vs_gold: GPT-5.2 factual verdicts track human answer-correctness (AUC ~0.65, boot diff 0.073 [0.024,0.107]) while both Claude judges are near-chance. IRT: GPT-5.2 is the severest judge (s=+1.09) and, per irt_dif, its severe reading of citation/attribution items drives the largest item-level DIF.",
+    "contrast": "Using GPT-5.2 as the load-bearing judge is defensible on validity grounds, but the same judge's severity and item-specific reading are what make the panel disagree (n_eff=1.65); the headline is thus partly a judge-choice. A robustness caveat, not a numeric contradiction.",
+    "keys": [
+     "judge_vs_gold",
+     "irt_tensor",
+     "n_eff"
+    ]
+   }
+  ],
+  "verdict": "The evidence base is asymmetric. STRONG, multiply-robust: the SCALE effect (GPT-4o and larger local models beat the 7B baseline; survives length control, decontamination, backbone swap) and the SELECTION-CEILING story (oracle lifts citation not factual; utilisation ceiling ~0.32; realisable router cannot capture the headroom -- an INFORMATIVE null). FRAGILE: the orchestration-over-P0 gain (length-confounded, compute-borderline, though it replicates on gpt-4.1). Of 9 nulls, 4 are INFORMATIVE (router headroom, oracle-factual, E5-factual-flat, length-adjusted cluster gap) and 5 are UNDERPOWERED (both disentanglement clamps at n=29, both E10 noise contrasts at the tight 0.005 margin, E5 citation slope). Under-powered nulls should be reported as 'not established at this n', never as evidence of absence."
+ }
+}

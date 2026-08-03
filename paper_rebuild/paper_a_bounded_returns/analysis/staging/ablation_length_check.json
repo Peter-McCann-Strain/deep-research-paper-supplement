@@ -1,0 +1,28 @@
+{
+  "_note": "Checks whether ablation_p4_no_triangulation's delta (-0.0599, the figure the abstract's '~0.06' actually quotes) survives the same length-adjustment logic already applied to the P0-vs-cluster headline gap. Same judge pool and ovc field as build_numbers.py's ablations().",
+  "seed": 20260727,
+  "n_boot": 10000,
+  "n_queries_common": 90,
+  "judges_pooled": [
+    "gpt52",
+    "claude_sonnet"
+  ],
+  "raw_delta": -0.0599,
+  "canonical_ablations_delta": -0.0599,
+  "word_count": {
+    "base_p4_mean": 1948.5,
+    "ablation_mean": 1838.7,
+    "mean_diff": -109.7,
+    "fraction_shorter": 0.6
+  },
+  "length_adjusted": {
+    "length_coef_per_1000_words": 0.1761,
+    "delta_at_grand_mean_length": -0.0406,
+    "ci95": [
+      -0.0569,
+      -0.0241
+    ],
+    "excludes_zero": true
+  },
+  "verdict": "SURVIVES, PARTIALLY ATTENUATED. Removing triangulation shortens P4 reports by 110 words on average (60% of queries shorter), and the length-adjusted delta shrinks from -0.060 (raw, this judge pool) to -0.041 (at grand-mean length, 32% attenuation), but the adjusted 95% CI still excludes zero. So part of the abstract's quoted ~0.06 ablation effect is a length artefact, similar in kind (though smaller in share) to the ~40% compute confound already reported for the P1 matched-budget disentanglement probe -- the triangulation-removal effect on quality is real but the raw figure overstates the pure-content-removal share by roughly this attenuation."
+}

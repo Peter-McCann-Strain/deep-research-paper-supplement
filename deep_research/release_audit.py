@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 import json
 import re
 from dataclasses import asdict, dataclass
@@ -10,6 +11,18 @@ from pathlib import Path
 from typing import Any
 
 DEFAULT_MANIFEST_NAME = "PUBLIC_MANIFEST.json"
+SCRIPT_CATALOG_PATH = Path("repro/SCRIPT_CATALOG.csv")
+SCRIPT_CATALOG_EXTENSIONS = {".py", ".sh", ".js"}
+SCRIPT_CATALOG_STATUSES = {
+    "prefer public CLI wrapper",
+    "supported public helper",
+    "optional non-default workflow",
+    "optional external download",
+    "optional GPU/local-model workflow",
+    "requires non-public raw artifacts",
+    "historical analysis helper",
+    "internal worker helper",
+}
 
 SAFE_ENV_TEMPLATES = {".env.example", ".env.template"}
 
@@ -100,7 +113,7 @@ LOCAL_OR_PRIVATE_MARKERS = (
     "file" + "://",
 )
 LOCAL_PATH_RE = re.compile(
-    r"(?:/home/[A-Za-z0-9._-]+/|/Users/[A-Za-z0-9._-]+/|"
+    r"(?<![A-Za-z0-9._-])(?:/home/[A-Za-z0-9._-]+/|/Users/[A-Za-z0-9._-]+/|"
     r"[A-Za-z]:(?:\\+|/+)(?:Users|Documents and Settings)(?:\\+|/+)"
     r"[A-Za-z0-9._ -]+(?:\\+|/+))",
     re.IGNORECASE,
@@ -297,6 +310,82 @@ def _find_secret_or_local_marker(text: str) -> str | None:
     return None
 
 
+def _audit_script_catalog(root: Path) -> list[AuditFinding]:
+    scripts_dir = root / "scripts"
+    if not scripts_dir.exists():
+        return []
+
+    shipped_scripts = {
+        path.name
+        for path in scripts_dir.iterdir()
+        if path.is_file() and path.suffix in SCRIPT_CATALOG_EXTENSIONS
+    }
+    if not shipped_scripts:
+        return []
+
+    findings: list[AuditFinding] = []
+    catalog_path = root / SCRIPT_CATALOG_PATH
+    if not catalog_path.exists():
+        return [
+            AuditFinding(
+                "error",
+                SCRIPT_CATALOG_PATH.as_posix(),
+                "script catalog missing for shipped top-level scripts",
+            )
+        ]
+
+    try:
+        rows = list(csv.DictReader(catalog_path.read_text().splitlines()))
+    except (csv.Error, OSError) as exc:
+        return [
+            AuditFinding(
+                "error",
+                SCRIPT_CATALOG_PATH.as_posix(),
+                f"script catalog cannot be parsed: {exc}",
+            )
+        ]
+
+    cataloged_scripts = {row.get("script", "") for row in rows}
+    for missing in sorted(shipped_scripts - cataloged_scripts):
+        findings.append(
+            AuditFinding("error", f"scripts/{missing}", "script missing from repro/SCRIPT_CATALOG.csv")
+        )
+    for extra in sorted(cataloged_scripts - shipped_scripts):
+        findings.append(
+            AuditFinding("error", SCRIPT_CATALOG_PATH.as_posix(), f"catalog references absent script: {extra}")
+        )
+
+    required_columns = {
+        "script",
+        "family",
+        "public_status",
+        "required_inputs_or_services",
+        "expected_outputs",
+        "summary",
+    }
+    for idx, row in enumerate(rows, start=2):
+        missing_columns = [column for column in required_columns if not row.get(column, "").strip()]
+        if missing_columns:
+            findings.append(
+                AuditFinding(
+                    "error",
+                    SCRIPT_CATALOG_PATH.as_posix(),
+                    f"script catalog row {idx} has blank required columns: {', '.join(sorted(missing_columns))}",
+                )
+            )
+        status = row.get("public_status", "")
+        if status and status not in SCRIPT_CATALOG_STATUSES:
+            findings.append(
+                AuditFinding(
+                    "error",
+                    SCRIPT_CATALOG_PATH.as_posix(),
+                    f"script catalog row {idx} has unknown public_status: {status}",
+                )
+            )
+
+    return findings
+
+
 def audit_release_tree(
     root: Path,
     *,
@@ -335,6 +424,8 @@ def audit_release_tree(
                 findings.append(
                     AuditFinding("error", required_path, "required public file is missing")
                 )
+
+    findings.extend(_audit_script_catalog(root))
 
     for path in iter_release_files(root):
         rel = _relative(path, root)

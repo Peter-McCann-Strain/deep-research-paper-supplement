@@ -15,7 +15,7 @@ raw human-label assets, and training corpora belong outside GitHub.
 | `variance_stratified.json` | 30-query variance experiment stratification manifest | Included |
 | `public_judge_criteria.json` | Small API judge smoke/example criteria | Included |
 | `benchmarks/` | Upstream benchmark cache directories | Excluded |
-| `analysis/` | Generated parquet/csv analysis products | Excluded |
+| `analysis/` | Compact derived parquet/metadata tables used by the public Paper A rebuild | Included; raw upstream report and judge forests remain excluded |
 | `human_calibration_pack/` | Human-rater pilot packet | Excluded |
 | `human_labels/` | Large local human-label assets with separate licenses | Excluded |
 | `dr_judge_training/` | Large local DR-Judge training split | Excluded |

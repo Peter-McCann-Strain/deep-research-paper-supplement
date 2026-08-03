@@ -1,0 +1,95 @@
+{
+  "experiment": "second_backbone_gpt41",
+  "date": "2026-07-12",
+  "axis": "GPT-5.2 anchor (family-clean, primary). Current-Claude 3-family robustness deferred (subscription budget); will land as second_backbone_claude.",
+  "cluster_patterns": [
+    "p1",
+    "p4",
+    "p5",
+    "p6",
+    "p7",
+    "p8"
+  ],
+  "throttle_caveat": "gpt-4.1 (swedencentral) hard-throttled: p5=21,p7=26 of 30 (others 30-59). Gap CI uses the shared query set (n_common=13).",
+  "per_pattern": {
+    "p0": {
+      "gpt41_mean": 0.5332,
+      "gpt41_n": 59,
+      "gpt4o_mean": 0.3845,
+      "gpt4o_n": 90,
+      "backbone_delta_41_minus_4o": 0.1487
+    },
+    "p1": {
+      "gpt41_mean": 0.6219,
+      "gpt41_n": 30,
+      "gpt4o_mean": 0.4665,
+      "gpt4o_n": 90,
+      "backbone_delta_41_minus_4o": 0.1555
+    },
+    "p4": {
+      "gpt41_mean": 0.53,
+      "gpt41_n": 41,
+      "gpt4o_mean": 0.4666,
+      "gpt4o_n": 90,
+      "backbone_delta_41_minus_4o": 0.0634
+    },
+    "p5": {
+      "gpt41_mean": 0.5958,
+      "gpt41_n": 21,
+      "gpt4o_mean": 0.4283,
+      "gpt4o_n": 89,
+      "backbone_delta_41_minus_4o": 0.1675
+    },
+    "p6": {
+      "gpt41_mean": 0.6331,
+      "gpt41_n": 30,
+      "gpt4o_mean": 0.4612,
+      "gpt4o_n": 87,
+      "backbone_delta_41_minus_4o": 0.1719
+    },
+    "p7": {
+      "gpt41_mean": 0.5858,
+      "gpt41_n": 26,
+      "gpt4o_mean": 0.4466,
+      "gpt4o_n": 90,
+      "backbone_delta_41_minus_4o": 0.1392
+    },
+    "p8": {
+      "gpt41_mean": 0.5686,
+      "gpt41_n": 30,
+      "gpt4o_mean": 0.4322,
+      "gpt4o_n": 90,
+      "backbone_delta_41_minus_4o": 0.1364
+    }
+  },
+  "cluster_minus_p0_gpt41": {
+    "gap": 0.056,
+    "ci95": [
+      0.0196,
+      0.0929
+    ],
+    "method": "mean_of_pattern_means",
+    "cluster_mean": 0.5892,
+    "p0_mean": 0.5332,
+    "paired_common_secondary": {
+      "gap": 0.0239,
+      "n_common": 13
+    }
+  },
+  "cluster_minus_p0_gpt4o_reference": {
+    "gap": 0.0657,
+    "ci95": [
+      0.0378,
+      0.0943
+    ],
+    "source": "headline_cluster_gap.gpt52.cluster_minus_p0 (mean-of-pattern-means)"
+  },
+  "ordering_preservation_spearman_41_vs_4o": 0.1071,
+  "reproduces": {
+    "cluster_gt_p0_on_gpt41": true,
+    "gap_positive_pointwise": true,
+    "gap_magnitude_similar_to_gpt4o": true,
+    "ordering_preserved_rho_ge_0p5": false,
+    "reading": "On gpt-4.1 the absolute levels rise (~+0.13 vs gpt-4o) and the cluster-over-P0 orchestration premium reproduces in MAGNITUDE (mean-of-means gap 0.056 vs gpt-4o 0.066), but the per-pattern ordering reshuffles (Spearman 0.11; notably P4 drops) -> the AGGREGATE bounded-returns premium is backbone-robust while WHICH architecture leads is backbone-dependent, consistent with capability>architecture."
+  }
+}

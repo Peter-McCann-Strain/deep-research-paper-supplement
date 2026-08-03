@@ -1,0 +1,152 @@
+{
+  "experiment": "headline_replicates_3family",
+  "date": "2026-07-25",
+  "substrate": "replicate runs of base_p0/p4/p6/p8/p11 (166 reports/judge post-quarantine); ragged N per cell",
+  "caveat": "ragged cell sizes (p0=7,p4=1,p6=32,p8=36,p11=94); rank-agreement robustness check, NOT a powered per-pattern re-derivation. p4 (n=1) excluded from rank agreement. base_p6__rep1 Claude verdicts re-parsed after a salvage verdict-format bug.",
+  "per_judge": {
+    "gpt52": {
+      "per_cell_mean": {
+        "base_p0__rep1": 0.5023,
+        "base_p4__rep1": 0.5058,
+        "base_p6__rep1": 0.4741,
+        "base_p6__rep2": 0.5087,
+        "base_p8__rep1": 0.2929,
+        "base_p8__rep2": 0.237,
+        "base_p11__rep1": 0.3567,
+        "base_p11__rep2": 0.3918
+      },
+      "per_cell_n": {
+        "base_p0__rep1": 7,
+        "base_p4__rep1": 1,
+        "base_p6__rep1": 26,
+        "base_p6__rep2": 5,
+        "base_p8__rep1": 23,
+        "base_p8__rep2": 12,
+        "base_p11__rep1": 69,
+        "base_p11__rep2": 23
+      },
+      "per_pattern_mean": {
+        "base_p0": 0.5023,
+        "base_p4": 0.5058,
+        "base_p6": 0.4797,
+        "base_p8": 0.2737,
+        "base_p11": 0.3655
+      },
+      "per_pattern_n": {
+        "base_p0": 7,
+        "base_p4": 1,
+        "base_p6": 31,
+        "base_p8": 35,
+        "base_p11": 92
+      }
+    },
+    "opus48": {
+      "per_cell_mean": {
+        "base_p0__rep1": 0.8862,
+        "base_p4__rep1": 0.7958,
+        "base_p6__rep1": 0.8652,
+        "base_p6__rep2": 0.8078,
+        "base_p8__rep1": 0.8073,
+        "base_p8__rep2": 0.6667,
+        "base_p11__rep1": 0.6579,
+        "base_p11__rep2": 0.6501
+      },
+      "per_cell_n": {
+        "base_p0__rep1": 7,
+        "base_p4__rep1": 1,
+        "base_p6__rep1": 26,
+        "base_p6__rep2": 5,
+        "base_p8__rep1": 23,
+        "base_p8__rep2": 12,
+        "base_p11__rep1": 69,
+        "base_p11__rep2": 23
+      },
+      "per_pattern_mean": {
+        "base_p0": 0.8862,
+        "base_p4": 0.7958,
+        "base_p6": 0.8559,
+        "base_p8": 0.7591,
+        "base_p11": 0.656
+      },
+      "per_pattern_n": {
+        "base_p0": 7,
+        "base_p4": 1,
+        "base_p6": 31,
+        "base_p8": 35,
+        "base_p11": 92
+      }
+    },
+    "sonnet5": {
+      "per_cell_mean": {
+        "base_p0__rep1": 0.7788,
+        "base_p4__rep1": 0.71,
+        "base_p6__rep1": 0.7222,
+        "base_p6__rep2": 0.7595,
+        "base_p8__rep1": 0.7121,
+        "base_p8__rep2": 0.4996,
+        "base_p11__rep1": 0.5775,
+        "base_p11__rep2": 0.5356
+      },
+      "per_cell_n": {
+        "base_p0__rep1": 7,
+        "base_p4__rep1": 1,
+        "base_p6__rep1": 26,
+        "base_p6__rep2": 5,
+        "base_p8__rep1": 23,
+        "base_p8__rep2": 12,
+        "base_p11__rep1": 69,
+        "base_p11__rep2": 23
+      },
+      "per_pattern_mean": {
+        "base_p0": 0.7788,
+        "base_p4": 0.71,
+        "base_p6": 0.7282,
+        "base_p8": 0.6393,
+        "base_p11": 0.567
+      },
+      "per_pattern_n": {
+        "base_p0": 7,
+        "base_p4": 1,
+        "base_p6": 31,
+        "base_p8": 35,
+        "base_p11": 92
+      }
+    }
+  },
+  "cross_judge_rank_agreement_spearman": {
+    "patterns_ranked": [
+      "base_p0",
+      "base_p6",
+      "base_p8",
+      "base_p11"
+    ],
+    "gpt52_vs_opus48": 0.8,
+    "gpt52_vs_sonnet5": 0.8,
+    "opus48_vs_sonnet5": 1.0
+  },
+  "per_judge_pattern_order": {
+    "gpt52": [
+      "base_p0",
+      "base_p6",
+      "base_p11",
+      "base_p8"
+    ],
+    "opus48": [
+      "base_p0",
+      "base_p6",
+      "base_p8",
+      "base_p11"
+    ],
+    "sonnet5": [
+      "base_p0",
+      "base_p6",
+      "base_p8",
+      "base_p11"
+    ]
+  },
+  "verdict": {
+    "pattern_ordering_identical_across_judges": false,
+    "min_pairwise_rank_spearman": 0.8,
+    "reading": "Robustness of the replicate-run pattern ranking across judge families. High cross-judge rank agreement => the replicate-based ordering is not a single-judge artefact (complements the banked run-noise-robustness result). Levels differ by judge leniency (J0) but the ordering is the load-bearing quantity here."
+  }
+}

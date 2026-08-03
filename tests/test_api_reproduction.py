@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 import sys
 from pathlib import Path
@@ -312,6 +313,7 @@ def test_run_api_reproduction_execute_success_with_fake_openai(monkeypatch, tmp_
     assert calls[0]["model"] == settings.openai.model
     assert calls[0]["tools"] == [{"type": "web_search"}]
     assert calls[0]["tool_choice"] == "required"
+    assert calls[0]["store"] is False
     generation = report.details["generation_results"][0]
     assert generation["web_search_required"] is True
     assert generation["web_search_used"] is True
@@ -466,6 +468,8 @@ def test_verify_api_entitlements_reports_missing_configuration_without_network(t
 def test_verify_api_entitlements_fails_when_search_call_missing(monkeypatch, tmp_path):
     from deep_research import reproduce
 
+    calls = []
+
     class FakeResponse:
         output_text = "OK"
         usage = None
@@ -475,6 +479,7 @@ def test_verify_api_entitlements_fails_when_search_call_missing(monkeypatch, tmp
 
     class FakeResponses:
         async def create(self, **kwargs):
+            calls.append(kwargs)
             return FakeResponse()
 
     class FakeClient:
@@ -508,6 +513,36 @@ def test_verify_api_entitlements_fails_when_search_call_missing(monkeypatch, tmp
     assert openai_check["status"] == "failed"
     assert openai_check["error_type"] == "MissingWebSearchCall"
     assert openai_check["response_output_types"] == []
+    assert calls[0]["store"] is False
+
+
+def test_bing_search_responses_call_disables_response_storage():
+    from deep_research.tools.bing_search import BingSearcher
+
+    calls = []
+
+    class FakeResponse:
+        output_text = "Search synthesis."
+        output = []
+
+    class FakeResponses:
+        async def create(self, **kwargs):
+            calls.append(kwargs)
+            return FakeResponse()
+
+    searcher = BingSearcher.__new__(BingSearcher)
+    searcher._model = "search-model"
+    searcher._semaphore = asyncio.Semaphore(1)
+    searcher._client = SimpleNamespace(responses=FakeResponses())
+    searcher._fetch_pages = False
+    searcher._max_page_fetch = 0
+    searcher._extractor = None
+
+    docs = asyncio.run(searcher.search("test query", max_results=3, use_cache=False))
+
+    assert calls[0]["model"] == "search-model"
+    assert calls[0]["store"] is False
+    assert docs[0].content == "Search synthesis."
 
 
 def test_verify_api_entitlements_judge_panel_includes_openai_judge(monkeypatch, tmp_path):

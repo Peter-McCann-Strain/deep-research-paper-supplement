@@ -1,0 +1,149 @@
+{
+  "build_timestamp": "2026-06-10T18:46:32.338258+00:00",
+  "detected_anomalies": [
+    "4 criterion_id(s) mapped to >1 dimension across judges (rubric drift warning)",
+    "349 (pattern, query_id, dimension) groups show different criterion sets across judges \u2014 rubric version drift"
+  ],
+  "detected_anomalies_truncated": false,
+  "input_paths": [
+    "./data/eval_queries_v2.json",
+    "./results/experiments",
+    "./checkpoints/experiments",
+    "./results/judge_gpt52",
+    "./results/judge_claude_opus",
+    "./results/judge_claude_sonnet",
+    "./results/judge_claude_code",
+    "./deep_research/evaluation/rubric_v2.py"
+  ],
+  "notes": {
+    "claude_sonnet_overall_score": "Upstream-corrupted. Use overall_score_recomputed or overall_score_per_query_weights for claude_sonnet rows.",
+    "cost_proxy_rates": {
+      "gpt4o_blended_usd_per_m_tokens": 5.0,
+      "local_model_patterns_short": [
+        "p10",
+        "p12",
+        "p9"
+      ],
+      "local_model_usd_per_sec": 0.0001
+    },
+    "excluded_patterns": [
+      "ablation_p5_no_citation_verify"
+    ],
+    "excluded_reason": "Only 2/90 reports were generated for ablation_p5_no_citation_verify (run aborted early); statistical comparisons would be unreliable.",
+    "public_redactions": "Before public release, two DRACO-derived rows and their derived citation/verdict text snippets were anonymized across data/eval_queries_v2.json, df_queries.parquet, df_citations.parquet, and df_verdicts.parquet. Row counts and scoring fields are unchanged."
+  },
+  "pandas_version": "2.3.3",
+  "pyarrow_version": "23.0.1",
+  "python_version": "3.12.3",
+  "row_counts": {
+    "df_overall_scores": 6509,
+    "df_queries": 90,
+    "df_runs": 6570,
+    "df_scores": 58552,
+    "df_verdicts": 248536
+  },
+  "script_path": "./scripts/build_analysis_dataframes.py",
+  "script_sha256": "9bbfd911976cbe666ec8fa13b25e9f3638d5b9bddf10db1671893dc17c477509",
+  "v2_dimension_weights": {
+    "analytical_depth": 0.15,
+    "attribution_quality": 0.05,
+    "citation_quality": 0.1,
+    "coverage": 0.1,
+    "factual_accuracy": 0.2,
+    "information_recall": 0.2,
+    "instruction_following": 0.1,
+    "logical_coherence": 0.05,
+    "organization": 0.05
+  },
+  "v2_dimension_weights_by_source": {
+    "deepsearchqa": {
+      "analytical_depth": 0.15,
+      "attribution_quality": 0.05,
+      "citation_quality": 0.1,
+      "coverage": 0.1,
+      "factual_accuracy": 0.2,
+      "information_recall": 0.25,
+      "instruction_following": 0.05,
+      "logical_coherence": 0.05,
+      "organization": 0.05
+    },
+    "default": {
+      "analytical_depth": 0.15,
+      "attribution_quality": 0.05,
+      "citation_quality": 0.1,
+      "coverage": 0.1,
+      "factual_accuracy": 0.2,
+      "information_recall": 0.2,
+      "instruction_following": 0.1,
+      "logical_coherence": 0.05,
+      "organization": 0.05
+    },
+    "draco": {
+      "analytical_depth": 0.15,
+      "attribution_quality": 0.05,
+      "citation_quality": 0.1,
+      "coverage": 0.2,
+      "factual_accuracy": 0.2,
+      "information_recall": 0.15,
+      "instruction_following": 0.05,
+      "logical_coherence": 0.05,
+      "organization": 0.05
+    },
+    "drb2": {
+      "analytical_depth": 0.15,
+      "attribution_quality": 0.05,
+      "citation_quality": 0.05,
+      "coverage": 0.1,
+      "factual_accuracy": 0.15,
+      "information_recall": 0.35,
+      "instruction_following": 0.05,
+      "logical_coherence": 0.05,
+      "organization": 0.05
+    },
+    "drbench": {
+      "analytical_depth": 0.15,
+      "attribution_quality": 0.05,
+      "citation_quality": 0.15,
+      "coverage": 0.1,
+      "factual_accuracy": 0.2,
+      "information_recall": 0.2,
+      "instruction_following": 0.05,
+      "logical_coherence": 0.05,
+      "organization": 0.05
+    },
+    "litqa2": {
+      "analytical_depth": 0.15,
+      "attribution_quality": 0.05,
+      "citation_quality": 0.1,
+      "coverage": 0.05,
+      "factual_accuracy": 0.3,
+      "information_recall": 0.2,
+      "instruction_following": 0.05,
+      "logical_coherence": 0.05,
+      "organization": 0.05
+    },
+    "research_rubrics": {
+      "analytical_depth": 0.15,
+      "attribution_quality": 0.05,
+      "citation_quality": 0.1,
+      "coverage": 0.15,
+      "factual_accuracy": 0.2,
+      "information_recall": 0.15,
+      "instruction_following": 0.1,
+      "logical_coherence": 0.05,
+      "organization": 0.05
+    },
+    "researchqa": {
+      "analytical_depth": 0.2,
+      "attribution_quality": 0.05,
+      "citation_quality": 0.1,
+      "coverage": 0.1,
+      "factual_accuracy": 0.2,
+      "information_recall": 0.2,
+      "instruction_following": 0.05,
+      "logical_coherence": 0.05,
+      "organization": 0.05
+    }
+  },
+  "v2_weights_hash": "c176a70a88e871123631f166ed455b69b022f06734cd68d6e6658e5bacde965a"
+}

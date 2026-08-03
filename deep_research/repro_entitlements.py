@@ -47,6 +47,7 @@ async def _verify_openai_generation_entitlement(
             tools=[{"type": settings.search.openai_web_search_tool}],
             tool_choice="required",
             max_output_tokens=32,
+            store=False,
         )
         response_output_types = _response_output_types(response)
         web_search_used = _response_used_web_search(response)

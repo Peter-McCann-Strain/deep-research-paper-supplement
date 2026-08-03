@@ -1,0 +1,3710 @@
+{
+  "_meta": {
+    "produced": "2026-07-04",
+    "producer": "0$-CPU re-analysis (quality_construct); NOT part of canonical_numbers.json",
+    "inputs": [
+      "data/analysis/df_verdicts.parquet",
+      "data/analysis/df_scores.parquet"
+    ],
+    "scope": "11 base patterns base_p0..base_p10; 3-judge panel {gpt52, claude_opus, claude_sonnet}; satisfied_is_known only",
+    "tools": "factor_analyzer 0.5.1 (EFA minres + promax oblique + Horn parallel analysis); sentence-transformers all-MiniLM-L6-v2 (local/offline); sklearn KMeans; TF-IDF",
+    "seed": 20260704,
+    "caveats_global": [
+      "df_verdicts has satisfied_is_known==True for every row here (no unknown verdicts to drop).",
+      "Marginalising the 3 judges by averaging DISATTENUATES dimension correlations and inflates the general factor => 1-factor solutions; single-judge solutions preserve item covariance and reveal >=2 factors. Both are reported.",
+      "Criterion-level FA uses Pearson correlations on binary items (tetrachoric would be preferable but factor_analyzer's parallel analysis path is Pearson-based).",
+      "Judge free-text is templated on the criterion wording, so high-purity clusters largely recover criterion identity; the CROSS-DIMENSION themes are the informative, non-trivial output and are stable across k=15/20/25."
+    ]
+  },
+  "factor_model": {
+    "question": "Is 'report quality' ONE latent construct, or >=2 orthogonal factors (a 'form' factor = analytical_depth/organization/citation vs a 'truth' factor = factual_accuracy/attribution)?",
+    "method": "EFA (minres extraction) with promax OBLIQUE rotation (so inter-factor correlation phi is estimable) + Horn parallel analysis (1000 sims) for #factors; Kaiser>1 reported alongside. Primary unit = report x 9 dimension scores (met/total); robustness unit = report x 38 general binary criteria.",
+    "adequacy": "KMO 0.78-0.93, Bartlett p<1e-300 across solutions => data are factorable.",
+    "dimension_level": {
+      "primary_marginalised": {
+        "unit": "report x 9-dimension score (met/total)",
+        "judge": "marginalised(mean of 3-judge panel)",
+        "n_reports": 985,
+        "n_variables": 9,
+        "kmo_overall": 0.902,
+        "bartlett_chi2": 7084.2,
+        "bartlett_p": 0.0,
+        "eigenvalues_observed": [
+          5.803,
+          1.077,
+          0.547,
+          0.384,
+          0.352,
+          0.292,
+          0.241,
+          0.18,
+          0.124
+        ],
+        "parallel_random_p95": [
+          1.192,
+          1.129,
+          1.089,
+          1.051,
+          1.019,
+          0.99,
+          0.96,
+          0.928,
+          0.894
+        ],
+        "n_factors_parallel": 1,
+        "n_factors_kaiser": 2,
+        "n_factors_used": 1,
+        "rotation": "promax(oblique)",
+        "loadings": {
+          "information_recall": [
+            0.813
+          ],
+          "factual_accuracy": [
+            0.904
+          ],
+          "coverage": [
+            0.789
+          ],
+          "analytical_depth": [
+            0.814
+          ],
+          "citation_quality": [
+            0.731
+          ],
+          "logical_coherence": [
+            0.839
+          ],
+          "organization": [
+            0.752
+          ],
+          "instruction_following": [
+            0.813
+          ],
+          "attribution_quality": [
+            0.466
+          ]
+        },
+        "factor_corr_phi": [
+          [
+            1.0
+          ]
+        ],
+        "pct_var_explained": [
+          0.605
+        ],
+        "cum_var_explained": [
+          0.605
+        ],
+        "communalities": {
+          "information_recall": 0.66,
+          "factual_accuracy": 0.818,
+          "coverage": 0.622,
+          "analytical_depth": 0.663,
+          "citation_quality": 0.534,
+          "logical_coherence": 0.704,
+          "organization": 0.566,
+          "instruction_following": 0.661,
+          "attribution_quality": 0.217
+        }
+      },
+      "robustness_gpt52": {
+        "unit": "report x 9-dimension score (met/total)",
+        "judge": "gpt52",
+        "n_reports": 985,
+        "n_variables": 9,
+        "kmo_overall": 0.784,
+        "bartlett_chi2": 2554.3,
+        "bartlett_p": 0.0,
+        "eigenvalues_observed": [
+          3.426,
+          1.4,
+          1.138,
+          0.74,
+          0.583,
+          0.534,
+          0.462,
+          0.401,
+          0.318
+        ],
+        "parallel_random_p95": [
+          1.189,
+          1.131,
+          1.085,
+          1.05,
+          1.02,
+          0.99,
+          0.959,
+          0.929,
+          0.892
+        ],
+        "n_factors_parallel": 3,
+        "n_factors_kaiser": 3,
+        "n_factors_used": 3,
+        "rotation": "promax(oblique)",
+        "loadings": {
+          "information_recall": [
+            0.794,
+            -0.047,
+            0.027
+          ],
+          "factual_accuracy": [
+            0.134,
+            0.229,
+            0.745
+          ],
+          "coverage": [
+            0.376,
+            0.493,
+            -0.102
+          ],
+          "analytical_depth": [
+            0.043,
+            0.627,
+            0.104
+          ],
+          "citation_quality": [
+            0.042,
+            0.603,
+            0.015
+          ],
+          "logical_coherence": [
+            0.54,
+            -0.125,
+            0.465
+          ],
+          "organization": [
+            -0.141,
+            0.728,
+            0.035
+          ],
+          "instruction_following": [
+            0.79,
+            0.044,
+            -0.142
+          ],
+          "attribution_quality": [
+            -0.227,
+            -0.004,
+            0.352
+          ]
+        },
+        "factor_corr_phi": [
+          [
+            1.0,
+            0.258,
+            0.532
+          ],
+          [
+            0.258,
+            1.0,
+            0.108
+          ],
+          [
+            0.532,
+            0.108,
+            1.0
+          ]
+        ],
+        "pct_var_explained": [
+          0.198,
+          0.178,
+          0.104
+        ],
+        "cum_var_explained": [
+          0.198,
+          0.376,
+          0.48
+        ],
+        "communalities": {
+          "information_recall": 0.634,
+          "factual_accuracy": 0.626,
+          "coverage": 0.395,
+          "analytical_depth": 0.406,
+          "citation_quality": 0.365,
+          "logical_coherence": 0.524,
+          "organization": 0.55,
+          "instruction_following": 0.646,
+          "attribution_quality": 0.176
+        }
+      },
+      "robustness_opus": {
+        "unit": "report x 9-dimension score (met/total)",
+        "judge": "claude_opus",
+        "n_reports": 972,
+        "n_variables": 9,
+        "kmo_overall": 0.896,
+        "bartlett_chi2": 5732.4,
+        "bartlett_p": 0.0,
+        "eigenvalues_observed": [
+          5.273,
+          1.316,
+          0.557,
+          0.413,
+          0.369,
+          0.345,
+          0.304,
+          0.25,
+          0.173
+        ],
+        "parallel_random_p95": [
+          1.191,
+          1.131,
+          1.089,
+          1.053,
+          1.02,
+          0.989,
+          0.959,
+          0.927,
+          0.89
+        ],
+        "n_factors_parallel": 2,
+        "n_factors_kaiser": 2,
+        "n_factors_used": 2,
+        "rotation": "promax(oblique)",
+        "loadings": {
+          "information_recall": [
+            0.876,
+            -0.209
+          ],
+          "factual_accuracy": [
+            0.49,
+            0.511
+          ],
+          "coverage": [
+            0.86,
+            -0.084
+          ],
+          "analytical_depth": [
+            0.738,
+            0.098
+          ],
+          "citation_quality": [
+            0.115,
+            0.804
+          ],
+          "logical_coherence": [
+            0.731,
+            0.138
+          ],
+          "organization": [
+            0.697,
+            0.073
+          ],
+          "instruction_following": [
+            0.849,
+            -0.024
+          ],
+          "attribution_quality": [
+            -0.192,
+            0.812
+          ]
+        },
+        "factor_corr_phi": [
+          [
+            1.0,
+            0.553
+          ],
+          [
+            0.553,
+            1.0
+          ]
+        ],
+        "pct_var_explained": [
+          0.454,
+          0.184
+        ],
+        "cum_var_explained": [
+          0.454,
+          0.637
+        ],
+        "communalities": {
+          "information_recall": 0.812,
+          "factual_accuracy": 0.501,
+          "coverage": 0.747,
+          "analytical_depth": 0.554,
+          "citation_quality": 0.66,
+          "logical_coherence": 0.554,
+          "organization": 0.491,
+          "instruction_following": 0.721,
+          "attribution_quality": 0.697
+        }
+      },
+      "robustness_sonnet": {
+        "unit": "report x 9-dimension score (met/total)",
+        "judge": "claude_sonnet",
+        "n_reports": 983,
+        "n_variables": 9,
+        "kmo_overall": 0.927,
+        "bartlett_chi2": 7334.1,
+        "bartlett_p": 0.0,
+        "eigenvalues_observed": [
+          6.063,
+          0.864,
+          0.541,
+          0.402,
+          0.324,
+          0.27,
+          0.199,
+          0.19,
+          0.147
+        ],
+        "parallel_random_p95": [
+          1.192,
+          1.132,
+          1.089,
+          1.051,
+          1.019,
+          0.989,
+          0.96,
+          0.928,
+          0.892
+        ],
+        "n_factors_parallel": 1,
+        "n_factors_kaiser": 1,
+        "n_factors_used": 1,
+        "rotation": "promax(oblique)",
+        "loadings": {
+          "information_recall": [
+            0.851
+          ],
+          "factual_accuracy": [
+            0.906
+          ],
+          "coverage": [
+            0.735
+          ],
+          "analytical_depth": [
+            0.863
+          ],
+          "citation_quality": [
+            0.644
+          ],
+          "logical_coherence": [
+            0.863
+          ],
+          "organization": [
+            0.771
+          ],
+          "instruction_following": [
+            0.875
+          ],
+          "attribution_quality": [
+            0.618
+          ]
+        },
+        "factor_corr_phi": [
+          [
+            1.0
+          ]
+        ],
+        "pct_var_explained": [
+          0.637
+        ],
+        "cum_var_explained": [
+          0.637
+        ],
+        "communalities": {
+          "information_recall": 0.725,
+          "factual_accuracy": 0.821,
+          "coverage": 0.54,
+          "analytical_depth": 0.745,
+          "citation_quality": 0.415,
+          "logical_coherence": 0.744,
+          "organization": 0.595,
+          "instruction_following": 0.766,
+          "attribution_quality": 0.382
+        }
+      }
+    },
+    "criterion_level_38_general": {
+      "crit_marginalised": {
+        "judge": "marginalised(mean 3-judge)",
+        "n_reports": 831,
+        "n_criteria": 38,
+        "kmo_overall": 0.948,
+        "eig_top6": [
+          15.451,
+          2.335,
+          2.147,
+          1.877,
+          1.684,
+          1.234
+        ],
+        "rand95_top6": [
+          1.479,
+          1.413,
+          1.372,
+          1.337,
+          1.305,
+          1.278
+        ],
+        "n_factors_parallel": 5,
+        "n_factors_used": 4,
+        "factor_corr_phi": [
+          [
+            1.0,
+            0.46,
+            0.532,
+            0.671
+          ],
+          [
+            0.46,
+            1.0,
+            0.356,
+            0.515
+          ],
+          [
+            0.532,
+            0.356,
+            1.0,
+            0.535
+          ],
+          [
+            0.671,
+            0.515,
+            0.535,
+            1.0
+          ]
+        ],
+        "dimension_mean_loadings": {
+          "information_recall": [
+            0.478,
+            0.017,
+            0.145,
+            0.011
+          ],
+          "factual_accuracy": [
+            0.043,
+            0.337,
+            0.169,
+            0.129
+          ],
+          "coverage": [
+            0.417,
+            0.267,
+            0.038,
+            0.036
+          ],
+          "analytical_depth": [
+            0.227,
+            0.607,
+            -0.03,
+            -0.066
+          ],
+          "citation_quality": [
+            -0.009,
+            0.211,
+            0.593,
+            0.025
+          ],
+          "logical_coherence": [
+            0.287,
+            0.259,
+            0.045,
+            0.191
+          ],
+          "organization": [
+            0.11,
+            0.168,
+            0.032,
+            0.688
+          ],
+          "instruction_following": [
+            0.778,
+            -0.091,
+            0.055,
+            0.08
+          ],
+          "attribution_quality": [
+            -0.184,
+            0.137,
+            0.378,
+            0.125
+          ]
+        },
+        "dominant_factor_per_dimension": {
+          "information_recall": 1,
+          "factual_accuracy": 2,
+          "coverage": 1,
+          "analytical_depth": 2,
+          "citation_quality": 3,
+          "logical_coherence": 1,
+          "organization": 4,
+          "instruction_following": 1,
+          "attribution_quality": 3
+        }
+      },
+      "crit_gpt52": {
+        "judge": "gpt52",
+        "n_reports": 820,
+        "n_criteria": 37,
+        "kmo_overall": 0.85,
+        "eig_top6": [
+          7.691,
+          3.432,
+          2.317,
+          1.887,
+          1.638,
+          1.543
+        ],
+        "rand95_top6": [
+          1.476,
+          1.408,
+          1.369,
+          1.33,
+          1.303,
+          1.275
+        ],
+        "n_factors_parallel": 8,
+        "n_factors_used": 4,
+        "factor_corr_phi": [
+          [
+            1.0,
+            0.369,
+            -0.187,
+            0.141
+          ],
+          [
+            0.369,
+            1.0,
+            0.082,
+            0.019
+          ],
+          [
+            -0.187,
+            0.082,
+            1.0,
+            0.057
+          ],
+          [
+            0.141,
+            0.019,
+            0.057,
+            1.0
+          ]
+        ],
+        "dimension_mean_loadings": {
+          "information_recall": [
+            -0.0,
+            0.521,
+            -0.009,
+            -0.037
+          ],
+          "factual_accuracy": [
+            0.15,
+            0.048,
+            0.159,
+            0.029
+          ],
+          "coverage": [
+            0.384,
+            0.2,
+            0.022,
+            0.017
+          ],
+          "analytical_depth": [
+            0.636,
+            0.027,
+            0.057,
+            -0.08
+          ],
+          "citation_quality": [
+            0.362,
+            0.134,
+            -0.034,
+            0.163
+          ],
+          "logical_coherence": [
+            0.166,
+            0.202,
+            0.397,
+            -0.061
+          ],
+          "organization": [
+            0.342,
+            0.102,
+            -0.06,
+            0.588
+          ],
+          "instruction_following": [
+            0.003,
+            0.617,
+            0.029,
+            0.024
+          ],
+          "attribution_quality": [
+            -0.036,
+            -0.079,
+            0.061,
+            0.149
+          ]
+        },
+        "dominant_factor_per_dimension": {
+          "information_recall": 2,
+          "factual_accuracy": 3,
+          "coverage": 1,
+          "analytical_depth": 1,
+          "citation_quality": 1,
+          "logical_coherence": 3,
+          "organization": 4,
+          "instruction_following": 2,
+          "attribution_quality": 4
+        }
+      },
+      "crit_opus": {
+        "judge": "claude_opus",
+        "n_reports": 757,
+        "n_criteria": 38,
+        "kmo_overall": 0.931,
+        "eig_top6": [
+          12.288,
+          3.415,
+          1.819,
+          1.684,
+          1.436,
+          1.274
+        ],
+        "rand95_top6": [
+          1.501,
+          1.435,
+          1.392,
+          1.354,
+          1.323,
+          1.293
+        ],
+        "n_factors_parallel": 5,
+        "n_factors_used": 4,
+        "factor_corr_phi": [
+          [
+            1.0,
+            0.453,
+            0.609,
+            0.292
+          ],
+          [
+            0.453,
+            1.0,
+            0.391,
+            0.091
+          ],
+          [
+            0.609,
+            0.391,
+            1.0,
+            0.163
+          ],
+          [
+            0.292,
+            0.091,
+            0.163,
+            1.0
+          ]
+        ],
+        "dimension_mean_loadings": {
+          "information_recall": [
+            0.381,
+            -0.058,
+            0.188,
+            -0.062
+          ],
+          "factual_accuracy": [
+            0.219,
+            0.243,
+            0.104,
+            0.172
+          ],
+          "coverage": [
+            0.477,
+            0.039,
+            0.132,
+            0.011
+          ],
+          "analytical_depth": [
+            0.584,
+            0.148,
+            -0.078,
+            0.038
+          ],
+          "citation_quality": [
+            0.08,
+            0.527,
+            0.078,
+            0.0
+          ],
+          "logical_coherence": [
+            0.33,
+            0.08,
+            0.218,
+            0.216
+          ],
+          "organization": [
+            0.148,
+            -0.005,
+            0.567,
+            0.223
+          ],
+          "instruction_following": [
+            0.406,
+            0.042,
+            0.298,
+            -0.073
+          ],
+          "attribution_quality": [
+            -0.066,
+            0.575,
+            -0.019,
+            0.011
+          ]
+        },
+        "dominant_factor_per_dimension": {
+          "information_recall": 1,
+          "factual_accuracy": 2,
+          "coverage": 1,
+          "analytical_depth": 1,
+          "citation_quality": 2,
+          "logical_coherence": 1,
+          "organization": 3,
+          "instruction_following": 1,
+          "attribution_quality": 2
+        }
+      },
+      "crit_sonnet": {
+        "judge": "claude_sonnet",
+        "n_reports": 817,
+        "n_criteria": 38,
+        "kmo_overall": 0.938,
+        "eig_top6": [
+          14.641,
+          2.299,
+          2.008,
+          1.703,
+          1.589,
+          1.177
+        ],
+        "rand95_top6": [
+          1.477,
+          1.415,
+          1.375,
+          1.339,
+          1.308,
+          1.282
+        ],
+        "n_factors_parallel": 5,
+        "n_factors_used": 4,
+        "factor_corr_phi": [
+          [
+            1.0,
+            0.583,
+            0.372,
+            0.517
+          ],
+          [
+            0.583,
+            1.0,
+            0.477,
+            0.571
+          ],
+          [
+            0.372,
+            0.477,
+            1.0,
+            0.351
+          ],
+          [
+            0.517,
+            0.571,
+            0.351,
+            1.0
+          ]
+        ],
+        "dimension_mean_loadings": {
+          "information_recall": [
+            0.067,
+            0.199,
+            0.31,
+            0.105
+          ],
+          "factual_accuracy": [
+            0.292,
+            0.302,
+            -0.006,
+            0.094
+          ],
+          "coverage": [
+            0.106,
+            0.294,
+            0.283,
+            0.045
+          ],
+          "analytical_depth": [
+            0.078,
+            0.417,
+            0.185,
+            0.005
+          ],
+          "citation_quality": [
+            0.002,
+            0.284,
+            0.035,
+            0.297
+          ],
+          "logical_coherence": [
+            0.402,
+            0.285,
+            0.125,
+            0.011
+          ],
+          "organization": [
+            0.809,
+            -0.007,
+            0.179,
+            -0.019
+          ],
+          "instruction_following": [
+            0.128,
+            0.194,
+            0.415,
+            0.076
+          ],
+          "attribution_quality": [
+            0.066,
+            0.091,
+            0.023,
+            0.285
+          ]
+        },
+        "dominant_factor_per_dimension": {
+          "information_recall": 3,
+          "factual_accuracy": 2,
+          "coverage": 2,
+          "analytical_depth": 2,
+          "citation_quality": 4,
+          "logical_coherence": 1,
+          "organization": 1,
+          "instruction_following": 3,
+          "attribution_quality": 4
+        }
+      }
+    },
+    "key_numbers": {
+      "marginalised_dim_n_factors_parallel": 1,
+      "marginalised_dim_first_two_eigenvalues": [
+        5.803,
+        1.077
+      ],
+      "marginalised_dim_pct_var_1factor": 0.605,
+      "attribution_quality_communality_marginalised": 0.217,
+      "attribution_quality_loading_marginalised": 0.466,
+      "gpt52_dim_n_factors_parallel": 3,
+      "gpt52_dim_form_factor_F2": {
+        "organization": 0.728,
+        "analytical_depth": 0.627,
+        "citation_quality": 0.603,
+        "coverage": 0.493
+      },
+      "gpt52_dim_truth_factor_F3": {
+        "factual_accuracy": 0.745,
+        "logical_coherence": 0.465,
+        "attribution_quality": 0.352
+      },
+      "gpt52_dim_form_vs_truth_interfactor_r": 0.108,
+      "opus_dim_n_factors_parallel": 2,
+      "opus_dim_sourcing_factor_F2": {
+        "attribution_quality": 0.812,
+        "citation_quality": 0.804,
+        "factual_accuracy": 0.511
+      },
+      "opus_dim_form_vs_sourcing_interfactor_r": 0.553,
+      "sonnet_dim_n_factors_parallel": 1,
+      "crit_opus_truth_sourcing_factor": "factual_accuracy+citation_quality+attribution_quality -> one factor; phi to content bulk = 0.453",
+      "crit_marginalised_sourcing_factor_phi_to_recall_factor": 0.532
+    },
+    "verdict": "NOT a clean single construct. A dominant general-quality factor exists, but a SEPARABLE second factor anchored by the sourcing/truth dimensions (factual_accuracy + citation_quality + attribution_quality) recurs in 2 of 3 single-judge solutions AND in the criterion-level solutions. Its correlation with the 'form/content' factor is weak-to-moderate and judge-dependent: r=0.108 (gpt52, near-orthogonal form vs truth), 0.453 (opus criterion-level), 0.553 (opus dimension-level). attribution_quality is the single most consistent outlier (lowest communality 0.217 and lowest loading 0.466 even in the disattenuated 1-factor solution). sonnet is the exception (unidimensional). Whether you 'see' 1 vs >=2 factors is driven by (a) judge and (b) averaging: averaging the panel inflates the general factor.",
+    "supports_bounded_returns": "YES, with caveats. When judge idiosyncrasy is preserved (gpt52), 'form' (organization/depth/citation) and 'truth' (factual_accuracy) sit on near-orthogonal factors (r=0.11 < 0.5). Orchestration that lifts the form factor need not move the weakly-coupled truth/sourcing factor => a factor-analytic mechanism for bounded returns and a caution against single-score leaderboards for the sourcing/factual dimensions.",
+    "paper_statement": "An exploratory factor analysis with parallel analysis over the 11-pattern x 3-judge verdict tensor finds that report quality is not a single latent construct: alongside a dominant general-quality factor, a separable 'sourcing/truth' factor anchored by factual_accuracy, citation_quality and attribution_quality recurs across the single-judge and criterion-level solutions, with attribution_quality the most consistent outlier (communality 0.22 even in the pooled one-factor fit). Its correlation with the 'form/content' factor is weak and judge-dependent - near-orthogonal under the GPT-5.2 judge (r=0.11) and only moderate under Claude Opus (r=0.45-0.55) - so a report can score highly on analytical depth, organisation and citation form while remaining flat on factual and attribution quality. This supplies a factor-analytic mechanism for bounded returns to orchestration and a caution against collapsing these weakly-coupled axes into one leaderboard number (the apparent unidimensionality of the pooled panel is partly an artefact of averaging judges, which disattenuates the inter-dimension correlations)."
+  },
+  "fail_reason_clusters": {
+    "method": "NOT-satisfied verdicts (satisfied==0) for 11 base patterns x 3-judge, reasoning>=15 chars; embedded with local all-MiniLM-L6-v2 (384-d, cosine-normalised, offline); KMeans at k=15/20/25 (primary k=20); representative terms via cluster-mean TF-IDF (1-2 grams), representative reasoning via nearest-to-centroid; dimension purity + normalised entropy per cluster; CROSS-DIMENSION flag = purity<0.45 AND >=3 dimensions each >=10%.",
+    "n_fails_clustered": 45955,
+    "n_fails_by_dimension_top": {
+      "factual_accuracy": 10978,
+      "information_recall": 6381,
+      "coverage": 5505,
+      "citation_quality": 5328,
+      "analytical_depth": 4869,
+      "instruction_following": 4559,
+      "attribution_quality": 4474
+    },
+    "n_cross_dim_clusters": {
+      "k15": 3,
+      "k20": 6,
+      "k25": 10
+    },
+    "primary_k": 20,
+    "cross_dimension_themes": [
+      {
+        "cluster_id": 12,
+        "label": "temporal_currency_staleness",
+        "axis_kind": "candidate_undiscovered_axis",
+        "size": 4715,
+        "pct_of_fails": 10.3,
+        "purity": 0.368,
+        "dim_entropy_norm": 0.759,
+        "n_dims_ge_10pct": 3,
+        "dim_distribution": {
+          "coverage": 0.368,
+          "factual_accuracy": 0.26,
+          "analytical_depth": 0.158,
+          "information_recall": 0.095,
+          "organization": 0.033
+        },
+        "top_terms": [
+          "developments",
+          "recent",
+          "recent developments",
+          "years",
+          "limitations",
+          "current",
+          "developments years",
+          "relevant",
+          "addressed",
+          "state"
+        ],
+        "representative_reasoning": [
+          "The report does not identify any current understanding or developments where relevant.",
+          "The report does not incorporate or identify any recent developments as required.",
+          "The report does not substantively incorporate recent developments within the last two years."
+        ],
+        "pattern_spread": {
+          "p9": 1134,
+          "p10": 894,
+          "p0": 640
+        },
+        "interpretation": "Failure to incorporate the CURRENT state of the art / RECENT developments. Splits across coverage(0.37)/factual_accuracy(0.26)/analytical_depth(0.16)/recall(0.10) - no single rubric dimension owns 'is the report up to date'. A genuine cross-cutting quality axis."
+      },
+      {
+        "cluster_id": 6,
+        "label": "epistemic_calibration_uncertainty",
+        "axis_kind": "candidate_undiscovered_axis",
+        "size": 3819,
+        "pct_of_fails": 8.3,
+        "purity": 0.409,
+        "dim_entropy_norm": 0.67,
+        "n_dims_ge_10pct": 3,
+        "dim_distribution": {
+          "analytical_depth": 0.409,
+          "factual_accuracy": 0.283,
+          "logical_coherence": 0.199,
+          "attribution_quality": 0.027,
+          "coverage": 0.026
+        },
+        "top_terms": [
+          "claims",
+          "established",
+          "contested",
+          "evidence",
+          "emerging",
+          "findings",
+          "distinguish",
+          "distinguish established",
+          "established findings",
+          "factual"
+        ],
+        "representative_reasoning": [
+          "The report does not distinguish well-established findings from emerging/contested claims or indicate uncertainty.",
+          "The report does not consistently distinguish well-established guidance/evidence from emerging or contested claims.",
+          "The report does not clearly distinguish well-established findings from uncertain or contested claims beyond general caveats."
+        ],
+        "pattern_spread": {
+          "p10": 558,
+          "p9": 409,
+          "p3": 370
+        },
+        "interpretation": "Failure to distinguish well-established findings from emerging/contested claims and to signal uncertainty. Splits analytical_depth(0.41)/factual_accuracy(0.28)/logical_coherence(0.20). 'Calibration/hedging' is not a named rubric dimension yet drives ~8% of all fails."
+      },
+      {
+        "cluster_id": 11,
+        "label": "descriptive_vs_mechanistic_depth_tradeoffs",
+        "axis_kind": "candidate_undiscovered_axis",
+        "size": 5105,
+        "pct_of_fails": 11.1,
+        "purity": 0.313,
+        "dim_entropy_norm": 0.828,
+        "n_dims_ge_10pct": 3,
+        "dim_distribution": {
+          "factual_accuracy": 0.313,
+          "coverage": 0.214,
+          "analytical_depth": 0.183,
+          "information_recall": 0.086,
+          "instruction_following": 0.076
+        },
+        "top_terms": [
+          "state",
+          "art",
+          "state art",
+          "current",
+          "practical",
+          "analysis",
+          "level",
+          "limitations",
+          "current state",
+          "transitions"
+        ],
+        "representative_reasoning": [
+          "The analysis remains at a descriptive level. It catalogs requirements and benefits without exploring deeper mechanisms or trade-offs. NOT_SATISFIED.",
+          "The analysis does not go much beyond high-level description into detailed trade-offs or methodological consequences.",
+          "It does not provide deeper analysis (mechanisms/patterns/trade-offs) beyond high-level description."
+        ],
+        "pattern_spread": {
+          "p10": 830,
+          "p7": 555,
+          "p9": 506
+        },
+        "interpretation": "Report stays at a DESCRIPTIVE/cataloguing level: no mechanisms, no trade-offs, no practical implications. Splits factual_accuracy(0.31)/coverage(0.21)/analytical_depth(0.18). Straddles depth+coverage+factual - a 'so-what / actionable insight' axis."
+      },
+      {
+        "cluster_id": 4,
+        "label": "placeholder_nonspecific_sources",
+        "axis_kind": "candidate_undiscovered_axis",
+        "size": 2585,
+        "pct_of_fails": 5.6,
+        "purity": 0.445,
+        "dim_entropy_norm": 0.643,
+        "n_dims_ge_10pct": 4,
+        "dim_distribution": {
+          "citation_quality": 0.445,
+          "information_recall": 0.274,
+          "attribution_quality": 0.125,
+          "factual_accuracy": 0.106,
+          "coverage": 0.032
+        },
+        "top_terms": [
+          "citations",
+          "claims",
+          "named",
+          "authoritative",
+          "inline",
+          "attribution",
+          "attributed",
+          "inline citations",
+          "claims attributed",
+          "seminal"
+        ],
+        "representative_reasoning": [
+          "Claims are not reliably attributed to named sources because many citations are non-specific syntheses rather than identifiable references.",
+          "Many claims are not attributed to identifiable named sources with proper inline citations.",
+          "Many claims are not attributed to identifiable named sources with proper inline citations."
+        ],
+        "pattern_spread": {
+          "p10": 417,
+          "p9": 294,
+          "p3": 286
+        },
+        "interpretation": "Claims backed by non-identifiable 'Web Search Synthesis'-style placeholder references rather than named sources. Splits citation_quality(0.45)/information_recall(0.27)/attribution(0.13)/factual(0.11). A single 'source concreteness' failure that is currently scored under 3-4 separate dimensions."
+      },
+      {
+        "cluster_id": 2,
+        "label": "question_answering_decisiveness",
+        "axis_kind": "candidate_undiscovered_axis",
+        "size": 3270,
+        "pct_of_fails": 7.1,
+        "purity": 0.35,
+        "dim_entropy_norm": 0.747,
+        "n_dims_ge_10pct": 3,
+        "dim_distribution": {
+          "information_recall": 0.35,
+          "factual_accuracy": 0.295,
+          "instruction_following": 0.128,
+          "coverage": 0.088,
+          "analytical_depth": 0.076
+        },
+        "top_terms": [
+          "evidence",
+          "current",
+          "gene",
+          "question",
+          "state",
+          "identify",
+          "state art",
+          "art",
+          "answer",
+          "quantitative"
+        ],
+        "representative_reasoning": [
+          "While the report covers multiple mechanisms, it does not deeply analyze the relative importance of each pathway or identify patterns across studies that would elevate it beyond a descriptive synthesis",
+          "The report omits widely-available evidence that would directly answer the multiple-choice-style query (i.e., specific complexes/pathways tested and found not to confer resistance).",
+          "The query is about a specific marker gene and the report provides no relevant quantitative evidence (e.g., specificity metrics, expression levels, counts in DCN layers)."
+        ],
+        "pattern_spread": {
+          "p7": 403,
+          "p10": 385,
+          "p0": 373
+        },
+        "interpretation": "Omits the specific evidence that would DIRECTLY answer the (often implied/quantitative) question; hedged non-answers. Splits information_recall(0.35)/factual_accuracy(0.30)/instruction_following(0.13). A 'decisiveness / actually answers the question' axis spanning recall+factual+instruction."
+      },
+      {
+        "cluster_id": 0,
+        "label": "degenerate_empty_output",
+        "axis_kind": "artifact_not_axis",
+        "size": 2900,
+        "pct_of_fails": 6.3,
+        "purity": 0.204,
+        "dim_entropy_norm": 0.976,
+        "n_dims_ge_10pct": 6,
+        "dim_distribution": {
+          "factual_accuracy": 0.204,
+          "organization": 0.123,
+          "information_recall": 0.119,
+          "citation_quality": 0.109,
+          "coverage": 0.107
+        },
+        "top_terms": [
+          "exists",
+          "contains",
+          "evaluate",
+          "exists evaluate",
+          "generated",
+          "present",
+          "file",
+          "file contains",
+          "contains generated",
+          "sections"
+        ],
+        "representative_reasoning": [
+          "The report contains no content.",
+          "The report contains no content.",
+          "The report contains no content."
+        ],
+        "pattern_spread": {
+          "p9": 2196,
+          "p0": 488,
+          "p10": 102
+        },
+        "interpretation": "Boilerplate 'the report contains no content' verdicts. Maximum cross-dimension spread (purity 0.20, 6 dims) but NOT a quality axis - it is a degenerate/empty-report artifact, 76% concentrated in base_p9 (local Qwen2.5-7B). Flag for data-quality, not a new rubric dimension."
+      }
+    ],
+    "criterion_anchored_clusters_high_purity": [
+      {
+        "cluster_id": 8,
+        "size": 2099,
+        "purity": 0.91,
+        "dimension": "citation_quality",
+        "top_terms": [
+          "sections",
+          "diversity",
+          "minimum",
+          "different",
+          "distinct",
+          "reliance"
+        ]
+      },
+      {
+        "cluster_id": 16,
+        "size": 1804,
+        "purity": 0.968,
+        "dimension": "attribution_quality",
+        "top_terms": [
+          "author",
+          "author analysis",
+          "material",
+          "analysis",
+          "distinguish author",
+          "distinguish"
+        ]
+      },
+      {
+        "cluster_id": 9,
+        "size": 1637,
+        "purity": 0.903,
+        "dimension": "attribution_quality",
+        "top_terms": [
+          "traceable",
+          "named",
+          "major",
+          "traceable named",
+          "claims traceable",
+          "claims"
+        ]
+      },
+      {
+        "cluster_id": 10,
+        "size": 1274,
+        "purity": 0.922,
+        "dimension": "factual_accuracy",
+        "top_terms": [
+          "chronology",
+          "timeline",
+          "historical",
+          "historical timeline",
+          "chronological",
+          "correctness"
+        ]
+      },
+      {
+        "cluster_id": 18,
+        "size": 1115,
+        "purity": 0.937,
+        "dimension": "logical_coherence",
+        "top_terms": [
+          "causal",
+          "reasoning",
+          "arguments",
+          "comparative",
+          "comparative causal",
+          "supported"
+        ]
+      },
+      {
+        "cluster_id": 3,
+        "size": 967,
+        "purity": 0.948,
+        "dimension": "coverage",
+        "top_terms": [
+          "perspectives",
+          "multiple perspectives",
+          "multiple",
+          "schools",
+          "schools thought",
+          "thought"
+        ]
+      },
+      {
+        "cluster_id": 13,
+        "size": 802,
+        "purity": 0.975,
+        "dimension": "citation_quality",
+        "top_terms": [
+          "citation",
+          "formatting",
+          "citation formatting",
+          "inconsistent",
+          "formatting inconsistent",
+          "consistent"
+        ]
+      },
+      {
+        "cluster_id": 5,
+        "size": 798,
+        "purity": 0.976,
+        "dimension": "instruction_following",
+        "top_terms": [
+          "scope",
+          "broad",
+          "broader",
+          "scope broad",
+          "necessary",
+          "broader necessary"
+        ]
+      }
+    ],
+    "all_k_solutions": {
+      "k15": [
+        {
+          "cluster": 9,
+          "size": 5197,
+          "top_dimension": "coverage",
+          "purity": 0.332,
+          "dim_entropy_norm": 0.787,
+          "n_dims_ge_10pct": 4,
+          "dim_distribution": {
+            "coverage": 0.332,
+            "factual_accuracy": 0.263,
+            "analytical_depth": 0.166,
+            "information_recall": 0.107,
+            "instruction_following": 0.034
+          },
+          "top_terms": [
+            "developments",
+            "recent",
+            "recent developments",
+            "years",
+            "limitations",
+            "developments years",
+            "analysis",
+            "current",
+            "present",
+            "relevant",
+            "findings",
+            "state"
+          ],
+          "representative": [
+            "The report does not identify any current understanding or developments where relevant.",
+            "The report does not incorporate or identify any recent developments as required.",
+            "The report provides no substantive content about the topic, so it cannot include recent developments."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p9": 1422,
+            "p10": 1016,
+            "p0": 687
+          }
+        },
+        {
+          "cluster": 10,
+          "size": 5173,
+          "top_dimension": "factual_accuracy",
+          "purity": 0.309,
+          "dim_entropy_norm": 0.776,
+          "n_dims_ge_10pct": 5,
+          "dim_distribution": {
+            "factual_accuracy": 0.309,
+            "coverage": 0.239,
+            "information_recall": 0.157,
+            "analytical_depth": 0.136,
+            "instruction_following": 0.114
+          },
+          "top_terms": [
+            "state",
+            "state art",
+            "art",
+            "current",
+            "practical",
+            "limitations",
+            "analysis",
+            "current state",
+            "level",
+            "implications",
+            "missing",
+            "addressed"
+          ],
+          "representative": [
+            "The analysis remains at a descriptive level. It catalogs requirements and benefits without exploring deeper mechanisms or trade-offs. NOT_SATISFIED.",
+            "It does not discuss advantages vs. limitations of approaches; it mainly lists limitations/gaps.",
+            "The report presents its findings without acknowledging limitations of its methodology or the caveats that should accompany such broad comparisons."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p10": 686,
+            "p7": 546,
+            "p2": 534
+          }
+        },
+        {
+          "cluster": 13,
+          "size": 4433,
+          "top_dimension": "analytical_depth",
+          "purity": 0.34,
+          "dim_entropy_norm": 0.752,
+          "n_dims_ge_10pct": 4,
+          "dim_distribution": {
+            "analytical_depth": 0.34,
+            "factual_accuracy": 0.265,
+            "information_recall": 0.156,
+            "logical_coherence": 0.146,
+            "coverage": 0.027
+          },
+          "top_terms": [
+            "evidence",
+            "claims",
+            "established",
+            "contested",
+            "findings",
+            "emerging",
+            "distinguish",
+            "distinguish established",
+            "factual",
+            "established findings",
+            "conclusion",
+            "contested claims"
+          ],
+          "representative": [
+            "The report does not clearly distinguish well-established findings from emerging/contested claims with adequate support.",
+            "The report does not clearly separate well-established findings from weaker or potentially contested claims based on non-authoritative sources.",
+            "The report does not distinguish well-established findings from emerging/contested claims or indicate uncertainty."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p10": 597,
+            "p9": 469,
+            "p3": 437
+          }
+        },
+        {
+          "cluster": 14,
+          "size": 4384,
+          "top_dimension": "factual_accuracy",
+          "purity": 0.484,
+          "dim_entropy_norm": 0.577,
+          "n_dims_ge_10pct": 2,
+          "dim_distribution": {
+            "factual_accuracy": 0.484,
+            "information_recall": 0.358,
+            "instruction_following": 0.06,
+            "coverage": 0.033,
+            "analytical_depth": 0.026
+          },
+          "top_terms": [
+            "numbers",
+            "quantitative",
+            "accuracy",
+            "benchmarks",
+            "figures",
+            "key",
+            "numeric",
+            "authoritative",
+            "cited",
+            "dates",
+            "missing",
+            "comparison"
+          ],
+          "representative": [
+            "The report largely avoids citing specific numbers. The absence of quantitative data means this criterion cannot be satisfied - there is nothing specific to verify as accurate or inaccurate.",
+            "The report provides numbers but does not substantiate them with enough source-specific context to judge their accuracy.",
+            "The report provides specific numbers but does not support them with verifiable primary sources, so their accuracy is not clearly established."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p7": 481,
+            "p10": 475,
+            "p0": 439
+          }
+        },
+        {
+          "cluster": 4,
+          "size": 3798,
+          "top_dimension": "information_recall",
+          "purity": 0.357,
+          "dim_entropy_norm": 0.754,
+          "n_dims_ge_10pct": 3,
+          "dim_distribution": {
+            "information_recall": 0.357,
+            "factual_accuracy": 0.28,
+            "instruction_following": 0.133,
+            "coverage": 0.088,
+            "analytical_depth": 0.077
+          },
+          "top_terms": [
+            "evidence",
+            "question",
+            "current",
+            "gene",
+            "widely",
+            "state",
+            "answer",
+            "identify",
+            "species",
+            "critical",
+            "available",
+            "key"
+          ],
+          "representative": [
+            "While the report covers multiple mechanisms, it does not deeply analyze the relative importance of each pathway or identify patterns across studies that would elevate it beyond a descriptive synthesis",
+            "The report omits widely-available evidence that would directly answer the multiple-choice-style query (i.e., specific complexes/pathways tested and found not to confer resistance).",
+            "The query is about a specific marker gene and the report provides no relevant quantitative evidence (e.g., specificity metrics, expression levels, counts in DCN layers)."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p10": 485,
+            "p7": 444,
+            "p0": 426
+          }
+        },
+        {
+          "cluster": 1,
+          "size": 3583,
+          "top_dimension": "instruction_following",
+          "purity": 0.668,
+          "dim_entropy_norm": 0.526,
+          "n_dims_ge_10pct": 2,
+          "dim_distribution": {
+            "instruction_following": 0.668,
+            "coverage": 0.131,
+            "information_recall": 0.084,
+            "factual_accuracy": 0.051,
+            "analytical_depth": 0.027
+          },
+          "top_terms": [
+            "question",
+            "implied",
+            "answer",
+            "scope",
+            "sub",
+            "format",
+            "questions",
+            "sub questions",
+            "required",
+            "address",
+            "dimensions",
+            "directly"
+          ],
+          "representative": [
+            "The report does not systematically work through the implied sub-questions. It provides scattered data points rather than a comprehensive analysis addressing each dimension of the query.",
+            "It does not address all implied sub-requirements and formatting/SEO dimensions of the query.",
+            "Major aspects of the query are mentioned but not substantively covered with evidence and domain-specific detail."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 468,
+            "p9": 436,
+            "p7": 368
+          }
+        },
+        {
+          "cluster": 5,
+          "size": 2874,
+          "top_dimension": "citation_quality",
+          "purity": 0.702,
+          "dim_entropy_norm": 0.43,
+          "n_dims_ge_10pct": 2,
+          "dim_distribution": {
+            "citation_quality": 0.702,
+            "analytical_depth": 0.186,
+            "information_recall": 0.066,
+            "attribution_quality": 0.021,
+            "factual_accuracy": 0.01
+          },
+          "top_terms": [
+            "sections",
+            "diversity",
+            "minimum",
+            "synthesis",
+            "different",
+            "distinct",
+            "single",
+            "limited",
+            "reliance",
+            "topic",
+            "section",
+            "insufficient"
+          ],
+          "representative": [
+            "The report exhibits heavy reliance on a single source [3] across multiple sections, suggesting insufficient source diversity for the breadth of topics covered.",
+            "Most sections cite the same core set of sources, indicating insufficient source diversity.",
+            "While different sections use different sources, within each section the reliance on just 2-3 sources is notable, with insufficient cross-referencing."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 500,
+            "p9": 406,
+            "p0": 391
+          }
+        },
+        {
+          "cluster": 3,
+          "size": 2689,
+          "top_dimension": "factual_accuracy",
+          "purity": 0.191,
+          "dim_entropy_norm": 0.979,
+          "n_dims_ge_10pct": 6,
+          "dim_distribution": {
+            "factual_accuracy": 0.191,
+            "information_recall": 0.125,
+            "organization": 0.124,
+            "analytical_depth": 0.108,
+            "coverage": 0.108
+          },
+          "top_terms": [
+            "exists",
+            "contains",
+            "evaluate",
+            "exists evaluate",
+            "generated",
+            "file",
+            "present",
+            "file contains",
+            "contains generated",
+            "sections",
+            "contains evaluate",
+            "kind"
+          ],
+          "representative": [
+            "The report contains no content.",
+            "The report contains no content.",
+            "The report contains no content."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p9": 2037,
+            "p0": 464,
+            "p10": 82
+          }
+        },
+        {
+          "cluster": 11,
+          "size": 2628,
+          "top_dimension": "attribution_quality",
+          "purity": 0.63,
+          "dim_entropy_norm": 0.43,
+          "n_dims_ge_10pct": 2,
+          "dim_distribution": {
+            "attribution_quality": 0.63,
+            "citation_quality": 0.276,
+            "factual_accuracy": 0.055,
+            "information_recall": 0.037,
+            "logical_coherence": 0.002
+          },
+          "top_terms": [
+            "named",
+            "traceable",
+            "claims",
+            "major",
+            "traceable named",
+            "claims traceable",
+            "major claims",
+            "attributed",
+            "citations",
+            "verifiable",
+            "claims attributed",
+            "major findings"
+          ],
+          "representative": [
+            "Many claims are not attributed to clearly named sources with traceable citations.",
+            "Major claims are not consistently traceable to specific named sources.",
+            "Major claims are not consistently traceable to named sources."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p3": 396,
+            "p4": 308,
+            "p10": 280
+          }
+        },
+        {
+          "cluster": 7,
+          "size": 2511,
+          "top_dimension": "logical_coherence",
+          "purity": 0.492,
+          "dim_entropy_norm": 0.427,
+          "n_dims_ge_10pct": 2,
+          "dim_distribution": {
+            "logical_coherence": 0.492,
+            "factual_accuracy": 0.456,
+            "instruction_following": 0.027,
+            "analytical_depth": 0.008,
+            "information_recall": 0.008
+          },
+          "top_terms": [
+            "comparative",
+            "supported",
+            "causal",
+            "evidence",
+            "reasoning",
+            "claims",
+            "arguments",
+            "valid",
+            "cited",
+            "comparative causal",
+            "comparative claims",
+            "causal arguments"
+          ],
+          "representative": [
+            "Comparative/causal claims are not supported by valid reasoning or cited evidence.",
+            "Several comparative/causal claims are not supported by valid reasoning or cited evidence.",
+            "Comparative/causal claims are not supported by valid, documented reasoning tied to authoritative evidence."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 334,
+            "p4": 249,
+            "p3": 240
+          }
+        },
+        {
+          "cluster": 12,
+          "size": 2508,
+          "top_dimension": "coverage",
+          "purity": 0.399,
+          "dim_entropy_norm": 0.802,
+          "n_dims_ge_10pct": 3,
+          "dim_distribution": {
+            "coverage": 0.399,
+            "organization": 0.175,
+            "analytical_depth": 0.136,
+            "logical_coherence": 0.087,
+            "factual_accuracy": 0.085
+          },
+          "top_terms": [
+            "perspectives",
+            "multiple perspectives",
+            "multiple",
+            "schools",
+            "schools thought",
+            "thought",
+            "represented",
+            "perspectives schools",
+            "represent multiple",
+            "perspective",
+            "represent",
+            "transitions"
+          ],
+          "representative": [
+            "Multiple perspectives are not substantively represented or contrasted in the analysis.",
+            "Multiple perspectives on the topic are not represented.",
+            "Multiple perspectives are not substantively represented beyond brief counterarguments."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p10": 592,
+            "p9": 292,
+            "p2": 235
+          }
+        },
+        {
+          "cluster": 0,
+          "size": 2098,
+          "top_dimension": "attribution_quality",
+          "purity": 0.881,
+          "dim_entropy_norm": 0.247,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "attribution_quality": 0.881,
+            "information_recall": 0.053,
+            "analytical_depth": 0.028,
+            "coverage": 0.013,
+            "factual_accuracy": 0.012
+          },
+          "top_terms": [
+            "author",
+            "author analysis",
+            "material",
+            "analysis",
+            "distinguish",
+            "distinguish author",
+            "analysis material",
+            "sourced",
+            "distinction",
+            "sourced material",
+            "consistently",
+            "analysis sourced"
+          ],
+          "representative": [
+            "The report does not clearly distinguish the author\u2019s analysis from sourced material.",
+            "The report does not clearly distinguish the author\u2019s analysis from sourced material.",
+            "The report does not clearly distinguish the author\u2019s analysis from sourced material."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 228,
+            "p7": 204,
+            "p5": 197
+          }
+        },
+        {
+          "cluster": 8,
+          "size": 1416,
+          "top_dimension": "citation_quality",
+          "purity": 0.85,
+          "dim_entropy_norm": 0.305,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "citation_quality": 0.85,
+            "attribution_quality": 0.044,
+            "factual_accuracy": 0.035,
+            "information_recall": 0.035,
+            "coverage": 0.019
+          },
+          "top_terms": [
+            "citation",
+            "formatting",
+            "citations",
+            "citation formatting",
+            "inconsistent",
+            "formatting inconsistent",
+            "inline",
+            "consistent",
+            "incomplete",
+            "reference",
+            "inline citations",
+            "reference list"
+          ],
+          "representative": [
+            "Citation formatting is inconsistent and includes entries that are not actual sources.",
+            "Citation formatting is inconsistent and some references are incomplete.",
+            "Citation formatting is inconsistent and some references are incomplete."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 284,
+            "p9": 190,
+            "p3": 162
+          }
+        },
+        {
+          "cluster": 2,
+          "size": 1359,
+          "top_dimension": "citation_quality",
+          "purity": 0.51,
+          "dim_entropy_norm": 0.586,
+          "n_dims_ge_10pct": 4,
+          "dim_distribution": {
+            "citation_quality": 0.51,
+            "attribution_quality": 0.213,
+            "information_recall": 0.136,
+            "factual_accuracy": 0.126,
+            "coverage": 0.007
+          },
+          "top_terms": [
+            "web",
+            "search",
+            "web search",
+            "synthesis",
+            "search synthesis",
+            "synthesis entries",
+            "entries",
+            "named",
+            "claims",
+            "citations",
+            "references",
+            "syntheses"
+          ],
+          "representative": [
+            "A large proportion of citations resolve to 'Web Search Synthesis' entries, which are not named sources. Major claims cannot be traced to specific, verifiable sources.",
+            "Many citations reference 'Web Search Synthesis' without providing actual named sources or URLs, making many claims untraceable to specific authoritative sources.",
+            "Many important claims rely on 'Web Search Synthesis' citations that are not attributed to named sources."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p8": 399,
+            "p5": 313,
+            "p4": 260
+          }
+        },
+        {
+          "cluster": 6,
+          "size": 1304,
+          "top_dimension": "factual_accuracy",
+          "purity": 0.883,
+          "dim_entropy_norm": 0.245,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "factual_accuracy": 0.883,
+            "coverage": 0.037,
+            "instruction_following": 0.031,
+            "information_recall": 0.026,
+            "logical_coherence": 0.015
+          },
+          "top_terms": [
+            "chronology",
+            "timeline",
+            "historical",
+            "historical timeline",
+            "correctness",
+            "chronological",
+            "criterion",
+            "correct",
+            "present",
+            "evaluate",
+            "date",
+            "dates"
+          ],
+          "representative": [
+            "It does not present a historical timeline of developments, so chronology cannot be assessed as correct.",
+            "Chronology is not established and the report does not demonstrate that any timeline-related statements are correct or even present in a checkable way.",
+            "The report does not discuss developments over time, so chronology cannot be evaluated as correct."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 167,
+            "p0": 139,
+            "p5": 126
+          }
+        }
+      ],
+      "k20": [
+        {
+          "cluster": 11,
+          "size": 5105,
+          "top_dimension": "factual_accuracy",
+          "purity": 0.313,
+          "dim_entropy_norm": 0.828,
+          "n_dims_ge_10pct": 3,
+          "dim_distribution": {
+            "factual_accuracy": 0.313,
+            "coverage": 0.214,
+            "analytical_depth": 0.183,
+            "information_recall": 0.086,
+            "instruction_following": 0.076
+          },
+          "top_terms": [
+            "state",
+            "art",
+            "state art",
+            "current",
+            "practical",
+            "analysis",
+            "level",
+            "limitations",
+            "current state",
+            "transitions",
+            "implications",
+            "trade"
+          ],
+          "representative": [
+            "The analysis remains at a descriptive level. It catalogs requirements and benefits without exploring deeper mechanisms or trade-offs. NOT_SATISFIED.",
+            "The analysis does not go much beyond high-level description into detailed trade-offs or methodological consequences.",
+            "It does not provide deeper analysis (mechanisms/patterns/trade-offs) beyond high-level description."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p10": 830,
+            "p7": 555,
+            "p9": 506
+          }
+        },
+        {
+          "cluster": 12,
+          "size": 4715,
+          "top_dimension": "coverage",
+          "purity": 0.368,
+          "dim_entropy_norm": 0.759,
+          "n_dims_ge_10pct": 3,
+          "dim_distribution": {
+            "coverage": 0.368,
+            "factual_accuracy": 0.26,
+            "analytical_depth": 0.158,
+            "information_recall": 0.095,
+            "organization": 0.033
+          },
+          "top_terms": [
+            "developments",
+            "recent",
+            "recent developments",
+            "years",
+            "limitations",
+            "current",
+            "developments years",
+            "relevant",
+            "addressed",
+            "state",
+            "analysis",
+            "practical"
+          ],
+          "representative": [
+            "The report does not identify any current understanding or developments where relevant.",
+            "The report does not incorporate or identify any recent developments as required.",
+            "The report does not substantively incorporate recent developments within the last two years."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p9": 1134,
+            "p10": 894,
+            "p0": 640
+          }
+        },
+        {
+          "cluster": 6,
+          "size": 3819,
+          "top_dimension": "analytical_depth",
+          "purity": 0.409,
+          "dim_entropy_norm": 0.67,
+          "n_dims_ge_10pct": 3,
+          "dim_distribution": {
+            "analytical_depth": 0.409,
+            "factual_accuracy": 0.283,
+            "logical_coherence": 0.199,
+            "attribution_quality": 0.027,
+            "coverage": 0.026
+          },
+          "top_terms": [
+            "claims",
+            "established",
+            "contested",
+            "evidence",
+            "emerging",
+            "findings",
+            "distinguish",
+            "distinguish established",
+            "established findings",
+            "factual",
+            "contested claims",
+            "conclusion"
+          ],
+          "representative": [
+            "The report does not distinguish well-established findings from emerging/contested claims or indicate uncertainty.",
+            "The report does not consistently distinguish well-established guidance/evidence from emerging or contested claims.",
+            "The report does not clearly distinguish well-established findings from uncertain or contested claims beyond general caveats."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p10": 558,
+            "p9": 409,
+            "p3": 370
+          }
+        },
+        {
+          "cluster": 1,
+          "size": 3454,
+          "top_dimension": "factual_accuracy",
+          "purity": 0.597,
+          "dim_entropy_norm": 0.523,
+          "n_dims_ge_10pct": 2,
+          "dim_distribution": {
+            "factual_accuracy": 0.597,
+            "information_recall": 0.272,
+            "instruction_following": 0.039,
+            "coverage": 0.032,
+            "analytical_depth": 0.025
+          },
+          "top_terms": [
+            "numbers",
+            "accuracy",
+            "benchmarks",
+            "quantitative",
+            "figures",
+            "numeric",
+            "dates",
+            "key",
+            "accurate",
+            "cited",
+            "authoritative",
+            "verifiable"
+          ],
+          "representative": [
+            "While numbers are plausible, the report does not provide sufficiently verifiable, source-specific support to judge them as accurate benchmarks.",
+            "The report provides almost no specific numbers/dates/benchmarks to verify, and the lone numeric claim is not contextualized for accuracy.",
+            "The report provides specific numbers but does not support them with verifiable primary sources, so their accuracy is not clearly established."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p7": 372,
+            "p10": 357,
+            "p5": 342
+          }
+        },
+        {
+          "cluster": 17,
+          "size": 3429,
+          "top_dimension": "instruction_following",
+          "purity": 0.576,
+          "dim_entropy_norm": 0.622,
+          "n_dims_ge_10pct": 3,
+          "dim_distribution": {
+            "instruction_following": 0.576,
+            "coverage": 0.142,
+            "information_recall": 0.125,
+            "factual_accuracy": 0.071,
+            "analytical_depth": 0.035
+          },
+          "top_terms": [
+            "question",
+            "answer",
+            "implied",
+            "sub",
+            "questions",
+            "sub questions",
+            "format",
+            "address",
+            "dimensions",
+            "directly",
+            "required",
+            "addressed"
+          ],
+          "representative": [
+            "The report does not systematically work through the implied sub-questions. It provides scattered data points rather than a comprehensive analysis addressing each dimension of the query.",
+            "The report does not answer the specific query.",
+            "All four components of the query remain unanswered. The report addresses none of them substantively."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 446,
+            "p9": 428,
+            "p0": 374
+          }
+        },
+        {
+          "cluster": 2,
+          "size": 3270,
+          "top_dimension": "information_recall",
+          "purity": 0.35,
+          "dim_entropy_norm": 0.747,
+          "n_dims_ge_10pct": 3,
+          "dim_distribution": {
+            "information_recall": 0.35,
+            "factual_accuracy": 0.295,
+            "instruction_following": 0.128,
+            "coverage": 0.088,
+            "analytical_depth": 0.076
+          },
+          "top_terms": [
+            "evidence",
+            "current",
+            "gene",
+            "question",
+            "state",
+            "identify",
+            "state art",
+            "art",
+            "answer",
+            "quantitative",
+            "key",
+            "species"
+          ],
+          "representative": [
+            "While the report covers multiple mechanisms, it does not deeply analyze the relative importance of each pathway or identify patterns across studies that would elevate it beyond a descriptive synthesis",
+            "The report omits widely-available evidence that would directly answer the multiple-choice-style query (i.e., specific complexes/pathways tested and found not to confer resistance).",
+            "The query is about a specific marker gene and the report provides no relevant quantitative evidence (e.g., specificity metrics, expression levels, counts in DCN layers)."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p7": 403,
+            "p10": 385,
+            "p0": 373
+          }
+        },
+        {
+          "cluster": 0,
+          "size": 2900,
+          "top_dimension": "factual_accuracy",
+          "purity": 0.204,
+          "dim_entropy_norm": 0.976,
+          "n_dims_ge_10pct": 6,
+          "dim_distribution": {
+            "factual_accuracy": 0.204,
+            "organization": 0.123,
+            "information_recall": 0.119,
+            "citation_quality": 0.109,
+            "coverage": 0.107
+          },
+          "top_terms": [
+            "exists",
+            "contains",
+            "evaluate",
+            "exists evaluate",
+            "generated",
+            "present",
+            "file",
+            "file contains",
+            "contains generated",
+            "sections",
+            "contains evaluate",
+            "kind"
+          ],
+          "representative": [
+            "The report contains no content.",
+            "The report contains no content.",
+            "The report contains no content."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p9": 2196,
+            "p0": 488,
+            "p10": 102
+          }
+        },
+        {
+          "cluster": 4,
+          "size": 2585,
+          "top_dimension": "citation_quality",
+          "purity": 0.445,
+          "dim_entropy_norm": 0.643,
+          "n_dims_ge_10pct": 4,
+          "dim_distribution": {
+            "citation_quality": 0.445,
+            "information_recall": 0.274,
+            "attribution_quality": 0.125,
+            "factual_accuracy": 0.106,
+            "coverage": 0.032
+          },
+          "top_terms": [
+            "citations",
+            "claims",
+            "named",
+            "authoritative",
+            "inline",
+            "attribution",
+            "attributed",
+            "inline citations",
+            "claims attributed",
+            "seminal",
+            "cited",
+            "attributed named"
+          ],
+          "representative": [
+            "Claims are not reliably attributed to named sources because many citations are non-specific syntheses rather than identifiable references.",
+            "Many claims are not attributed to identifiable named sources with proper inline citations.",
+            "Many claims are not attributed to identifiable named sources with proper inline citations."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p10": 417,
+            "p9": 294,
+            "p3": 286
+          }
+        },
+        {
+          "cluster": 8,
+          "size": 2099,
+          "top_dimension": "citation_quality",
+          "purity": 0.91,
+          "dim_entropy_norm": 0.197,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "citation_quality": 0.91,
+            "analytical_depth": 0.046,
+            "information_recall": 0.021,
+            "coverage": 0.006,
+            "factual_accuracy": 0.005
+          },
+          "top_terms": [
+            "sections",
+            "diversity",
+            "minimum",
+            "different",
+            "distinct",
+            "reliance",
+            "single",
+            "topic",
+            "limited",
+            "section",
+            "insufficient",
+            "different sections"
+          ],
+          "representative": [
+            "Most sections cite the same core set of sources, indicating insufficient source diversity.",
+            "While different sections use different sources, within each section the reliance on just 2-3 sources is notable, with insufficient cross-referencing.",
+            "Source diversity across sections is limited\u2014same few sources cited throughout."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 322,
+            "p0": 292,
+            "p9": 285
+          }
+        },
+        {
+          "cluster": 15,
+          "size": 2083,
+          "top_dimension": "information_recall",
+          "purity": 0.75,
+          "dim_entropy_norm": 0.432,
+          "n_dims_ge_10pct": 2,
+          "dim_distribution": {
+            "information_recall": 0.75,
+            "coverage": 0.119,
+            "factual_accuracy": 0.051,
+            "organization": 0.025,
+            "analytical_depth": 0.017
+          },
+          "top_terms": [
+            "critical",
+            "omitted",
+            "widely",
+            "available",
+            "widely available",
+            "evidence",
+            "absent",
+            "missing",
+            "available evidence",
+            "critical widely",
+            "quantitative",
+            "critical evidence"
+          ],
+          "representative": [
+            "The report lacks any research content, so all widely-available evidence is necessarily omitted.",
+            "Several critical, widely available evidence elements required by the query are omitted.",
+            "Critical widely-available evidence central to the query is omitted."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 312,
+            "p2": 244,
+            "p0": 225
+          }
+        },
+        {
+          "cluster": 19,
+          "size": 2052,
+          "top_dimension": "factual_accuracy",
+          "purity": 0.66,
+          "dim_entropy_norm": 0.524,
+          "n_dims_ge_10pct": 3,
+          "dim_distribution": {
+            "factual_accuracy": 0.66,
+            "instruction_following": 0.143,
+            "logical_coherence": 0.11,
+            "coverage": 0.02,
+            "analytical_depth": 0.02
+          },
+          "top_terms": [
+            "comparative",
+            "comparison",
+            "claims",
+            "supported",
+            "evidence",
+            "comparative claims",
+            "cited",
+            "cited evidence",
+            "claims supported",
+            "performance",
+            "comparative performance",
+            "supported cited"
+          ],
+          "representative": [
+            "Comparative/performance claims are not supported with cited evidence or concrete comparisons.",
+            "Comparative claims are not supported with explicit evidence (e.g., reported comparisons, metrics, or study outcomes) in the text.",
+            "Comparative claims are made but not supported with specific cited evidence or reported comparative results."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 313,
+            "p9": 201,
+            "p3": 201
+          }
+        },
+        {
+          "cluster": 16,
+          "size": 1804,
+          "top_dimension": "attribution_quality",
+          "purity": 0.968,
+          "dim_entropy_norm": 0.088,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "attribution_quality": 0.968,
+            "analytical_depth": 0.013,
+            "information_recall": 0.007,
+            "factual_accuracy": 0.004,
+            "instruction_following": 0.003
+          },
+          "top_terms": [
+            "author",
+            "author analysis",
+            "material",
+            "analysis",
+            "distinguish author",
+            "distinguish",
+            "analysis material",
+            "sourced",
+            "distinction",
+            "sourced material",
+            "analysis sourced",
+            "consistently"
+          ],
+          "representative": [
+            "It does not clearly distinguish the author\u2019s analysis from sourced material throughout.",
+            "It does not clearly distinguish the author\u2019s analysis from sourced material.",
+            "It does not clearly distinguish the author\u2019s analysis from sourced material."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 183,
+            "p7": 178,
+            "p2": 172
+          }
+        },
+        {
+          "cluster": 9,
+          "size": 1637,
+          "top_dimension": "attribution_quality",
+          "purity": 0.903,
+          "dim_entropy_norm": 0.178,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "attribution_quality": 0.903,
+            "citation_quality": 0.071,
+            "factual_accuracy": 0.018,
+            "information_recall": 0.005,
+            "coverage": 0.001
+          },
+          "top_terms": [
+            "traceable",
+            "named",
+            "major",
+            "traceable named",
+            "claims traceable",
+            "claims",
+            "major claims",
+            "major findings",
+            "findings traceable",
+            "findings",
+            "named verifiable",
+            "major claim"
+          ],
+          "representative": [
+            "Many major claims are not traceable to a specific named source.",
+            "Many major claims are not traceable to a clearly identifiable named source.",
+            "Many major claims are not traceable to a named source."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p3": 267,
+            "p4": 196,
+            "p5": 175
+          }
+        },
+        {
+          "cluster": 10,
+          "size": 1274,
+          "top_dimension": "factual_accuracy",
+          "purity": 0.922,
+          "dim_entropy_norm": 0.183,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "factual_accuracy": 0.922,
+            "instruction_following": 0.02,
+            "coverage": 0.019,
+            "information_recall": 0.019,
+            "logical_coherence": 0.014
+          },
+          "top_terms": [
+            "chronology",
+            "timeline",
+            "historical",
+            "historical timeline",
+            "chronological",
+            "correctness",
+            "criterion",
+            "correct",
+            "evaluate",
+            "present",
+            "presented",
+            "historical chronology"
+          ],
+          "representative": [
+            "Chronology is not established and the report does not demonstrate that any timeline-related statements are correct or even present in a checkable way.",
+            "It does not present a historical timeline of developments, so chronology cannot be assessed as correct.",
+            "The report does not discuss developments over time, so chronology cannot be evaluated as correct."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 171,
+            "p0": 131,
+            "p9": 128
+          }
+        },
+        {
+          "cluster": 14,
+          "size": 1244,
+          "top_dimension": "citation_quality",
+          "purity": 0.537,
+          "dim_entropy_norm": 0.556,
+          "n_dims_ge_10pct": 4,
+          "dim_distribution": {
+            "citation_quality": 0.537,
+            "attribution_quality": 0.227,
+            "factual_accuracy": 0.119,
+            "information_recall": 0.105,
+            "coverage": 0.006
+          },
+          "top_terms": [
+            "web",
+            "search",
+            "web search",
+            "search synthesis",
+            "synthesis",
+            "synthesis entries",
+            "entries",
+            "named",
+            "claims",
+            "citations",
+            "references",
+            "syntheses"
+          ],
+          "representative": [
+            "A large proportion of citations resolve to 'Web Search Synthesis' entries, which are not named sources. Major claims cannot be traced to specific, verifiable sources.",
+            "Many citations reference 'Web Search Synthesis' without providing actual named sources or URLs, making many claims untraceable to specific authoritative sources.",
+            "Many important claims rely on 'Web Search Synthesis' citations that are not attributed to named sources."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p8": 376,
+            "p5": 302,
+            "p4": 252
+          }
+        },
+        {
+          "cluster": 18,
+          "size": 1115,
+          "top_dimension": "logical_coherence",
+          "purity": 0.937,
+          "dim_entropy_norm": 0.127,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "logical_coherence": 0.937,
+            "factual_accuracy": 0.05,
+            "analytical_depth": 0.007,
+            "information_recall": 0.004,
+            "coverage": 0.002
+          },
+          "top_terms": [
+            "causal",
+            "reasoning",
+            "arguments",
+            "comparative",
+            "comparative causal",
+            "supported",
+            "valid",
+            "causal arguments",
+            "evidence",
+            "supported valid",
+            "causal comparative",
+            "arguments supported"
+          ],
+          "representative": [
+            "Causal/comparative arguments are not sufficiently supported by valid, specific reasoning and evidence.",
+            "Comparative and causal claims are not supported with sufficiently valid reasoning grounded in specific evidence.",
+            "Some comparative/causal claims are not supported by sufficiently valid reasoning and evidence."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 126,
+            "p4": 110,
+            "p8": 109
+          }
+        },
+        {
+          "cluster": 3,
+          "size": 967,
+          "top_dimension": "coverage",
+          "purity": 0.948,
+          "dim_entropy_norm": 0.119,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "coverage": 0.948,
+            "analytical_depth": 0.029,
+            "attribution_quality": 0.016,
+            "organization": 0.004,
+            "citation_quality": 0.001
+          },
+          "top_terms": [
+            "perspectives",
+            "multiple perspectives",
+            "multiple",
+            "schools",
+            "schools thought",
+            "thought",
+            "perspectives schools",
+            "represented",
+            "represent multiple",
+            "represent",
+            "perspective",
+            "meaningfully"
+          ],
+          "representative": [
+            "It does not meaningfully represent multiple perspectives or schools of thought with distinct sourced positions.",
+            "It does not explicitly represent multiple perspectives or schools of thought.",
+            "It does not represent multiple perspectives or schools of thought."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 163,
+            "p0": 107,
+            "p9": 103
+          }
+        },
+        {
+          "cluster": 7,
+          "size": 803,
+          "top_dimension": "analytical_depth",
+          "purity": 0.721,
+          "dim_entropy_norm": 0.445,
+          "n_dims_ge_10pct": 2,
+          "dim_distribution": {
+            "analytical_depth": 0.721,
+            "attribution_quality": 0.143,
+            "organization": 0.054,
+            "citation_quality": 0.041,
+            "information_recall": 0.02
+          },
+          "top_terms": [
+            "synthesis",
+            "cross synthesis",
+            "cross",
+            "synthesize",
+            "synthesis impossible",
+            "impossible",
+            "synthesis possible",
+            "true synthesis",
+            "true",
+            "summary",
+            "possible",
+            "author synthesis"
+          ],
+          "representative": [
+            "There is no synthesis across sources because the report does not incorporate multiple sources.",
+            "Synthesis across sources is impossible because the report provides no sourced material.",
+            "The report does not demonstrate synthesis across sources; it largely states conclusions without source integration."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 203,
+            "p9": 147,
+            "p0": 89
+          }
+        },
+        {
+          "cluster": 13,
+          "size": 802,
+          "top_dimension": "citation_quality",
+          "purity": 0.975,
+          "dim_entropy_norm": 0.072,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "citation_quality": 0.975,
+            "instruction_following": 0.009,
+            "factual_accuracy": 0.007,
+            "organization": 0.002,
+            "attribution_quality": 0.002
+          },
+          "top_terms": [
+            "citation",
+            "formatting",
+            "citation formatting",
+            "inconsistent",
+            "formatting inconsistent",
+            "consistent",
+            "citations",
+            "incomplete",
+            "inconsistent incomplete",
+            "formatting consistent",
+            "reference",
+            "format"
+          ],
+          "representative": [
+            "Citation formatting is inconsistent and sometimes incomplete.",
+            "Citation formatting is inconsistent and sometimes incomplete.",
+            "Citation formatting is inconsistent and sometimes incomplete."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 144,
+            "p9": 112,
+            "p3": 110
+          }
+        },
+        {
+          "cluster": 5,
+          "size": 798,
+          "top_dimension": "instruction_following",
+          "purity": 0.976,
+          "dim_entropy_norm": 0.063,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "instruction_following": 0.976,
+            "citation_quality": 0.01,
+            "factual_accuracy": 0.008,
+            "coverage": 0.006
+          },
+          "top_terms": [
+            "scope",
+            "broad",
+            "broader",
+            "scope broad",
+            "necessary",
+            "broader necessary",
+            "scope broader",
+            "narrow",
+            "relative",
+            "misaligned",
+            "scope misaligned",
+            "broad relative"
+          ],
+          "representative": [
+            "Scope is misaligned\u2014too broad conceptually while missing the query\u2019s specific comparative requirements.",
+            "The scope is broader than necessary and includes extraneous material not needed to answer the narrow query.",
+            "The scope is broader than necessary and still fails to precisely answer the narrow query."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 111,
+            "p2": 87,
+            "p7": 85
+          }
+        }
+      ],
+      "k25": [
+        {
+          "cluster": 1,
+          "size": 3646,
+          "top_dimension": "factual_accuracy",
+          "purity": 0.406,
+          "dim_entropy_norm": 0.755,
+          "n_dims_ge_10pct": 4,
+          "dim_distribution": {
+            "factual_accuracy": 0.406,
+            "information_recall": 0.2,
+            "coverage": 0.152,
+            "analytical_depth": 0.104,
+            "instruction_following": 0.072
+          },
+          "top_terms": [
+            "state",
+            "state art",
+            "art",
+            "current",
+            "current state",
+            "analysis",
+            "identify",
+            "key",
+            "terminology",
+            "used",
+            "technical",
+            "mentioned"
+          ],
+          "representative": [
+            "The report asserts a leading approach but does not accurately situate it within the broader state-of-the-art with adequate sourcing and comparison.",
+            "While some vendor documentation is cited, authoritative independent comparisons or industry benchmarks are missing.",
+            "It addresses the general comparison but misses key specifics explicitly requested in the research question."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p7": 496,
+            "p8": 406,
+            "p10": 387
+          }
+        },
+        {
+          "cluster": 10,
+          "size": 2945,
+          "top_dimension": "information_recall",
+          "purity": 0.242,
+          "dim_entropy_norm": 0.879,
+          "n_dims_ge_10pct": 4,
+          "dim_distribution": {
+            "information_recall": 0.242,
+            "factual_accuracy": 0.235,
+            "analytical_depth": 0.163,
+            "coverage": 0.142,
+            "instruction_following": 0.061
+          },
+          "top_terms": [
+            "authoritative",
+            "identify",
+            "seminal",
+            "authoritative seminal",
+            "state",
+            "findings",
+            "distinguish",
+            "current",
+            "relevant",
+            "question",
+            "represent",
+            "analysis"
+          ],
+          "representative": [
+            "The report does not distinguish between its own analysis and information derived from sources.",
+            "The report does not differentiate between its own analysis and information from sources.",
+            "The report does not identify or rely on the most authoritative/seminal sources specified in the query."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p9": 681,
+            "p0": 435,
+            "p10": 374
+          }
+        },
+        {
+          "cluster": 7,
+          "size": 2871,
+          "top_dimension": "analytical_depth",
+          "purity": 0.44,
+          "dim_entropy_norm": 0.627,
+          "n_dims_ge_10pct": 3,
+          "dim_distribution": {
+            "analytical_depth": 0.44,
+            "factual_accuracy": 0.282,
+            "logical_coherence": 0.196,
+            "attribution_quality": 0.028,
+            "information_recall": 0.019
+          },
+          "top_terms": [
+            "claims",
+            "established",
+            "contested",
+            "evidence",
+            "emerging",
+            "findings",
+            "established findings",
+            "distinguish established",
+            "distinguish",
+            "contested claims",
+            "factual",
+            "emerging contested"
+          ],
+          "representative": [
+            "The report does not consistently distinguish well-established findings from emerging/contested claims.",
+            "The report does not consistently distinguish well-established findings from emerging/contested claims.",
+            "The report does not clearly distinguish well-established findings from emerging/contested claims with adequate support."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p10": 382,
+            "p2": 286,
+            "p3": 273
+          }
+        },
+        {
+          "cluster": 14,
+          "size": 2844,
+          "top_dimension": "instruction_following",
+          "purity": 0.35,
+          "dim_entropy_norm": 0.708,
+          "n_dims_ge_10pct": 4,
+          "dim_distribution": {
+            "instruction_following": 0.35,
+            "information_recall": 0.302,
+            "factual_accuracy": 0.158,
+            "coverage": 0.118,
+            "analytical_depth": 0.03
+          },
+          "top_terms": [
+            "format",
+            "answer",
+            "match",
+            "required",
+            "implied",
+            "implies",
+            "key",
+            "needed",
+            "quantitative",
+            "format match",
+            "comparison",
+            "aspects"
+          ],
+          "representative": [
+            "The query implies a concrete comparative/ranking output, which the report does not provide.",
+            "The query does not require state-of-the-art, but the report still does not identify it where relevant, so the criterion is unmet.",
+            "The report addresses only half of the implied query dimensions and does so incompletely."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p10": 337,
+            "p0": 319,
+            "p7": 298
+          }
+        },
+        {
+          "cluster": 18,
+          "size": 2525,
+          "top_dimension": "coverage",
+          "purity": 0.381,
+          "dim_entropy_norm": 0.669,
+          "n_dims_ge_10pct": 3,
+          "dim_distribution": {
+            "coverage": 0.381,
+            "factual_accuracy": 0.265,
+            "analytical_depth": 0.243,
+            "instruction_following": 0.044,
+            "information_recall": 0.032
+          },
+          "top_terms": [
+            "limitations",
+            "practical",
+            "implications",
+            "practical implications",
+            "analysis",
+            "addressed",
+            "trade",
+            "offs",
+            "trade offs",
+            "level",
+            "state",
+            "surface"
+          ],
+          "representative": [
+            "Analysis remains surface-level and does not identify mechanisms or trade-offs relevant to the decision.",
+            "Limitations and caveats are not represented because no methodology or findings are provided.",
+            "Advantages/limitations of approaches are not meaningfully discussed."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p10": 552,
+            "p9": 314,
+            "p0": 265
+          }
+        },
+        {
+          "cluster": 15,
+          "size": 2486,
+          "top_dimension": "attribution_quality",
+          "purity": 0.662,
+          "dim_entropy_norm": 0.378,
+          "n_dims_ge_10pct": 2,
+          "dim_distribution": {
+            "attribution_quality": 0.662,
+            "citation_quality": 0.282,
+            "factual_accuracy": 0.029,
+            "information_recall": 0.026,
+            "logical_coherence": 0.0
+          },
+          "top_terms": [
+            "named",
+            "traceable",
+            "claims",
+            "major",
+            "traceable named",
+            "claims traceable",
+            "major claims",
+            "attributed",
+            "citations",
+            "claims attributed",
+            "verifiable",
+            "major findings"
+          ],
+          "representative": [
+            "Many claims are not attributed to clearly named sources with traceable citations.",
+            "Major claims are not consistently traceable to named sources.",
+            "Major claims are not consistently traceable to named sources."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p3": 368,
+            "p4": 291,
+            "p10": 274
+          }
+        },
+        {
+          "cluster": 9,
+          "size": 2337,
+          "top_dimension": "factual_accuracy",
+          "purity": 0.277,
+          "dim_entropy_norm": 0.871,
+          "n_dims_ge_10pct": 4,
+          "dim_distribution": {
+            "factual_accuracy": 0.277,
+            "analytical_depth": 0.21,
+            "coverage": 0.175,
+            "information_recall": 0.108,
+            "logical_coherence": 0.078
+          },
+          "top_terms": [
+            "present",
+            "contains",
+            "distinction",
+            "claims",
+            "chronological",
+            "kind",
+            "findings",
+            "evaluate",
+            "presented",
+            "quantitative",
+            "analysis",
+            "provided"
+          ],
+          "representative": [
+            "No sources of any kind are present in the report.",
+            "No sources of any kind are present in the report.",
+            "No sources of any kind are present in the report."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p9": 1043,
+            "p10": 451,
+            "p0": 312
+          }
+        },
+        {
+          "cluster": 6,
+          "size": 2301,
+          "top_dimension": "citation_quality",
+          "purity": 0.853,
+          "dim_entropy_norm": 0.283,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "citation_quality": 0.853,
+            "information_recall": 0.069,
+            "analytical_depth": 0.046,
+            "attribution_quality": 0.012,
+            "factual_accuracy": 0.01
+          },
+          "top_terms": [
+            "sections",
+            "diversity",
+            "minimum",
+            "different",
+            "distinct",
+            "reliance",
+            "single",
+            "limited",
+            "topic",
+            "section",
+            "insufficient",
+            "cited"
+          ],
+          "representative": [
+            "Most sections cite the same core set of sources, indicating insufficient source diversity.",
+            "While different sections use different sources, within each section the reliance on just 2-3 sources is notable, with insufficient cross-referencing.",
+            "The report exhibits heavy reliance on a single source [3] across multiple sections, suggesting insufficient source diversity for the breadth of topics covered."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 341,
+            "p0": 308,
+            "p9": 301
+          }
+        },
+        {
+          "cluster": 2,
+          "size": 2137,
+          "top_dimension": "factual_accuracy",
+          "purity": 0.205,
+          "dim_entropy_norm": 0.972,
+          "n_dims_ge_10pct": 6,
+          "dim_distribution": {
+            "factual_accuracy": 0.205,
+            "organization": 0.125,
+            "citation_quality": 0.118,
+            "information_recall": 0.115,
+            "instruction_following": 0.109
+          },
+          "top_terms": [
+            "exists",
+            "evaluate",
+            "contains",
+            "exists evaluate",
+            "generated",
+            "file",
+            "file contains",
+            "contains generated",
+            "present",
+            "contains evaluate",
+            "sections",
+            "exist"
+          ],
+          "representative": [
+            "The report contains no content.",
+            "The report contains no content.",
+            "The report contains no content."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p9": 1668,
+            "p0": 376,
+            "p10": 51
+          }
+        },
+        {
+          "cluster": 5,
+          "size": 1821,
+          "top_dimension": "information_recall",
+          "purity": 0.321,
+          "dim_entropy_norm": 0.763,
+          "n_dims_ge_10pct": 3,
+          "dim_distribution": {
+            "information_recall": 0.321,
+            "factual_accuracy": 0.314,
+            "coverage": 0.124,
+            "analytical_depth": 0.097,
+            "instruction_following": 0.075
+          },
+          "top_terms": [
+            "clinical",
+            "current",
+            "evidence",
+            "quantitative",
+            "state",
+            "state art",
+            "art",
+            "widely",
+            "available",
+            "widely available",
+            "guidance",
+            "critical"
+          ],
+          "representative": [
+            "While some emerging techniques are flagged as 'largely conceptual,' the report does not systematically distinguish well-established clinical findings from speculative or unvalidated technological clai",
+            "Several claims are plausible, but the report includes potentially overstated/insufficiently supported assertions (notably about human trial efficacy) without primary clinical data.",
+            "The report does not clearly prioritize authoritative primary sources (DSM-5 text, ICD-11 official clinical descriptions) and high-quality peer-reviewed comparative studies as the backbone of the analy"
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p10": 231,
+            "p7": 227,
+            "p0": 221
+          }
+        },
+        {
+          "cluster": 13,
+          "size": 1807,
+          "top_dimension": "factual_accuracy",
+          "purity": 0.723,
+          "dim_entropy_norm": 0.445,
+          "n_dims_ge_10pct": 3,
+          "dim_distribution": {
+            "factual_accuracy": 0.723,
+            "logical_coherence": 0.117,
+            "instruction_following": 0.105,
+            "information_recall": 0.013,
+            "coverage": 0.013
+          },
+          "top_terms": [
+            "comparative",
+            "claims",
+            "supported",
+            "evidence",
+            "comparison",
+            "comparative claims",
+            "cited",
+            "cited evidence",
+            "claims supported",
+            "performance",
+            "comparative performance",
+            "supported cited"
+          ],
+          "representative": [
+            "Comparative/performance claims are not supported with cited evidence or concrete comparisons.",
+            "Comparative claims are made but not supported with specific cited evidence or reported comparative results.",
+            "Comparative claims are made but not supported with explicit cited evidence or quantitative comparisons."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 266,
+            "p3": 181,
+            "p9": 172
+          }
+        },
+        {
+          "cluster": 20,
+          "size": 1805,
+          "top_dimension": "coverage",
+          "purity": 0.467,
+          "dim_entropy_norm": 0.71,
+          "n_dims_ge_10pct": 3,
+          "dim_distribution": {
+            "coverage": 0.467,
+            "organization": 0.204,
+            "analytical_depth": 0.101,
+            "logical_coherence": 0.094,
+            "factual_accuracy": 0.066
+          },
+          "top_terms": [
+            "perspectives",
+            "multiple perspectives",
+            "multiple",
+            "schools",
+            "schools thought",
+            "thought",
+            "represented",
+            "perspectives schools",
+            "represent multiple",
+            "perspective",
+            "represent",
+            "transitions"
+          ],
+          "representative": [
+            "Multiple perspectives are not substantively represented or contrasted in the analysis.",
+            "Multiple perspectives on the topic are not represented.",
+            "Multiple perspectives are not meaningfully represented or contrasted."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 420,
+            "p9": 210,
+            "p1": 171
+          }
+        },
+        {
+          "cluster": 8,
+          "size": 1752,
+          "top_dimension": "information_recall",
+          "purity": 0.785,
+          "dim_entropy_norm": 0.397,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "information_recall": 0.785,
+            "coverage": 0.095,
+            "factual_accuracy": 0.041,
+            "organization": 0.02,
+            "logical_coherence": 0.019
+          },
+          "top_terms": [
+            "critical",
+            "omitted",
+            "widely",
+            "available",
+            "widely available",
+            "evidence",
+            "absent",
+            "available evidence",
+            "critical widely",
+            "missing",
+            "quantitative",
+            "critical evidence"
+          ],
+          "representative": [
+            "Several critical, widely available evidence elements required by the query are omitted.",
+            "Critical widely-available evidence and required components are omitted.",
+            "Critical widely-available evidence central to the query is omitted."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 260,
+            "p2": 200,
+            "p0": 186
+          }
+        },
+        {
+          "cluster": 19,
+          "size": 1751,
+          "top_dimension": "attribution_quality",
+          "purity": 0.965,
+          "dim_entropy_norm": 0.096,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "attribution_quality": 0.965,
+            "information_recall": 0.012,
+            "coverage": 0.009,
+            "factual_accuracy": 0.005,
+            "analytical_depth": 0.005
+          },
+          "top_terms": [
+            "author",
+            "author analysis",
+            "material",
+            "analysis",
+            "distinguish author",
+            "distinguish",
+            "analysis material",
+            "sourced",
+            "distinction",
+            "sourced material",
+            "consistently",
+            "analysis sourced"
+          ],
+          "representative": [
+            "It does not clearly distinguish the author\u2019s analysis from sourced material throughout.",
+            "It does not clearly distinguish the author\u2019s analysis from sourced material.",
+            "It does not clearly distinguish the author\u2019s analysis from sourced material."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 183,
+            "p7": 180,
+            "p2": 167
+          }
+        },
+        {
+          "cluster": 16,
+          "size": 1736,
+          "top_dimension": "factual_accuracy",
+          "purity": 0.891,
+          "dim_entropy_norm": 0.232,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "factual_accuracy": 0.891,
+            "information_recall": 0.056,
+            "analytical_depth": 0.015,
+            "logical_coherence": 0.012,
+            "citation_quality": 0.008
+          },
+          "top_terms": [
+            "numbers",
+            "accuracy",
+            "benchmarks",
+            "numeric",
+            "accurate",
+            "dates",
+            "figures",
+            "verifiable",
+            "cited",
+            "claims",
+            "confirmed",
+            "numbers dates"
+          ],
+          "representative": [
+            "While numbers are plausible, the report does not provide sufficiently verifiable, source-specific support to judge them as accurate benchmarks.",
+            "The specific numbers are not verifiably accurate because the report lacks precise, checkable citations.",
+            "The report provides many precise numbers but does not substantiate them with verifiable citations, so their accuracy is not demonstrated."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 203,
+            "p1": 171,
+            "p5": 171
+          }
+        },
+        {
+          "cluster": 0,
+          "size": 1682,
+          "top_dimension": "information_recall",
+          "purity": 0.348,
+          "dim_entropy_norm": 0.765,
+          "n_dims_ge_10pct": 3,
+          "dim_distribution": {
+            "information_recall": 0.348,
+            "factual_accuracy": 0.254,
+            "instruction_following": 0.171,
+            "analytical_depth": 0.077,
+            "coverage": 0.071
+          },
+          "top_terms": [
+            "gene",
+            "question",
+            "evidence",
+            "drar1",
+            "resistance",
+            "glycorna",
+            "answer",
+            "repeat",
+            "regulation",
+            "expression",
+            "genes",
+            "glycornas"
+          ],
+          "representative": [
+            "The report explicitly states it cannot answer which complexes/pathways\u2019 gene inactivation does not cause resistance, so it does not include the key facts needed.",
+            "While the report covers multiple mechanisms, it does not deeply analyze the relative importance of each pathway or identify patterns across studies that would elevate it beyond a descriptive synthesis",
+            "The query is about a specific marker gene and the report provides no relevant quantitative evidence (e.g., specificity metrics, expression levels, counts in DCN layers)."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p10": 208,
+            "p7": 202,
+            "p9": 184
+          }
+        },
+        {
+          "cluster": 4,
+          "size": 1388,
+          "top_dimension": "citation_quality",
+          "purity": 0.856,
+          "dim_entropy_norm": 0.297,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "citation_quality": 0.856,
+            "attribution_quality": 0.047,
+            "information_recall": 0.035,
+            "factual_accuracy": 0.027,
+            "coverage": 0.018
+          },
+          "top_terms": [
+            "citation",
+            "formatting",
+            "citation formatting",
+            "citations",
+            "inconsistent",
+            "formatting inconsistent",
+            "inline",
+            "consistent",
+            "incomplete",
+            "reference",
+            "inline citations",
+            "reference list"
+          ],
+          "representative": [
+            "Citation formatting is inconsistent and some references are incomplete.",
+            "Citation formatting is inconsistent and some references are incomplete.",
+            "Citation formatting is inconsistent and includes entries that are not actual sources."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 283,
+            "p9": 181,
+            "p3": 155
+          }
+        },
+        {
+          "cluster": 22,
+          "size": 1357,
+          "top_dimension": "instruction_following",
+          "purity": 0.811,
+          "dim_entropy_norm": 0.365,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "instruction_following": 0.811,
+            "coverage": 0.077,
+            "organization": 0.038,
+            "information_recall": 0.024,
+            "logical_coherence": 0.017
+          },
+          "top_terms": [
+            "question",
+            "sub",
+            "questions",
+            "sub questions",
+            "answer",
+            "implied",
+            "directly",
+            "addressed",
+            "answered",
+            "dimensions",
+            "directly answer",
+            "address"
+          ],
+          "representative": [
+            "It only partially addresses the research question and does not meet several explicit requirements.",
+            "It only partially addresses the specific question and does not deliver the requested documented comparisons and measurement evidence.",
+            "It only partially addresses the specific research question and does not meet the requested level of detail."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 199,
+            "p9": 181,
+            "p7": 129
+          }
+        },
+        {
+          "cluster": 17,
+          "size": 1260,
+          "top_dimension": "citation_quality",
+          "purity": 0.537,
+          "dim_entropy_norm": 0.558,
+          "n_dims_ge_10pct": 4,
+          "dim_distribution": {
+            "citation_quality": 0.537,
+            "attribution_quality": 0.224,
+            "information_recall": 0.119,
+            "factual_accuracy": 0.109,
+            "coverage": 0.005
+          },
+          "top_terms": [
+            "web",
+            "search",
+            "web search",
+            "search synthesis",
+            "synthesis",
+            "synthesis entries",
+            "entries",
+            "named",
+            "claims",
+            "citations",
+            "references",
+            "syntheses"
+          ],
+          "representative": [
+            "A large proportion of citations resolve to 'Web Search Synthesis' entries, which are not named sources. Major claims cannot be traced to specific, verifiable sources.",
+            "Many citations reference 'Web Search Synthesis' without providing actual named sources or URLs, making many claims untraceable to specific authoritative sources.",
+            "Many important claims rely on 'Web Search Synthesis' citations that are not attributed to named sources."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p8": 370,
+            "p5": 295,
+            "p4": 250
+          }
+        },
+        {
+          "cluster": 11,
+          "size": 1110,
+          "top_dimension": "factual_accuracy",
+          "purity": 0.923,
+          "dim_entropy_norm": 0.18,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "factual_accuracy": 0.923,
+            "instruction_following": 0.027,
+            "information_recall": 0.018,
+            "logical_coherence": 0.016,
+            "coverage": 0.009
+          },
+          "top_terms": [
+            "chronology",
+            "timeline",
+            "historical",
+            "historical timeline",
+            "correctness",
+            "chronological",
+            "criterion",
+            "correct",
+            "evaluate",
+            "present",
+            "criterion met",
+            "historical chronology"
+          ],
+          "representative": [
+            "It does not present a historical timeline of developments, so chronology cannot be assessed as correct.",
+            "Chronology is not established and the report does not demonstrate that any timeline-related statements are correct or even present in a checkable way.",
+            "The report does not present a timeline, so chronology cannot be assessed as correct."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 130,
+            "p0": 119,
+            "p8": 104
+          }
+        },
+        {
+          "cluster": 3,
+          "size": 1086,
+          "top_dimension": "logical_coherence",
+          "purity": 0.944,
+          "dim_entropy_norm": 0.115,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "logical_coherence": 0.944,
+            "factual_accuracy": 0.046,
+            "analytical_depth": 0.006,
+            "information_recall": 0.004,
+            "coverage": 0.001
+          },
+          "top_terms": [
+            "causal",
+            "reasoning",
+            "arguments",
+            "comparative",
+            "comparative causal",
+            "supported",
+            "valid",
+            "causal arguments",
+            "evidence",
+            "supported valid",
+            "causal comparative",
+            "arguments supported"
+          ],
+          "representative": [
+            "Causal/comparative arguments are not sufficiently supported by valid, specific reasoning and evidence.",
+            "Comparative and causal claims are not supported with sufficiently valid reasoning grounded in specific evidence.",
+            "Comparative and causal arguments are not supported by sufficiently valid reasoning and evidence."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 123,
+            "p4": 108,
+            "p7": 106
+          }
+        },
+        {
+          "cluster": 12,
+          "size": 1035,
+          "top_dimension": "coverage",
+          "purity": 0.839,
+          "dim_entropy_norm": 0.221,
+          "n_dims_ge_10pct": 2,
+          "dim_distribution": {
+            "coverage": 0.839,
+            "factual_accuracy": 0.153,
+            "citation_quality": 0.004,
+            "analytical_depth": 0.003,
+            "instruction_following": 0.001
+          },
+          "top_terms": [
+            "developments",
+            "recent",
+            "recent developments",
+            "years",
+            "developments years",
+            "current",
+            "incorporate",
+            "2024",
+            "incorporated",
+            "dated",
+            "updates",
+            "inclusion"
+          ],
+          "representative": [
+            "The report does not include recent developments within the last two years.",
+            "The report does not include recent developments within the last two years.",
+            "The report does not include recent developments within the last two years."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 161,
+            "p9": 118,
+            "p3": 111
+          }
+        },
+        {
+          "cluster": 23,
+          "size": 779,
+          "top_dimension": "instruction_following",
+          "purity": 0.972,
+          "dim_entropy_norm": 0.074,
+          "n_dims_ge_10pct": 1,
+          "dim_distribution": {
+            "instruction_following": 0.972,
+            "factual_accuracy": 0.01,
+            "citation_quality": 0.01,
+            "coverage": 0.006,
+            "information_recall": 0.001
+          },
+          "top_terms": [
+            "scope",
+            "broad",
+            "broader",
+            "scope broad",
+            "necessary",
+            "broader necessary",
+            "scope broader",
+            "relative",
+            "misaligned",
+            "narrow",
+            "scope misaligned",
+            "broad relative"
+          ],
+          "representative": [
+            "Scope is misaligned\u2014too broad conceptually while missing the query\u2019s specific comparative requirements.",
+            "The scope is broader than necessary and includes extraneous material not needed to answer the narrow query.",
+            "The scope is broader than necessary and still fails to precisely answer the narrow query."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 106,
+            "p2": 85,
+            "p7": 84
+          }
+        },
+        {
+          "cluster": 21,
+          "size": 764,
+          "top_dimension": "analytical_depth",
+          "purity": 0.733,
+          "dim_entropy_norm": 0.425,
+          "n_dims_ge_10pct": 2,
+          "dim_distribution": {
+            "analytical_depth": 0.733,
+            "attribution_quality": 0.137,
+            "organization": 0.051,
+            "citation_quality": 0.045,
+            "information_recall": 0.017
+          },
+          "top_terms": [
+            "synthesis",
+            "cross synthesis",
+            "cross",
+            "synthesis impossible",
+            "impossible",
+            "synthesize",
+            "synthesis possible",
+            "true synthesis",
+            "true",
+            "possible",
+            "summary",
+            "author synthesis"
+          ],
+          "representative": [
+            "There is no synthesis across sources because the report does not incorporate multiple sources.",
+            "Synthesis across sources is impossible because the report provides no sourced material.",
+            "With only one source, synthesis across sources is impossible. The report is essentially a summary of a single paper's findings, not a synthesis."
+          ],
+          "cross_dimension_flag": false,
+          "pattern_spread": {
+            "p10": 193,
+            "p9": 143,
+            "p0": 83
+          }
+        },
+        {
+          "cluster": 24,
+          "size": 730,
+          "top_dimension": "information_recall",
+          "purity": 0.352,
+          "dim_entropy_norm": 0.769,
+          "n_dims_ge_10pct": 4,
+          "dim_distribution": {
+            "information_recall": 0.352,
+            "factual_accuracy": 0.238,
+            "instruction_following": 0.142,
+            "coverage": 0.136,
+            "analytical_depth": 0.07
+          },
+          "top_terms": [
+            "species",
+            "iucn",
+            "list",
+            "conservation",
+            "threatened",
+            "park",
+            "gbif",
+            "xenopus",
+            "red list",
+            "red",
+            "near threatened",
+            "iucn red"
+          ],
+          "representative": [
+            "The report does not use the most authoritative primary sources for the task (IUCN Red List species pages/API and GBIF species pages/API).",
+            "The report does not clearly use or cite the most authoritative sources needed to answer the question (IUCN Red List entries and GBIF species/occurrence summaries for the target taxa).",
+            "Critical evidence is omitted\u2014the report itself acknowledges it could not access the full IUCN database listing. Only 2 species identified when the query likely expects a broader enumeration."
+          ],
+          "cross_dimension_flag": true,
+          "pattern_spread": {
+            "p6": 89,
+            "p5": 87,
+            "p0": 85
+          }
+        }
+      ]
+    },
+    "verdict": "Most fail clusters are criterion-anchored (judge reasoning echoes the criterion wording -> high purity, e.g. 'author-analysis vs sourced material' 0.97, 'traceable to named sources' 0.90, 'citation formatting inconsistent' 0.97, 'multiple perspectives/schools of thought' 0.95, 'causal arguments unsupported' 0.94). BUT five stable CROSS-DIMENSION themes emerge that map to NO single rubric dimension and together account for ~42% of all fails: (1) temporal currency/staleness, (2) epistemic calibration/uncertainty-signalling, (3) descriptive-vs-mechanistic depth & practical trade-offs, (4) placeholder/non-specific sources, (5) question-answering decisiveness. A sixth max-entropy cluster is a degenerate 'no content' artefact (76% base_p9). Themes 1-5 are candidate UNDISCOVERED quality axes; the current 9-dimension rubric splits each of them across 3-4 dimensions, which both dilutes their signal and helps explain why single-dimension scores move less than the underlying failure would suggest.",
+    "paper_statement": "Embedding and clustering the ~46k failing verdict rationales shows that while most failure clusters simply re-express a single rubric criterion, five recurrent themes cut cleanly ACROSS dimensions and are owned by no single one: temporal staleness (report misses the current state of the art / recent developments), poor epistemic calibration (no distinction between established and contested claims, no uncertainty signalling), descriptive-rather-than-mechanistic depth (facts catalogued but trade-offs and practical implications absent), non-specific 'Web Search Synthesis' placeholder sourcing, and a failure of decisiveness in directly answering the posed question. Together these cross-dimension themes account for roughly 42% of all failing verdicts, each currently scattered across three to four rubric dimensions, suggesting the 9-dimension rubric under-resolves several genuine quality axes. A sixth, maximally cross-dimensional cluster is not a quality axis at all but a degenerate empty-output artefact concentrated (76%) in the local 7B baseline (base_p9), a data-quality flag in its own right."
+  }
+}

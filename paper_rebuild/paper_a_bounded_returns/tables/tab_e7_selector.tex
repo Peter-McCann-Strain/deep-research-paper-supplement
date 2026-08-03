@@ -1,0 +1,13 @@
+\begin{tabular}{lrrc}
+\toprule
+Selector & Sel.\ mean & Gain & 95\% CI\\
+\midrule
+Single run (baseline) & 0.436 & --- & --- \\
+\midrule
+Oracle (argmax true score) & 0.488 & +0.0519 & [+0.0458, +0.0580] \\
+GPT-5.2-quality selector & 0.473 & +0.0368 & [+0.0299, +0.0432] \\
+GPT-4o-quality selector & 0.451 & +0.0148 & [+0.0128, +0.0270] \\
+Random pick & 0.433 & -0.0027 & [-0.0077, +0.0074] \\
+\bottomrule
+\end{tabular}
+% Gate G2: max|structured-random|=0.0036 < 0.005 -> b~=e (False)

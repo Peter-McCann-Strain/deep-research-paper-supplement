@@ -6,6 +6,10 @@ import json
 import tomllib
 from pathlib import Path
 
+import pytest
+
+import deep_research.public_export as public_export
+from deep_research.cli import build_parser
 from deep_research.public_export import export_public_tree
 from deep_research.release_audit import audit_release_tree
 
@@ -100,6 +104,53 @@ def test_release_audit_flags_vcs_metadata(tmp_path):
     assert any(finding.path == ".git/config" for finding in result.findings)
 
 
+def test_release_audit_requires_catalog_for_shipped_scripts(tmp_path):
+    scripts = tmp_path / "scripts"
+    scripts.mkdir()
+    (scripts / "uncataloged.py").write_text("print('x')\n")
+    (tmp_path / "PUBLIC_MANIFEST.json").write_text(
+        json.dumps(
+            {
+                "include_globs": ["PUBLIC_MANIFEST.json", "scripts/*.py"],
+                "exclude_globs": [],
+                "required_paths": ["PUBLIC_MANIFEST.json"],
+            }
+        )
+    )
+
+    result = audit_release_tree(tmp_path)
+
+    assert result.ok is False
+    assert any("script catalog missing" in finding.message for finding in result.findings)
+
+
+def test_release_audit_flags_uncataloged_script_rows(tmp_path):
+    scripts = tmp_path / "scripts"
+    scripts.mkdir()
+    (scripts / "covered.py").write_text("print('x')\n")
+    (scripts / "missing.py").write_text("print('y')\n")
+    repro = tmp_path / "repro"
+    repro.mkdir()
+    (repro / "SCRIPT_CATALOG.csv").write_text(
+        "script,family,public_status,required_inputs_or_services,expected_outputs,summary\n"
+        "covered.py,validation,supported public helper,public files,console report,covered helper\n"
+    )
+    (tmp_path / "PUBLIC_MANIFEST.json").write_text(
+        json.dumps(
+            {
+                "include_globs": ["PUBLIC_MANIFEST.json", "scripts/*.py", "repro/*.csv"],
+                "exclude_globs": [],
+                "required_paths": ["PUBLIC_MANIFEST.json"],
+            }
+        )
+    )
+
+    result = audit_release_tree(tmp_path)
+
+    assert result.ok is False
+    assert any(finding.path == "scripts/missing.py" for finding in result.findings)
+
+
 def test_release_audit_flags_redaction_leak_phrases(tmp_path):
     (tmp_path / "README.md").write_text("mentions a " + "private" + " planning " + "board\n")
 
@@ -147,26 +198,82 @@ def test_public_export_copies_allowlist_and_audits(tmp_path):
     assert not (output / "private" / "notes.md").exists()
 
 
+def test_public_export_refuses_dirty_git_tree_without_explicit_opt_in(tmp_path, monkeypatch):
+    source = tmp_path / "source"
+    source.mkdir()
+    (source / "README.md").write_text("# Public\n")
+    (source / "PUBLIC_MANIFEST.json").write_text(
+        json.dumps(
+            {
+                "required_paths": ["README.md", "PUBLIC_MANIFEST.json"],
+                "include_globs": ["README.md", "PUBLIC_MANIFEST.json", "PUBLIC_EXPORT_REPORT.json"],
+                "exclude_globs": [],
+            }
+        )
+    )
+    monkeypatch.setattr(public_export, "_git_metadata", lambda _: {"commit": "abc123", "dirty": True})
+
+    with pytest.raises(ValueError, match="uncommitted changes"):
+        export_public_tree(source, tmp_path / "blocked-export")
+
+    result = export_public_tree(source, tmp_path / "allowed-export", allow_dirty=True)
+    report = json.loads((tmp_path / "allowed-export" / "PUBLIC_EXPORT_REPORT.json").read_text())
+
+    assert result.ok is True
+    assert report["source_git"] == {"commit": "abc123", "dirty": True}
+
+
+def test_export_public_cli_reports_dirty_tree_without_traceback(tmp_path, monkeypatch, capsys):
+    source = tmp_path / "source"
+    source.mkdir()
+
+    def fake_export(*_args, **_kwargs):
+        raise ValueError("source git tree has uncommitted changes")
+
+    monkeypatch.setattr("deep_research.cli.export_public_tree", fake_export)
+    args = build_parser().parse_args(
+        ["export-public", "--source-root", str(source), "--out", str(tmp_path / "export")]
+    )
+
+    exit_code = args.func(args)
+    payload = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 1
+    assert payload == {
+        "status": "failed",
+        "message": "source git tree has uncommitted changes",
+    }
+
+
 def test_notice_and_pattern_metrics_are_manifested():
     manifest = json.loads(Path("PUBLIC_MANIFEST.json").read_text())
 
     assert Path("NOTICE").exists()
     assert "NOTICE" in manifest["required_paths"]
+    assert "deep_research/config.py" in manifest["required_paths"]
+    assert "deep_research/types.py" in manifest["required_paths"]
     assert "repro/reference/paper_a_pattern_metrics.csv" in manifest["required_paths"]
+    assert "repro/PAPER_A_ARTIFACT_INDEX.md" in manifest["required_paths"]
+    assert "repro/SCRIPT_CATALOG.csv" in manifest["required_paths"]
+    assert "repro/SCRIPT_CATALOG.md" in manifest["required_paths"]
     assert "Apache-2.0 applies to code" in Path("README.md").read_text()
     assert "mixed-license" in Path("NOTICE").read_text()
 
 
-def test_public_dependency_profile_is_minimal_and_api_extra_is_explicit():
+def test_public_dependency_profile_uses_api_and_paper_without_local_model_stack():
     project = tomllib.loads(Path("pyproject.toml").read_text())
 
-    assert project["project"]["dependencies"] == ["python-dotenv>=1.0.0"]
+    base_deps = project["project"]["dependencies"]
+    assert "python-dotenv>=1.0.0" in base_deps
+    assert any(dep.startswith("pydantic") for dep in base_deps)
+    assert any(dep.startswith("structlog") for dep in base_deps)
     api_extra = project["project"]["optional-dependencies"]["api"]
     assert any(dep.startswith("openai") for dep in api_extra)
     assert any(dep.startswith("anthropic") for dep in api_extra)
+    assert any(dep.startswith("aiolimiter") for dep in api_extra)
+    assert any(dep.startswith("trafilatura") for dep in api_extra)
+    assert any(dep.startswith("tavily-python") for dep in api_extra)
     requirements = Path("requirements.txt").read_text()
-    assert ".[api]" in requirements
-    assert ".[paper]" not in requirements
-    assert ".[api,paper]" not in requirements
+    assert ".[api,paper]" in requirements
     assert ("tor" + "ch") not in Path("constraints-public.txt").read_text().lower()
     assert "tavily" not in Path("deep_research/cli.py").read_text()

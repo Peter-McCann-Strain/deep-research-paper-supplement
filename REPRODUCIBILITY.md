@@ -1,8 +1,8 @@
 # Reproducibility
 
-This repo supports three public workflows: no-cost checks, inspection of the frozen paper-reference summaries, and optional current-API reruns. The current-API path uses hosted models and search, so it is best-effort by design.
+This repo supports four public workflows: no-cost checks, inspection of the frozen paper-reference summaries, Paper A artifact rebuilds, and optional current-API reruns. The current-API path uses hosted models and search, so it is best-effort by design.
 
-It does not recreate the private historical run bit for bit. Exact replay would require archived raw reports, judge verdict trees, model/search snapshots, and local infrastructure that are outside this GitHub supplement.
+It does not recreate the private historical raw run bit for bit. Exact raw replay would require archived generated reports, raw judge-verdict packet directories, model/search snapshots, and local infrastructure that are outside this GitHub supplement. The paper-facing artifacts are rebuilt from the included canonical store and compact derived analysis tables.
 
 ## Setup
 
@@ -10,8 +10,8 @@ Requires Python `>=3.11,<3.13`.
 
 ```bash
 python3 -m venv venv
-source venv/bin/activate
-python -m pip install -c constraints-public.txt -e ".[api]"
+[ -f venv/bin/activate ] && source venv/bin/activate
+python -m pip install -c constraints-public.txt -e ".[api,paper]"
 cp .env.example .env
 ```
 
@@ -33,7 +33,33 @@ deep-research reproduce paper-a --mode reference
 deep-research reproduce paper-a --mode provenance
 ```
 
-`quickstart-check` runs the offline first-run path in one command. `smoke` validates public reference files. `reference` prints the compact headline ordering, broad score ranges, and comparison policy used for best-effort public reruns. `provenance` verifies checked hashes and counts for the public reference files. None of these commands make paid API calls. See `repro/PAPER_A_REPRO_MAP.md` for the command-to-artifact map and comparability contract.
+`quickstart-check` runs the offline first-run path in one command. `smoke` validates public reference files. `reference` prints the compact headline ordering, broad score ranges, and comparison policy used for best-effort public reruns. `provenance` verifies checked hashes and counts for the public reference files. None of these commands make paid API calls. See `repro/PAPER_A_REPRO_MAP.md` for the command-to-artifact map and comparability contract, and `repro/PAPER_A_ARTIFACT_INDEX.md` for the manuscript/table/figure/data index.
+
+## Paper Artifact Rebuild
+
+Check that all public rebuild inputs are present:
+
+```bash
+deep-research paper rebuild paper-a --check-only
+```
+
+Regenerate tables and figures from the shipped canonical store and derived analysis tables:
+
+```bash
+deep-research paper rebuild paper-a --skip-compile
+```
+
+Compile the manuscript too when `tectonic` is installed:
+
+```bash
+deep-research paper rebuild paper-a
+```
+
+This writes generated assets under `paper_rebuild/paper_a_bounded_returns/`. A full compile also refreshes `papers/paper_a_bounded_returns/main.pdf` from the rebuilt source PDF for citation and browsing. The artifact rebuild makes no provider API calls.
+
+`paper_rebuild/paper_a_bounded_returns/analysis/rebuild_all.sh` is retained as historical provenance code for rebuilding the canonical store when optional raw result directories are available. It is not the default public command because it depends on raw artifacts that are intentionally not shipped.
+
+For direct script use, consult `repro/SCRIPT_CATALOG.csv` first. It classifies every shipped top-level file under `scripts/` by family, public status, required inputs or services, expected outputs, and a short purpose summary.
 
 ## Best-Effort API Rerun
 
@@ -69,6 +95,8 @@ deep-research reproduce paper-a --mode api-best-effort --execute --full --judge
 ```
 
 The run writes generated Markdown reports, per-query JSON status files, query-rubric criteria files for judged runs, and `summary.json` under `artifacts/reproduction/paper_a_api_best_effort/`.
+
+The public API workflow reads `OPENAI_MODEL` and `OPENAI_JUDGE_MODEL` from `.env`. The shipped defaults were release-tested on 2026-08-02 and still require provider entitlement in the account used for the rerun. Legacy archival scripts that import `deep_research.config` retain `DEFAULT_MODEL` and `JUDGE_MODEL` overrides so historical sensitivity runners can be inspected or rerun deliberately.
 
 Every generation call requires hosted web search. If the provider response lacks a `web_search_call`, the query is marked failed instead of being treated as a valid research report.
 
@@ -118,8 +146,12 @@ Run the offline test gate before publishing:
 ```bash
 python -m pip install -c constraints-public.txt -e ".[api,paper,dev]"
 python -m pytest -q -p no:cacheprovider
-ruff check --no-cache deep_research tests
+ruff check --select F821,F811,B008,B023 --no-cache deep_research tests
+deep-research paper rebuild paper-a --check-only
 ```
+
+The lint command is the high-impact gate used by CI. The archival research
+scripts are shipped for provenance and are not yet a full-style-clean tree.
 
 Before publishing a candidate tree:
 
@@ -128,7 +160,16 @@ deep-research export-public --out /tmp/deep-research-public-export
 deep-research release-audit --root /tmp/deep-research-public-export
 ```
 
+`export-public` refuses a dirty git tree by default so `PUBLIC_EXPORT_REPORT.json`
+maps to an exact commit. Use `--allow-dirty` only for local inspection exports.
+Audit the exported tree, not the raw git checkout.
+
 The audit fails on private files, local paths, filled secret assignments, generated bundles, model weights, and oversized files. It also enforces `PUBLIC_MANIFEST.json`, so files outside the explicit allowlist are rejected.
+
+For a Hugging Face dataset mirror, run `scripts/publish_huggingface.py --dry-run`
+first. The publish helper builds the same audited export, swaps in the Hugging
+Face dataset card for the upload copy, refreshes file hashes, and reads any
+credential only from `HF_TOKEN` or an existing Hugging Face login.
 
 If you run tests inside an exported candidate tree, rebuild the export before
 the final audit and before publishing. Runtime caches and bytecode are not part

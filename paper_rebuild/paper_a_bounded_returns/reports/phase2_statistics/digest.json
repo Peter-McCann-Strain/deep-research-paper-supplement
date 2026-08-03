@@ -1,0 +1,195 @@
+{
+  "gate1": {
+    "lr_stat": 982.4383273386356,
+    "df": 11,
+    "p": 0.0,
+    "pass": true,
+    "variance_query": 0.007990789290882478,
+    "variance_resid": 0.012092049722406002,
+    "icc": 0.3978914179212962,
+    "best_pattern": "base_p1",
+    "best_mean": 0.6737798148148149
+  },
+  "gate2": {
+    "sig_dims": [
+      "information_recall",
+      "factual_accuracy",
+      "coverage",
+      "analytical_depth",
+      "citation_quality",
+      "logical_coherence",
+      "organization",
+      "instruction_following",
+      "attribution_quality"
+    ],
+    "n_sig": 9
+  },
+  "gate3": {
+    "overall_sig_pairs": 54,
+    "overall_total_pairs": 66,
+    "top3": [
+      {
+        "a": "base_p11",
+        "b": "base_p4",
+        "delta": -0.9234945082691579,
+        "mean_diff": -0.3103337078651685,
+        "p_holm": 1.5560935005145835e-14
+      },
+      {
+        "a": "base_p4",
+        "b": "base_p9",
+        "delta": 0.9048148148148148,
+        "mean_diff": 0.3819911111111112,
+        "p_holm": 1.1507410704404881e-14
+      },
+      {
+        "a": "base_p1",
+        "b": "base_p11",
+        "delta": 0.9030425451331903,
+        "mean_diff": 0.3425544943820224,
+        "p_holm": 1.5560935005145835e-14
+      }
+    ]
+  },
+  "gate4": {
+    "source_interaction_p": 0.0,
+    "difficulty_interaction_p": 0.032956074816682834,
+    "source_sig": true,
+    "difficulty_sig": true
+  },
+  "gate5": {
+    "ablations": [
+      {
+        "ablation": "ablation_p3_no_quality_eval",
+        "base": "base_p3",
+        "mean_diff": -0.00656557321012696,
+        "ci": [
+          -0.021081725188209978,
+          0.007766965368472454
+        ],
+        "delta": -0.05284713964856652,
+        "p_holm": 0.46531967679921005,
+        "sig": false
+      },
+      {
+        "ablation": "ablation_p3_no_topic_mining",
+        "base": "base_p3",
+        "mean_diff": -0.001953448092415256,
+        "ci": [
+          -0.018220865290077687,
+          0.014569629503463973
+        ],
+        "delta": -0.027312060573282854,
+        "p_holm": 0.46531967679921005,
+        "sig": false
+      },
+      {
+        "ablation": "ablation_p4_fixed_perspectives",
+        "base": "base_p4",
+        "mean_diff": -0.030232685185185185,
+        "ci": [
+          -0.04358487962962962,
+          -0.016246895833333327
+        ],
+        "delta": -0.23530864197530865,
+        "p_holm": 0.00014490563743717886,
+        "sig": true
+      },
+      {
+        "ablation": "ablation_p4_no_conversations",
+        "base": "base_p4",
+        "mean_diff": -0.03653548148148148,
+        "ci": [
+          -0.05328658333333332,
+          -0.019876828703703713
+        ],
+        "delta": -0.23580246913580247,
+        "p_holm": 2.4989611270826553e-05,
+        "sig": true
+      },
+      {
+        "ablation": "ablation_p4_no_triangulation",
+        "base": "base_p4",
+        "mean_diff": -0.06023574074074074,
+        "ci": [
+          -0.07972050462962962,
+          -0.04243443981481481
+        ],
+        "delta": -0.38320987654320987,
+        "p_holm": 2.150951544590247e-09,
+        "sig": true
+      },
+      {
+        "ablation": "ablation_p5_fixed_width",
+        "base": "base_p5",
+        "mean_diff": -0.024026524390243914,
+        "ci": [
+          -0.04411605945121953,
+          -0.0038392022357723685
+        ],
+        "delta": -0.17355740630577038,
+        "p_holm": 0.021549181878463067,
+        "sig": true
+      },
+      {
+        "ablation": "ablation_p5_no_meta_eval",
+        "base": "base_p5",
+        "mean_diff": -0.047287887596899225,
+        "ci": [
+          -0.063761683624031,
+          -0.02913388323643413
+        ],
+        "delta": -0.2850189291508924,
+        "p_holm": 5.935481393832108e-06,
+        "sig": true
+      }
+    ]
+  },
+  "gate6": [
+    {
+      "label": "P4 vs P10 (best pipeline vs RL-7B)",
+      "a": "base_p4",
+      "b": "base_p10",
+      "n": 90,
+      "mean_a": 0.639691851851852,
+      "mean_b": 0.3357533333333333,
+      "p_a_wins": 1.0,
+      "p_rope": 0.0,
+      "p_b_wins": 0.0
+    },
+    {
+      "label": "P9 vs P10 (RL effect)",
+      "a": "base_p9",
+      "b": "base_p10",
+      "n": 90,
+      "mean_a": 0.25770074074074073,
+      "mean_b": 0.3357533333333333,
+      "p_a_wins": 2e-05,
+      "p_rope": 0.0,
+      "p_b_wins": 0.99998
+    },
+    {
+      "label": "P9 vs P0 (model scale)",
+      "a": "base_p9",
+      "b": "base_p0",
+      "n": 90,
+      "mean_a": 0.25770074074074073,
+      "mean_b": 0.488359586419753,
+      "p_a_wins": 0.0,
+      "p_rope": 0.0,
+      "p_b_wins": 1.0
+    }
+  ],
+  "gate7": {
+    "spearman_across_judges": {
+      "gpt52 vs claude_opus": NaN,
+      "gpt52 vs claude_sonnet": NaN,
+      "claude_opus vs claude_sonnet": NaN
+    },
+    "per_judge_omnibus_p": {
+      "gpt52": 1.1102230246251565e-16,
+      "claude_opus": 1.1102230246251565e-16,
+      "claude_sonnet": 1.1102230246251565e-16
+    }
+  }
+}

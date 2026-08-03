@@ -9,10 +9,12 @@
 ## Public Export Note
 
 This document records the historical methodology used for the paper. The GitHub
-export ships the API workflow in `deep_research/`, compact inputs, frozen
-reference summaries, public tests, and the final PDF. It does not ship the
-archived execution engine, local/GPU pattern implementations, raw reports, raw
-judge verdict trees, or historical model/search snapshots.
+export ships the API workflow in `deep_research/`, the reusable pattern and
+evaluation modules, compact inputs, compact derived analysis tables, frozen
+reference summaries, public tests, the Paper A rebuild package, and the final
+PDF. It does not ship raw generated report forests, raw judge-verdict packet
+directories, private notes, model weights, checkpoints, or historical
+model/search snapshots.
 
 Naming note: this protocol describes six orchestration archetypes (`P0`--`P5`).
 The public reference table contains thirteen frozen `base_p*` rows because the
@@ -62,7 +64,7 @@ The evaluation covers:
 
 - **6 patterns** spanning the complexity spectrum from single-call baseline to three-level hierarchical control (Section 3).
 - **90 evaluation queries** drawn from 5 benchmark sources with stratified sampling across domains, difficulty levels, and answer types (Section 4).
-- **7 quality dimensions** with 31 general criteria plus task-specific criteria per query (Section 5).
+- **Final 9-dimension rubric-v2 scoring** with 31 general criteria plus task-specific criteria per query (Section 5). Earlier planning notes used a 7-dimension shorthand; the shipped public data and API judge path use the 9 dimensions listed in `data/analysis/DATA_DICTIONARY.md`.
 - **Process metrics** at each pipeline stage: planning, query generation, retrieval, and synthesis (Section 6).
 - **Multi-judge ensemble evaluation** with inter-rater reliability measurement (Section 7).
 - **External benchmark calibration** against published system scores (Section 8).
@@ -74,7 +76,7 @@ The evaluation covers:
 | Principle | Implementation |
 |-----------|---------------|
 | Controlled comparison | Historical paper runs used a controlled GPT-4o/PTU generation environment with common search/extraction tools and API endpoints. Public API reruns use the current configured standard OpenAI and Anthropic model IDs and are documented as best-effort. |
-| Multi-dimensional assessment | Seven quality dimensions with distinct weights rather than a single holistic score. |
+| Multi-dimensional assessment | Final 9-dimension rubric-v2 scoring with distinct weights rather than a single holistic score. |
 | Measurement triangulation | LLM-as-judge verdicts, agentic citation verification, process metrics, human calibration, and concordance analysis. |
 | Reproducibility | Fixed random seeds, deterministic query manifest, checkpoint/resume execution, version-locked dependencies. |
 | Statistical rigor | Nonparametric tests appropriate for k-system comparison on n tasks, with multiplicity correction and effect sizes. |
@@ -314,7 +316,7 @@ The primary quality measurement used a historical LLM-as-judge ensemble to addre
 
 #### 7.1.1 Architecture
 
-- **Judge model:** GPT-5.2 on Azure (standard deployment, not PTU), configured via `JUDGE_MODEL`.
+- **Judge model:** the archived paper run used GPT-5.2 on Azure (standard deployment, not PTU), configured via `JUDGE_MODEL` in the legacy experiment code. The public current-API workflow uses `OPENAI_JUDGE_MODEL` from `.env.example` and records the exact model ID used in each rerun.
 - **Ensemble configuration:** Multiple judge instances (potentially different models or endpoints) each execute multiple passes.
 - **Passes per judge:** 3 (configurable via `EVAL_PIPELINE.passes_per_judge`).
 - **Total evaluations per report:** n_judges * passes_per_judge (e.g., 2 judges * 3 passes = 6 evaluations).
@@ -343,7 +345,7 @@ Negative-weight criteria (DRACO critical failures) are handled with inverted log
 
 Criteria order is randomized per judge pass to mitigate position bias (Zheng et al., 2023):
 
-- A deterministic seed is computed from `hash((judge_label, pass_number, query_id))`.
+- A deterministic seed is computed from SHA-256 over `(judge_label, pass_number, query_id)`; Python's process-randomized `hash()` is not used.
 - The criteria list is shuffled using this seed before building the judge prompt.
 - A mapping from shuffled index to original criterion index is maintained for verdict parsing.
 - Different passes see different criteria orderings, ensuring that no criterion is systematically advantaged or disadvantaged by its position.
@@ -716,7 +718,7 @@ The historical private judge pipeline orchestrated multi-judge evaluation of all
 |---------|---------------|
 | Random seeds | Fixed seed 42 for all sampling, stratification, and difficulty classification |
 | Query manifest | `data/eval_queries_v2.json` locked after generation; must not be regenerated between runs |
-| Criterion shuffling | Deterministic per-pass shuffle seeds via `hash((judge_label, pass_number, query_id))` |
+| Criterion shuffling | Deterministic per-pass shuffle seeds via SHA-256 over `(judge_label, pass_number, query_id)` |
 | Environment capture | `get_environment_metadata()` records Python version, platform, timestamp, model deployments |
 | Checkpoint versioning | JSON checkpoints include timestamp and metadata for auditability |
 

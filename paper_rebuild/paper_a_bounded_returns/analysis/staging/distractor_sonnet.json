@@ -1,0 +1,576 @@
+{
+  "experiment": "distractor_sonnet_crosscheck",
+  "date": "2026-07-27",
+  "judge_model": "claude-sonnet-5",
+  "judge_source": "distractor_j9",
+  "note": "Current-Claude (Sonnet 5 only, Opus dropped per 2026-07-27 efficiency decision) cross-family replication of the banked GPT-5.2 `frozen_defence.distractor` finding. Same 12 arms (3 patterns x 4 doses) x ~29 (82de3e92 quarantined; p4_d020 has 28), same seed/paired-bootstrap machinery as build_frozen_defence.py.",
+  "coverage": {
+    "p0_d000": 29,
+    "p0_d020": 29,
+    "p0_d040": 29,
+    "p0_d070": 29,
+    "p1_d000": 29,
+    "p1_d020": 29,
+    "p1_d040": 29,
+    "p1_d070": 29,
+    "p4_d000": 29,
+    "p4_d020": 28,
+    "p4_d040": 29,
+    "p4_d070": 29
+  },
+  "per_pattern": {
+    "p0": {
+      "per_dose": {
+        "d000": {
+          "dose": 0.0,
+          "overall": {
+            "mean": 0.8359,
+            "ci95": [
+              0.7949,
+              0.8771
+            ],
+            "n": 29
+          },
+          "factual_accuracy": {
+            "mean": 0.7716,
+            "ci95": [
+              0.6897,
+              0.8491
+            ],
+            "n": 29
+          }
+        },
+        "d020": {
+          "dose": 0.2,
+          "overall": {
+            "mean": 0.8272,
+            "ci95": [
+              0.7871,
+              0.867
+            ],
+            "n": 29
+          },
+          "factual_accuracy": {
+            "mean": 0.7457,
+            "ci95": [
+              0.6595,
+              0.8276
+            ],
+            "n": 29
+          }
+        },
+        "d040": {
+          "dose": 0.4,
+          "overall": {
+            "mean": 0.8146,
+            "ci95": [
+              0.7761,
+              0.8514
+            ],
+            "n": 29
+          },
+          "factual_accuracy": {
+            "mean": 0.7543,
+            "ci95": [
+              0.6724,
+              0.8276
+            ],
+            "n": 29
+          }
+        },
+        "d070": {
+          "dose": 0.7,
+          "overall": {
+            "mean": 0.8114,
+            "ci95": [
+              0.7502,
+              0.8663
+            ],
+            "n": 29
+          },
+          "factual_accuracy": {
+            "mean": 0.7629,
+            "ci95": [
+              0.6767,
+              0.8405
+            ],
+            "n": 29
+          }
+        }
+      },
+      "dose_slope_overall": {
+        "slope": -0.03631,
+        "ci95": [
+          -0.09902,
+          0.0225
+        ],
+        "p_two_sided_boot": 0.231,
+        "n_queries": 29
+      },
+      "dose_slope_factual": {
+        "slope": -0.00483,
+        "ci95": [
+          -0.10394,
+          0.09306
+        ],
+        "p_two_sided_boot": 0.927,
+        "n_queries": 29
+      },
+      "n_common_queries": 29
+    },
+    "p1": {
+      "per_dose": {
+        "d000": {
+          "dose": 0.0,
+          "overall": {
+            "mean": 0.8138,
+            "ci95": [
+              0.7636,
+              0.8608
+            ],
+            "n": 29
+          },
+          "factual_accuracy": {
+            "mean": 0.7457,
+            "ci95": [
+              0.6681,
+              0.8233
+            ],
+            "n": 29
+          }
+        },
+        "d020": {
+          "dose": 0.2,
+          "overall": {
+            "mean": 0.8733,
+            "ci95": [
+              0.8419,
+              0.9035
+            ],
+            "n": 29
+          },
+          "factual_accuracy": {
+            "mean": 0.8362,
+            "ci95": [
+              0.7716,
+              0.9009
+            ],
+            "n": 29
+          }
+        },
+        "d040": {
+          "dose": 0.4,
+          "overall": {
+            "mean": 0.8647,
+            "ci95": [
+              0.8313,
+              0.8961
+            ],
+            "n": 29
+          },
+          "factual_accuracy": {
+            "mean": 0.8103,
+            "ci95": [
+              0.7414,
+              0.875
+            ],
+            "n": 29
+          }
+        },
+        "d070": {
+          "dose": 0.7,
+          "overall": {
+            "mean": 0.821,
+            "ci95": [
+              0.7801,
+              0.8607
+            ],
+            "n": 29
+          },
+          "factual_accuracy": {
+            "mean": 0.8017,
+            "ci95": [
+              0.7371,
+              0.8664
+            ],
+            "n": 29
+          }
+        }
+      },
+      "dose_slope_overall": {
+        "slope": -0.00345,
+        "ci95": [
+          -0.04722,
+          0.03932
+        ],
+        "p_two_sided_boot": 0.8994,
+        "n_queries": 29
+      },
+      "dose_slope_factual": {
+        "slope": 0.05438,
+        "ci95": [
+          -0.03706,
+          0.15066
+        ],
+        "p_two_sided_boot": 0.269,
+        "n_queries": 29
+      },
+      "n_common_queries": 29
+    },
+    "p4": {
+      "per_dose": {
+        "d000": {
+          "dose": 0.0,
+          "overall": {
+            "mean": 0.8581,
+            "ci95": [
+              0.8196,
+              0.8933
+            ],
+            "n": 29
+          },
+          "factual_accuracy": {
+            "mean": 0.8103,
+            "ci95": [
+              0.7543,
+              0.8664
+            ],
+            "n": 29
+          }
+        },
+        "d020": {
+          "dose": 0.2,
+          "overall": {
+            "mean": 0.8742,
+            "ci95": [
+              0.832,
+              0.9132
+            ],
+            "n": 28
+          },
+          "factual_accuracy": {
+            "mean": 0.8929,
+            "ci95": [
+              0.8393,
+              0.942
+            ],
+            "n": 28
+          }
+        },
+        "d040": {
+          "dose": 0.4,
+          "overall": {
+            "mean": 0.8864,
+            "ci95": [
+              0.8481,
+              0.9201
+            ],
+            "n": 29
+          },
+          "factual_accuracy": {
+            "mean": 0.875,
+            "ci95": [
+              0.8276,
+              0.9181
+            ],
+            "n": 29
+          }
+        },
+        "d070": {
+          "dose": 0.7,
+          "overall": {
+            "mean": 0.8358,
+            "ci95": [
+              0.7905,
+              0.8806
+            ],
+            "n": 29
+          },
+          "factual_accuracy": {
+            "mean": 0.7888,
+            "ci95": [
+              0.7155,
+              0.8621
+            ],
+            "n": 29
+          }
+        }
+      },
+      "dose_slope_overall": {
+        "slope": -0.02653,
+        "ci95": [
+          -0.08027,
+          0.02443
+        ],
+        "p_two_sided_boot": 0.3166,
+        "n_queries": 28
+      },
+      "dose_slope_factual": {
+        "slope": -0.03922,
+        "ci95": [
+          -0.17148,
+          0.08845
+        ],
+        "p_two_sided_boot": 0.5608,
+        "n_queries": 28
+      },
+      "n_common_queries": 28
+    }
+  },
+  "cluster_vs_p0": {
+    "p1_minus_p0": {
+      "gap_by_dose": {
+        "d000": {
+          "dose": 0.0,
+          "overall_gap": {
+            "point": -0.0221,
+            "ci95": [
+              -0.063,
+              0.0198
+            ],
+            "p_two_sided_boot": 0.2962,
+            "n_pairs": 29
+          },
+          "factual_gap": {
+            "point": -0.0259,
+            "ci95": [
+              -0.1078,
+              0.0603
+            ],
+            "p_two_sided_boot": 0.5322,
+            "n_pairs": 29
+          }
+        },
+        "d020": {
+          "dose": 0.2,
+          "overall_gap": {
+            "point": 0.0462,
+            "ci95": [
+              0.0155,
+              0.079
+            ],
+            "p_two_sided_boot": 0.002,
+            "n_pairs": 29
+          },
+          "factual_gap": {
+            "point": 0.0905,
+            "ci95": [
+              0.0216,
+              0.1595
+            ],
+            "p_two_sided_boot": 0.007,
+            "n_pairs": 29
+          }
+        },
+        "d040": {
+          "dose": 0.4,
+          "overall_gap": {
+            "point": 0.05,
+            "ci95": [
+              0.0228,
+              0.0767
+            ],
+            "p_two_sided_boot": 0.0002,
+            "n_pairs": 29
+          },
+          "factual_gap": {
+            "point": 0.056,
+            "ci95": [
+              -0.0129,
+              0.125
+            ],
+            "p_two_sided_boot": 0.0942,
+            "n_pairs": 29
+          }
+        },
+        "d070": {
+          "dose": 0.7,
+          "overall_gap": {
+            "point": 0.0097,
+            "ci95": [
+              -0.0342,
+              0.0564
+            ],
+            "p_two_sided_boot": 0.6888,
+            "n_pairs": 29
+          },
+          "factual_gap": {
+            "point": 0.0388,
+            "ci95": [
+              -0.0431,
+              0.1207
+            ],
+            "p_two_sided_boot": 0.3368,
+            "n_pairs": 29
+          }
+        }
+      },
+      "gap_slope_overall": {
+        "slope": 0.03285,
+        "ci95": [
+          -0.04968,
+          0.12012
+        ],
+        "p_two_sided_boot": 0.446,
+        "n_queries": 29
+      },
+      "gap_slope_factual": {
+        "slope": 0.05922,
+        "ci95": [
+          -0.08581,
+          0.1994
+        ],
+        "p_two_sided_boot": 0.4212,
+        "n_queries": 29
+      },
+      "n_common_queries": 29,
+      "orchestration_value_grows_with_noise_overall": true
+    },
+    "p4_minus_p0": {
+      "gap_by_dose": {
+        "d000": {
+          "dose": 0.0,
+          "overall_gap": {
+            "point": 0.0222,
+            "ci95": [
+              -0.0151,
+              0.0626
+            ],
+            "p_two_sided_boot": 0.2698,
+            "n_pairs": 29
+          },
+          "factual_gap": {
+            "point": 0.0388,
+            "ci95": [
+              -0.0517,
+              0.1379
+            ],
+            "p_two_sided_boot": 0.3656,
+            "n_pairs": 29
+          }
+        },
+        "d020": {
+          "dose": 0.2,
+          "overall_gap": {
+            "point": 0.0435,
+            "ci95": [
+              0.0116,
+              0.0728
+            ],
+            "p_two_sided_boot": 0.01,
+            "n_pairs": 28
+          },
+          "factual_gap": {
+            "point": 0.1384,
+            "ci95": [
+              0.0491,
+              0.2321
+            ],
+            "p_two_sided_boot": 0.0024,
+            "n_pairs": 28
+          }
+        },
+        "d040": {
+          "dose": 0.4,
+          "overall_gap": {
+            "point": 0.0717,
+            "ci95": [
+              0.0243,
+              0.1192
+            ],
+            "p_two_sided_boot": 0.0034,
+            "n_pairs": 29
+          },
+          "factual_gap": {
+            "point": 0.1207,
+            "ci95": [
+              0.0388,
+              0.2069
+            ],
+            "p_two_sided_boot": 0.002,
+            "n_pairs": 29
+          }
+        },
+        "d070": {
+          "dose": 0.7,
+          "overall_gap": {
+            "point": 0.0244,
+            "ci95": [
+              -0.0156,
+              0.0668
+            ],
+            "p_two_sided_boot": 0.2348,
+            "n_pairs": 29
+          },
+          "factual_gap": {
+            "point": 0.0259,
+            "ci95": [
+              -0.0302,
+              0.0862
+            ],
+            "p_two_sided_boot": 0.3314,
+            "n_pairs": 29
+          }
+        }
+      },
+      "gap_slope_overall": {
+        "slope": 0.00841,
+        "ci95": [
+          -0.06963,
+          0.08712
+        ],
+        "p_two_sided_boot": 0.8286,
+        "n_queries": 28
+      },
+      "gap_slope_factual": {
+        "slope": -0.03922,
+        "ci95": [
+          -0.20195,
+          0.11807
+        ],
+        "p_two_sided_boot": 0.6486,
+        "n_queries": 28
+      },
+      "n_common_queries": 28,
+      "orchestration_value_grows_with_noise_overall": true
+    }
+  },
+  "cross_family_verdict": {
+    "p1_minus_p0": {
+      "gpt52_gap_slope_overall": 0.01963,
+      "gpt52_gap_slope_ci95": [
+        -0.01993,
+        0.059
+      ],
+      "gpt52_significant": false,
+      "gpt52_grows_with_noise_point_estimate": true,
+      "sonnet_gap_slope_overall": 0.03285,
+      "sonnet_gap_slope_ci95": [
+        -0.04968,
+        0.12012
+      ],
+      "sonnet_significant": false,
+      "sonnet_grows_with_noise_point_estimate": true,
+      "either_judge_significant": false,
+      "reading": "Neither judge's gap-slope CI excludes zero -- point-estimate sign differences between judges are noise around a null, not a genuine cross-family disagreement."
+    },
+    "p4_minus_p0": {
+      "gpt52_gap_slope_overall": -0.01503,
+      "gpt52_gap_slope_ci95": [
+        -0.05651,
+        0.02447
+      ],
+      "gpt52_significant": false,
+      "gpt52_grows_with_noise_point_estimate": false,
+      "sonnet_gap_slope_overall": 0.00841,
+      "sonnet_gap_slope_ci95": [
+        -0.06963,
+        0.08712
+      ],
+      "sonnet_significant": false,
+      "sonnet_grows_with_noise_point_estimate": true,
+      "either_judge_significant": false,
+      "reading": "Neither judge's gap-slope CI excludes zero -- point-estimate sign differences between judges are noise around a null, not a genuine cross-family disagreement."
+    }
+  }
+}

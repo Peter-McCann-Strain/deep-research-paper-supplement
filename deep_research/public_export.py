@@ -140,6 +140,7 @@ def _write_public_report(
     audit_findings: list[AuditFinding] | None,
     source_root: Path,
     manifest_path: Path,
+    git_metadata: dict[str, Any],
 ) -> Path:
     report_path = output_root / EXPORT_REPORT_NAME
     report = {
@@ -147,7 +148,7 @@ def _write_public_report(
         "created_utc": datetime.now(UTC).isoformat(),
         "manifest": DEFAULT_MANIFEST_NAME,
         "manifest_sha256": _sha256_file(manifest_path),
-        "source_git": _git_metadata(source_root),
+        "source_git": git_metadata,
         "python_version": sys.version.split()[0],
         "platform": platform.platform(),
         "files_copied": files,
@@ -171,6 +172,7 @@ def export_public_tree(
     manifest_path: Path | None = None,
     force: bool = False,
     max_file_mb: int | None = None,
+    allow_dirty: bool = False,
 ) -> PublicExportResult:
     """Copy the manifest allowlist into ``output_root`` and audit the result."""
     source_root = source_root.resolve()
@@ -180,6 +182,13 @@ def export_public_tree(
 
     if output_root == source_root or source_root in output_root.parents:
         raise ValueError("output directory must be outside the source repository")
+
+    git_metadata = _git_metadata(source_root)
+    if git_metadata.get("dirty") is True and not allow_dirty:
+        raise ValueError(
+            "source git tree has uncommitted changes; commit them before exporting or pass "
+            "--allow-dirty for an explicitly non-release export"
+        )
 
     selected = _manifest_files(source_root, manifest)
     _prepare_output(output_root, force=force)
@@ -200,6 +209,7 @@ def export_public_tree(
         audit_findings=None,
         source_root=source_root,
         manifest_path=manifest_path,
+        git_metadata=git_metadata,
     )
     first_audit = audit_release_tree(
         output_root,
@@ -214,6 +224,7 @@ def export_public_tree(
         audit_findings=first_audit.findings,
         source_root=source_root,
         manifest_path=manifest_path,
+        git_metadata=git_metadata,
     )
     final_audit = audit_release_tree(
         output_root,

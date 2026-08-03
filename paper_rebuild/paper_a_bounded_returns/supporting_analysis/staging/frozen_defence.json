@@ -1,0 +1,909 @@
+{
+ "key": "frozen_defence",
+ "generated_utc": "2026-07-28T17:27:38.620565+00:00",
+ "seed": 20260705,
+ "n_boot": 10000,
+ "resampling_unit": "query (frozen greedy decode => no decode-seed variance)",
+ "judge_model": "gpt-5.2",
+ "complete": true,
+ "rebuts": [
+  "Argus 2605.16217",
+  "TTD-DR 2507.16075",
+  "GRACE 2606.16151"
+ ],
+ "synth_ablation": {
+  "description": "Same 30 frozen-oracle evidence sets written by 5 synthesis scaffolds (single_pass baseline + draft_revise / map_reduce / beam / verifier_select). KEY TEST: does any scaffold beat single_pass on FACTUAL accuracy given identical evidence? If not, orchestration's factual gain is caused by the evidence, not the synthesis machinery -> finding (iv) hardens to causal.",
+  "coverage": {
+   "single_pass": {
+    "got": 30,
+    "expected": 30
+   },
+   "draft_revise": {
+    "got": 30,
+    "expected": 30
+   },
+   "map_reduce": {
+    "got": 30,
+    "expected": 30
+   },
+   "beam": {
+    "got": 30,
+    "expected": 30
+   },
+   "verifier_select": {
+    "got": 30,
+    "expected": 30
+   }
+  },
+  "per_scaffold": {
+   "single_pass": {
+    "factual_accuracy": {
+     "mean": 0.3125,
+     "ci95": [
+      0.2583,
+      0.3667
+     ],
+     "n": 30
+    },
+    "citation_quality": {
+     "mean": 0.925,
+     "ci95": [
+      0.875,
+      0.9667
+     ],
+     "n": 30
+    },
+    "overall": {
+     "mean": 0.5113,
+     "ci95": [
+      0.4596,
+      0.5611
+     ],
+     "n": 30
+    }
+   },
+   "draft_revise": {
+    "factual_accuracy": {
+     "mean": 0.3917,
+     "ci95": [
+      0.3458,
+      0.4375
+     ],
+     "n": 30
+    },
+    "citation_quality": {
+     "mean": 0.9667,
+     "ci95": [
+      0.9333,
+      0.9917
+     ],
+     "n": 30
+    },
+    "overall": {
+     "mean": 0.5712,
+     "ci95": [
+      0.527,
+      0.6143
+     ],
+     "n": 30
+    }
+   },
+   "map_reduce": {
+    "factual_accuracy": {
+     "mean": 0.3,
+     "ci95": [
+      0.25,
+      0.35
+     ],
+     "n": 30
+    },
+    "citation_quality": {
+     "mean": 0.9333,
+     "ci95": [
+      0.8833,
+      0.975
+     ],
+     "n": 30
+    },
+    "overall": {
+     "mean": 0.5186,
+     "ci95": [
+      0.4737,
+      0.5626
+     ],
+     "n": 30
+    }
+   },
+   "beam": {
+    "factual_accuracy": {
+     "mean": 0.3417,
+     "ci95": [
+      0.2875,
+      0.3958
+     ],
+     "n": 30
+    },
+    "citation_quality": {
+     "mean": 0.9667,
+     "ci95": [
+      0.9333,
+      0.9917
+     ],
+     "n": 30
+    },
+    "overall": {
+     "mean": 0.5489,
+     "ci95": [
+      0.5006,
+      0.5972
+     ],
+     "n": 30
+    }
+   },
+   "verifier_select": {
+    "factual_accuracy": {
+     "mean": 0.3,
+     "ci95": [
+      0.25,
+      0.3542
+     ],
+     "n": 30
+    },
+    "citation_quality": {
+     "mean": 0.9333,
+     "ci95": [
+      0.8917,
+      0.9667
+     ],
+     "n": 30
+    },
+    "overall": {
+     "mean": 0.5033,
+     "ci95": [
+      0.4502,
+      0.5588
+     ],
+     "n": 30
+    }
+   }
+  },
+  "contrasts_vs_single_pass": {
+   "draft_revise_minus_single_pass": {
+    "factual_accuracy_diff": {
+     "point": 0.0792,
+     "ci95": [
+      0.0375,
+      0.125
+     ],
+     "p_two_sided_boot": "<1e-04",
+     "n_pairs": 30
+    },
+    "citation_quality_diff": {
+     "point": 0.0417,
+     "ci95": [
+      -0.0083,
+      0.1
+     ],
+     "p_two_sided_boot": 0.0714,
+     "n_pairs": 30
+    },
+    "beats_single_pass_factual": true,
+    "n_common_queries": 30
+   },
+   "map_reduce_minus_single_pass": {
+    "factual_accuracy_diff": {
+     "point": -0.0125,
+     "ci95": [
+      -0.05,
+      0.025
+     ],
+     "p_two_sided_boot": 0.4304,
+     "n_pairs": 30
+    },
+    "citation_quality_diff": {
+     "point": 0.0083,
+     "ci95": [
+      -0.0583,
+      0.075
+     ],
+     "p_two_sided_boot": 0.7248,
+     "n_pairs": 30
+    },
+    "beats_single_pass_factual": false,
+    "n_common_queries": 30
+   },
+   "beam_minus_single_pass": {
+    "factual_accuracy_diff": {
+     "point": 0.0292,
+     "ci95": [
+      -0.0083,
+      0.075
+     ],
+     "p_two_sided_boot": 0.1038,
+     "n_pairs": 30
+    },
+    "citation_quality_diff": {
+     "point": 0.0417,
+     "ci95": [
+      -0.0083,
+      0.0917
+     ],
+     "p_two_sided_boot": 0.0698,
+     "n_pairs": 30
+    },
+    "beats_single_pass_factual": false,
+    "n_common_queries": 30
+   },
+   "verifier_select_minus_single_pass": {
+    "factual_accuracy_diff": {
+     "point": -0.0125,
+     "ci95": [
+      -0.0542,
+      0.025
+     ],
+     "p_two_sided_boot": 0.479,
+     "n_pairs": 30
+    },
+    "citation_quality_diff": {
+     "point": 0.0083,
+     "ci95": [
+      -0.05,
+      0.0667
+     ],
+     "p_two_sided_boot": 0.6966,
+     "n_pairs": 30
+    },
+    "beats_single_pass_factual": false,
+    "n_common_queries": 30
+   }
+  },
+  "best_scaffold_by_factual": "draft_revise",
+  "n_scaffolds_beating_single_pass_factual": 1,
+  "finding_iv_hardens_causal": false,
+  "interpretation": "ACTUAL RESULT: n_scaffolds_beating_single_pass_factual = 1 (draft_revise; map_reduce/beam/verifier_select do not), so finding (iv) does NOT harden to fully causal -- a specific synthesis choice (draft-then-revise) recovers part of the factual gap even under identical frozen evidence. This partially rebuts, rather than fully rebuts, Argus / TTD-DR / GRACE test-time-scaling claims: the P1/P4>P0 factual gap is mostly attributable to the evidence, but not entirely -- report the draft_revise exception explicitly rather than a clean 'evidence alone' claim."
+ },
+ "counterfactual": {
+  "description": "Frozen evidence carries an attribute that CONTRADICTS the model's likely prior. Override-rate = fraction of decided probes where the report reverted to its prior instead of the (counterfactual) frozen fact. GPT-5.2 separately scores evidence-faithfulness of the same 30 reports.",
+  "coverage": {
+   "got": 30,
+   "expected": 30,
+   "n_probes": 30
+  },
+  "override_rate_probe_class": {
+   "class_counts": {
+    "faithful": 24,
+    "other": 5,
+    "prior_override": 1
+   },
+   "override_rate": 0.04,
+   "n_decided": 25
+  },
+  "override_rate_report_class": {
+   "class_counts": {
+    "faithful": 8,
+    "other": 9,
+    "prior_override": 5,
+    "ambiguous": 8
+   },
+   "override_rate": 0.3846,
+   "n_decided": 13
+  },
+  "override_summary_rule": {
+   "n_probes": 30,
+   "class_counts": {
+    "faithful": 24,
+    "other": 5,
+    "prior_override": 1
+   },
+   "override_rate_probe": 0.04,
+   "override_rate_note": "prior_override / (prior_override + faithful); ambiguous/other excluded",
+   "timestamp": "2026-07-04T02:58:05.301509+00:00"
+  },
+  "gpt52_faithfulness": {
+   "factual_accuracy": {
+    "mean": 0.2625,
+    "ci95": [
+     0.2125,
+     0.3167
+    ],
+    "n": 30
+   },
+   "attribution_quality": {
+    "mean": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "n": 30
+   },
+   "overall": {
+    "mean": 0.4908,
+    "ci95": [
+     0.4379,
+     0.5438
+    ],
+    "n": 30
+   }
+  },
+  "interpretation": "A low override-rate + high GPT-5.2 factual/attribution faithfulness => the writer follows the frozen evidence rather than its prior, so measured quality tracks the evidence, not the model's memory -> supports the evidence-is-the-cause reading of the orchestration gain."
+ },
+ "distractor": {
+  "description": "P0 / P1 / P4 write from a frozen corpus doped with distractor passages at 0 / 20 / 40 / 70%. Tests whether orchestration's value re-emerges as the evidence quality degrades (cluster-minus-P0 gap widening with dose).",
+  "doses": {
+   "d000": 0.0,
+   "d020": 0.2,
+   "d040": 0.4,
+   "d070": 0.7
+  },
+  "coverage": {
+   "p0_d000": {
+    "got": 30,
+    "expected": 30
+   },
+   "p0_d020": {
+    "got": 30,
+    "expected": 30
+   },
+   "p0_d040": {
+    "got": 30,
+    "expected": 30
+   },
+   "p0_d070": {
+    "got": 30,
+    "expected": 30
+   },
+   "p1_d000": {
+    "got": 30,
+    "expected": 30
+   },
+   "p1_d020": {
+    "got": 30,
+    "expected": 30
+   },
+   "p1_d040": {
+    "got": 30,
+    "expected": 30
+   },
+   "p1_d070": {
+    "got": 30,
+    "expected": 30
+   },
+   "p4_d000": {
+    "got": 30,
+    "expected": 30
+   },
+   "p4_d020": {
+    "got": 29,
+    "expected": 29
+   },
+   "p4_d040": {
+    "got": 30,
+    "expected": 30
+   },
+   "p4_d070": {
+    "got": 30,
+    "expected": 30
+   }
+  },
+  "per_pattern": {
+   "p0": {
+    "per_dose": {
+     "d000": {
+      "dose": 0.0,
+      "overall": {
+       "mean": 0.5608,
+       "ci95": [
+        0.5186,
+        0.6017
+       ],
+       "n": 30
+      },
+      "factual_accuracy": {
+       "mean": 0.4125,
+       "ci95": [
+        0.3792,
+        0.45
+       ],
+       "n": 30
+      }
+     },
+     "d020": {
+      "dose": 0.2,
+      "overall": {
+       "mean": 0.5664,
+       "ci95": [
+        0.521,
+        0.6091
+       ],
+       "n": 30
+      },
+      "factual_accuracy": {
+       "mean": 0.3625,
+       "ci95": [
+        0.3125,
+        0.4125
+       ],
+       "n": 30
+      }
+     },
+     "d040": {
+      "dose": 0.4,
+      "overall": {
+       "mean": 0.5689,
+       "ci95": [
+        0.526,
+        0.6088
+       ],
+       "n": 30
+      },
+      "factual_accuracy": {
+       "mean": 0.4,
+       "ci95": [
+        0.3625,
+        0.4376
+       ],
+       "n": 30
+      }
+     },
+     "d070": {
+      "dose": 0.7,
+      "overall": {
+       "mean": 0.5599,
+       "ci95": [
+        0.5202,
+        0.5997
+       ],
+       "n": 30
+      },
+      "factual_accuracy": {
+       "mean": 0.4,
+       "ci95": [
+        0.3542,
+        0.4458
+       ],
+       "n": 30
+      }
+     }
+    },
+    "dose_slope_overall": {
+     "slope": -0.0016,
+     "ci95": [
+      -0.02435,
+      0.02039
+     ],
+     "p_two_sided_boot": 0.9112,
+     "n_queries": 30
+    },
+    "dose_slope_factual": {
+     "slope": 0.00234,
+     "ci95": [
+      -0.05218,
+      0.05413
+     ],
+     "p_two_sided_boot": 0.9368,
+     "n_queries": 30
+    },
+    "n_common_queries": 30
+   },
+   "p1": {
+    "per_dose": {
+     "d000": {
+      "dose": 0.0,
+      "overall": {
+       "mean": 0.5738,
+       "ci95": [
+        0.5342,
+        0.6133
+       ],
+       "n": 30
+      },
+      "factual_accuracy": {
+       "mean": 0.3708,
+       "ci95": [
+        0.3333,
+        0.4125
+       ],
+       "n": 30
+      }
+     },
+     "d020": {
+      "dose": 0.2,
+      "overall": {
+       "mean": 0.5918,
+       "ci95": [
+        0.55,
+        0.6336
+       ],
+       "n": 30
+      },
+      "factual_accuracy": {
+       "mean": 0.4125,
+       "ci95": [
+        0.3708,
+        0.4542
+       ],
+       "n": 30
+      }
+     },
+     "d040": {
+      "dose": 0.4,
+      "overall": {
+       "mean": 0.582,
+       "ci95": [
+        0.5381,
+        0.6248
+       ],
+       "n": 30
+      },
+      "factual_accuracy": {
+       "mean": 0.4,
+       "ci95": [
+        0.35,
+        0.45
+       ],
+       "n": 30
+      }
+     },
+     "d070": {
+      "dose": 0.7,
+      "overall": {
+       "mean": 0.591,
+       "ci95": [
+        0.5502,
+        0.6307
+       ],
+       "n": 30
+      },
+      "factual_accuracy": {
+       "mean": 0.3833,
+       "ci95": [
+        0.3417,
+        0.425
+       ],
+       "n": 30
+      }
+     }
+    },
+    "dose_slope_overall": {
+     "slope": 0.01803,
+     "ci95": [
+      -0.01538,
+      0.05212
+     ],
+     "p_two_sided_boot": 0.2948,
+     "n_queries": 30
+    },
+    "dose_slope_factual": {
+     "slope": 0.00623,
+     "ci95": [
+      -0.03934,
+      0.05101
+     ],
+     "p_two_sided_boot": 0.788,
+     "n_queries": 30
+    },
+    "n_common_queries": 30
+   },
+   "p4": {
+    "per_dose": {
+     "d000": {
+      "dose": 0.0,
+      "overall": {
+       "mean": 0.5728,
+       "ci95": [
+        0.5343,
+        0.6089
+       ],
+       "n": 30
+      },
+      "factual_accuracy": {
+       "mean": 0.3542,
+       "ci95": [
+        0.3208,
+        0.3875
+       ],
+       "n": 30
+      }
+     },
+     "d020": {
+      "dose": 0.2,
+      "overall": {
+       "mean": 0.5853,
+       "ci95": [
+        0.5415,
+        0.628
+       ],
+       "n": 29
+      },
+      "factual_accuracy": {
+       "mean": 0.4009,
+       "ci95": [
+        0.3578,
+        0.4483
+       ],
+       "n": 29
+      }
+     },
+     "d040": {
+      "dose": 0.4,
+      "overall": {
+       "mean": 0.5782,
+       "ci95": [
+        0.5425,
+        0.6123
+       ],
+       "n": 30
+      },
+      "factual_accuracy": {
+       "mean": 0.3958,
+       "ci95": [
+        0.3625,
+        0.4292
+       ],
+       "n": 30
+      }
+     },
+     "d070": {
+      "dose": 0.7,
+      "overall": {
+       "mean": 0.5667,
+       "ci95": [
+        0.5233,
+        0.6086
+       ],
+       "n": 30
+      },
+      "factual_accuracy": {
+       "mean": 0.3792,
+       "ci95": [
+        0.3333,
+        0.4208
+       ],
+       "n": 30
+      }
+     }
+    },
+    "dose_slope_overall": {
+     "slope": -0.01504,
+     "ci95": [
+      -0.05069,
+      0.02185
+     ],
+     "p_two_sided_boot": 0.4306,
+     "n_queries": 29
+    },
+    "dose_slope_factual": {
+     "slope": 0.0137,
+     "ci95": [
+      -0.056,
+      0.07896
+     ],
+     "p_two_sided_boot": 0.6606,
+     "n_queries": 29
+    },
+    "n_common_queries": 29
+   }
+  },
+  "cluster_vs_p0": {
+   "p1_minus_p0": {
+    "gap_by_dose": {
+     "d000": {
+      "dose": 0.0,
+      "overall_gap": {
+       "point": 0.013,
+       "ci95": [
+        -0.0119,
+        0.0373
+       ],
+       "p_two_sided_boot": 0.2928,
+       "n_pairs": 30
+      },
+      "factual_gap": {
+       "point": -0.0417,
+       "ci95": [
+        -0.0833,
+        0.0
+       ],
+       "p_two_sided_boot": 0.0414,
+       "n_pairs": 30
+      }
+     },
+     "d020": {
+      "dose": 0.2,
+      "overall_gap": {
+       "point": 0.0254,
+       "ci95": [
+        -0.0053,
+        0.0546
+       ],
+       "p_two_sided_boot": 0.104,
+       "n_pairs": 30
+      },
+      "factual_gap": {
+       "point": 0.05,
+       "ci95": [
+        -0.0042,
+        0.1042
+       ],
+       "p_two_sided_boot": 0.0642,
+       "n_pairs": 30
+      }
+     },
+     "d040": {
+      "dose": 0.4,
+      "overall_gap": {
+       "point": 0.0131,
+       "ci95": [
+        -0.0111,
+        0.0367
+       ],
+       "p_two_sided_boot": 0.2756,
+       "n_pairs": 30
+      },
+      "factual_gap": {
+       "point": 0.0,
+       "ci95": [
+        -0.0542,
+        0.05
+       ],
+       "p_two_sided_boot": 0.9292,
+       "n_pairs": 30
+      }
+     },
+     "d070": {
+      "dose": 0.7,
+      "overall_gap": {
+       "point": 0.0311,
+       "ci95": [
+        0.0069,
+        0.0556
+       ],
+       "p_two_sided_boot": 0.0132,
+       "n_pairs": 30
+      },
+      "factual_gap": {
+       "point": -0.0167,
+       "ci95": [
+        -0.0625,
+        0.0292
+       ],
+       "p_two_sided_boot": 0.4192,
+       "n_pairs": 30
+      }
+     }
+    },
+    "gap_slope_overall": {
+     "slope": 0.01963,
+     "ci95": [
+      -0.01993,
+      0.059
+     ],
+     "p_two_sided_boot": 0.3288,
+     "n_queries": 30
+    },
+    "gap_slope_factual": {
+     "slope": 0.00389,
+     "ci95": [
+      -0.06738,
+      0.07517
+     ],
+     "p_two_sided_boot": 0.8962,
+     "n_queries": 30
+    },
+    "n_common_queries": 30,
+    "orchestration_value_grows_with_noise_overall": true,
+    "orchestration_value_grows_with_noise_significant": false
+   },
+   "p4_minus_p0": {
+    "gap_by_dose": {
+     "d000": {
+      "dose": 0.0,
+      "overall_gap": {
+       "point": 0.012,
+       "ci95": [
+        -0.0088,
+        0.0308
+       ],
+       "p_two_sided_boot": 0.2474,
+       "n_pairs": 30
+      },
+      "factual_gap": {
+       "point": -0.0583,
+       "ci95": [
+        -0.1,
+        -0.0167
+       ],
+       "p_two_sided_boot": 0.0062,
+       "n_pairs": 30
+      }
+     },
+     "d020": {
+      "dose": 0.2,
+      "overall_gap": {
+       "point": 0.0188,
+       "ci95": [
+        -0.0041,
+        0.0431
+       ],
+       "p_two_sided_boot": 0.1146,
+       "n_pairs": 29
+      },
+      "factual_gap": {
+       "point": 0.0388,
+       "ci95": [
+        -0.0172,
+        0.0905
+       ],
+       "p_two_sided_boot": 0.1428,
+       "n_pairs": 29
+      }
+     },
+     "d040": {
+      "dose": 0.4,
+      "overall_gap": {
+       "point": 0.0093,
+       "ci95": [
+        -0.0122,
+        0.031
+       ],
+       "p_two_sided_boot": 0.3924,
+       "n_pairs": 30
+      },
+      "factual_gap": {
+       "point": -0.0042,
+       "ci95": [
+        -0.05,
+        0.0417
+       ],
+       "p_two_sided_boot": 0.774,
+       "n_pairs": 30
+      }
+     },
+     "d070": {
+      "dose": 0.7,
+      "overall_gap": {
+       "point": 0.0068,
+       "ci95": [
+        -0.0194,
+        0.0325
+       ],
+       "p_two_sided_boot": 0.6036,
+       "n_pairs": 30
+      },
+      "factual_gap": {
+       "point": -0.0208,
+       "ci95": [
+        -0.0667,
+        0.0292
+       ],
+       "p_two_sided_boot": 0.3412,
+       "n_pairs": 30
+      }
+     }
+    },
+    "gap_slope_overall": {
+     "slope": -0.01503,
+     "ci95": [
+      -0.05651,
+      0.02447
+     ],
+     "p_two_sided_boot": 0.4728,
+     "n_queries": 29
+    },
+    "gap_slope_factual": {
+     "slope": 0.0,
+     "ci95": [
+      -0.08984,
+      0.08581
+     ],
+     "p_two_sided_boot": 0.9942,
+     "n_queries": 29
+    },
+    "n_common_queries": 29,
+    "orchestration_value_grows_with_noise_overall": false,
+    "orchestration_value_grows_with_noise_significant": false
+   }
+  },
+  "interpretation": "NULL RESULT, not a defence: neither cluster's gap_slope_overall CI excludes zero (p1_minus_p0 point +0.020, CI crosses 0, p=0.33; p4_minus_p0 point -0.015, CI crosses 0, p=0.47 -- p4's own point estimate is NEGATIVE, the opposite sign from p1). There is no statistically supported evidence that orchestration's advantage over P0 grows as injected-noise dose rises; any apparent 'value reappears under noise' reading is noise around a null, not a finding. This is corroborated by an independent Sonnet-5 judge crosscheck (see distractor_sonnet_crosscheck), which replicates the null under a different judge family."
+ }
+}

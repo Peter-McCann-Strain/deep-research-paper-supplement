@@ -1,0 +1,15 @@
+\begin{tabular}{lrrr}
+\toprule
+Benchmark & P9 (Qwen-7B) & P10 (DeepRes-7B) & $\Delta_{\mathrm{RL}}$\\
+\midrule
+deepsearch\_qa & 0.042 & 0.165 & +0.123 \\
+draco & 0.078 & 0.133 & +0.055 \\
+freshwiki & 0.103 & 0.362 & +0.259 \\
+litqa2 & 0.107 & 0.260 & +0.153 \\
+research\_qa & 0.188 & 0.244 & +0.057 \\
+\midrule
+Macro mean & 0.103 & 0.233 & +0.130 \\
+\midrule
+\multicolumn{4}{l}{\footnotesize Paired RL-training effect $=+0.130$, 95\% CI [0.092, 0.170], Wilcoxon $p=0.000$ ($n=75$ pairs, GPT-5.2 judge).} \\
+\bottomrule
+\end{tabular}

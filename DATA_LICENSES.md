@@ -14,6 +14,7 @@ Public releases must keep only compact, reviewed inputs in GitHub. Large generat
 | `data/protocol_a_stratified_v2.json` | Protocol A stratification manifest | Included as derived metadata |
 | `data/variance_stratified.json` | Variance stratification manifest | Included as derived metadata |
 | `data/public_judge_criteria.json` | Public API judge criteria | Included under Apache-2.0 with the repository code |
+| `data/analysis/*.parquet` | Compact derived analysis tables used by the Paper A rebuild | Included as public supplementary data; raw report and judge forests remain excluded |
 
 ## Query Source Licenses
 
@@ -31,7 +32,12 @@ The public query manifests are research prompts and metadata for reproducing the
 
 ## Excluded By Policy
 
-The public manifest excludes paper drafts and LaTeX sources, submission bundles, private notes, outreach messages, local paths, generated report forests, cached search/API payloads, human-label packets, model weights, checkpoints, and large upstream benchmark corpora.
+The public manifest excludes paper drafts, private/submission LaTeX sources,
+submission bundles, private notes, outreach messages, local paths, generated
+report forests, cached search/API payloads, human-label packets, model weights,
+checkpoints, and large upstream benchmark corpora. The final scrubbed manuscript
+source under `paper_rebuild/` is included only so public users can rebuild the
+paper artifacts.
 
 The default public reproduction path is API-backed and best-effort. It does not require downloading model weights, frozen caches, or archived verdict corpora.
 

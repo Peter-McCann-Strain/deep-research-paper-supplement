@@ -1,0 +1,126 @@
+{
+  "experiment": "frozen_vintage_3family",
+  "date": "2026-07-24",
+  "note": "current-Claude robustness for `frozen_vintage`. 88/arm (82de3e92 quarantine). Same length-control (OLS, mean-centred) + paired bootstrap seed=20260611 as the banked key. J0 offset NOT applied (within-curve contrasts cancel it). p17 reports under experiments_frozen_vintage (J3-corrected).",
+  "per_judge": {
+    "gpt52": {
+      "raw_mean": {
+        "base_p9": 0.2792,
+        "base_p14_vintage_deepseek_qwen7b": 0.2224,
+        "base_p13_vintage_qwen3_8b": 0.3553,
+        "base_p17_scale_qwen25_14b": 0.3036
+      },
+      "length_adjusted_mean": {
+        "base_p9": 0.2777,
+        "base_p14_vintage_deepseek_qwen7b": 0.2725,
+        "base_p13_vintage_qwen3_8b": 0.2987,
+        "base_p17_scale_qwen25_14b": 0.3117
+      },
+      "length_coef_per_1000w": 0.1749,
+      "grand_mean_words": 1108.9,
+      "capacity_p17_minus_p9_raw": {
+        "delta": 0.0245,
+        "ci95": [
+          0.0068,
+          0.0417
+        ],
+        "p_two_sided": 0.0084,
+        "n": 88
+      },
+      "capacity_p17_minus_p9_length_adjusted": 0.034,
+      "length_adjusted_order": [
+        "base_p17_scale_qwen25_14b",
+        "base_p13_vintage_qwen3_8b",
+        "base_p9",
+        "base_p14_vintage_deepseek_qwen7b"
+      ],
+      "best_length_adjusted_arm": "base_p17_scale_qwen25_14b"
+    },
+    "opus48": {
+      "raw_mean": {
+        "base_p9": 0.6252,
+        "base_p14_vintage_deepseek_qwen7b": 0.5179,
+        "base_p13_vintage_qwen3_8b": 0.6491,
+        "base_p17_scale_qwen25_14b": 0.6322
+      },
+      "length_adjusted_mean": {
+        "base_p9": 0.6217,
+        "base_p14_vintage_deepseek_qwen7b": 0.6335,
+        "base_p13_vintage_qwen3_8b": 0.5185,
+        "base_p17_scale_qwen25_14b": 0.6507
+      },
+      "length_coef_per_1000w": 0.4033,
+      "grand_mean_words": 1108.9,
+      "capacity_p17_minus_p9_raw": {
+        "delta": 0.007,
+        "ci95": [
+          -0.0196,
+          0.0332
+        ],
+        "p_two_sided": 0.6114,
+        "n": 88
+      },
+      "capacity_p17_minus_p9_length_adjusted": 0.029,
+      "length_adjusted_order": [
+        "base_p17_scale_qwen25_14b",
+        "base_p14_vintage_deepseek_qwen7b",
+        "base_p9",
+        "base_p13_vintage_qwen3_8b"
+      ],
+      "best_length_adjusted_arm": "base_p17_scale_qwen25_14b"
+    },
+    "sonnet5": {
+      "raw_mean": {
+        "base_p9": 0.4814,
+        "base_p14_vintage_deepseek_qwen7b": 0.4181,
+        "base_p13_vintage_qwen3_8b": 0.5745,
+        "base_p17_scale_qwen25_14b": 0.5393
+      },
+      "length_adjusted_mean": {
+        "base_p9": 0.4784,
+        "base_p14_vintage_deepseek_qwen7b": 0.5166,
+        "base_p13_vintage_qwen3_8b": 0.4632,
+        "base_p17_scale_qwen25_14b": 0.5551
+      },
+      "length_coef_per_1000w": 0.3437,
+      "grand_mean_words": 1108.9,
+      "capacity_p17_minus_p9_raw": {
+        "delta": 0.0579,
+        "ci95": [
+          0.0266,
+          0.0888
+        ],
+        "p_two_sided": 0.0012,
+        "n": 88
+      },
+      "capacity_p17_minus_p9_length_adjusted": 0.0767,
+      "length_adjusted_order": [
+        "base_p17_scale_qwen25_14b",
+        "base_p14_vintage_deepseek_qwen7b",
+        "base_p9",
+        "base_p13_vintage_qwen3_8b"
+      ],
+      "best_length_adjusted_arm": "base_p17_scale_qwen25_14b"
+    }
+  },
+  "cross_family_verdict": {
+    "capacity_p17_gt_p9_all_families": true,
+    "capacity_significant_by_family": {
+      "gpt52": true,
+      "opus48": false,
+      "sonnet5": true
+    },
+    "capacity_gap_by_family": {
+      "gpt52": 0.0245,
+      "opus48": 0.007,
+      "sonnet5": 0.0579
+    },
+    "best_length_adjusted_arm_by_family": {
+      "gpt52": "base_p17_scale_qwen25_14b",
+      "opus48": "base_p17_scale_qwen25_14b",
+      "sonnet5": "base_p17_scale_qwen25_14b"
+    },
+    "length_adjustment_favours_14b_all_families": true,
+    "reading": "Cross-family robustness of the capacity finding: p17(14B) > p9(7B) holds under GPT-5.2 AND both current Claude judges. Whether the length-adjustment makes the 14B the single best arm across all judges is reported explicitly (Claude runs more lenient in level per J0, but the within-curve capacity contrast is offset-invariant)."
+  }
+}

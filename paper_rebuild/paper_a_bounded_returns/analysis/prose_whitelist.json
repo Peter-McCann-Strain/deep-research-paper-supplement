@@ -1,0 +1,88 @@
+{
+ "_doc": "Whitelist for reconcile_prose.py: legitimate numeric literals in main.tex prose that are NOT (and should not be) in canonical_numbers.json. Matching order: canonical store first (printed-precision, raw/x100/abs spaces), then auto rules, then these categories (first hit wins). NB: many anticipated whitelist values (90 queries, 11 patterns, 55 pairs, 165 tests, rubric weights, budget dollars, most Related-Work percentages) never reach the whitelist because the store itself contains them (as n= fields, weights, cost keys) or a store value shares their rounded grid cell; category counts below therefore reflect only the residue the store does not absorb.",
+ "auto_rules": {
+  "small_integers_max": 9,
+  "note": "Integers 0-9 are counts/notation (Gate 1-4, k=3 judges, N^2, t(8), five sources, six patterns, ICC(A,1) ...); years 19xx/20xx, date/vintage strings (2024-09, Mar~16) and sci-notation p-value magnitudes (5x10^-5 etc.) are skipped structurally by the script and reported as skip counts."
+ },
+ "categories": {
+  "design-count": {
+   "note": "Study-design counts fixed by the manifest/protocol, not measured quantities. 990 = 11 patterns x 90 queries (the (pattern,query) cell grid quoted in the Reproducibility section; the store carries the realised 985/983, the 990 ideal grid is arithmetic).",
+   "values": [
+    990
+   ]
+  },
+  "rubric-weight": {
+   "note": "The nine-dimension rubric weights as specified in the protocol (0.20/0.15/0.10/0.05). Currently absorbed by the store grid; kept for documentation and future drift.",
+   "values": [
+    0.2,
+    0.15,
+    0.1,
+    0.05
+   ]
+  },
+  "stats-convention": {
+   "note": "Statistical conventions / pre-specified constants: 95% CIs, 80% power, ROPE margins +/-0.05 and +/-0.02, DR-Judge kappa target 0.7, 5000 bootstrap resamples. Mostly absorbed by the store; kept for documentation.",
+   "values": [
+    95,
+    80,
+    0.7,
+    5000,
+    0.05,
+    0.02
+   ],
+   "external_note": "0.05/0.02 also appear as measured deltas; store match takes precedence."
+  },
+  "model-or-infra-name": {
+   "note": "Digits inside model/product/infrastructure names and protocol constants: RTX 5080, HTTP 429 (Semantic Scholar rate-limit status), HTTP 404, GPT-x/Claude x.y version digits, 7B/8B/14B, Bing v7, 200KB cap, 200rpm, semaphore 12, 16.6GB VRAM, P0/P1/P4 generation cap 8192 tokens vs. P9/P10's 4096 (VRAM-driven scaffold constants disclosed 2026-07-28, adversarial review round 31, \\Cref{sec:taxonomy}).",
+   "values": [
+    5080,
+    429,
+    404,
+    5.2,
+    4.1,
+    4.5,
+    2.5,
+    16.6,
+    200,
+    16384,
+    4096,
+    8192
+   ]
+  },
+  "external-citation": {
+   "note": "Results quoted from OTHER papers (Related Work / discussion context), exempt from the store by design: 871 = SimpleDeepSearcher's curated SFT-trajectory count (sun2025simpledeepsearcher). 541000 = Norman/Rivera/Hughes' judgment count across 21 judges (norman2026reliability, added 2026-07-29 literature sweep). Other quoted externals (68% rubric compliance, TaxoBench 20.9/28/29/47/58%, iterativeideal 69->81%, REFLECT <55%, alvarado 83%, 3-13% dead-URL band, citednotverified 39-77%/94%, deepverifier 8-11%, bavaresco rho~0.5, kohli ~2 effective votes) are currently absorbed by the store grid at printed precision; add them here if a store rebuild exposes them.",
+   "values": [
+    871,
+    20.9,
+    68,
+    0.5,
+    83,
+    55,
+    541000
+   ]
+  },
+  "figure-derived": {
+   "note": "Values computed inside figure scripts from the released parquets but not exported to the store: CD-diagram average ranks and Nemenyi critical difference (make_cd_diagram.py) - P7 avg rank 1.66 vs CD 1.62 (1.62 happens to be absorbed by the store grid; 1.66 is not).",
+   "values": [
+    1.66,
+    1.62
+   ]
+  },
+  "derived-from-store": {
+   "note": "Simple arithmetic on store values, quoted with an approx qualifier in the prose: ~1440 = 6 cluster patterns x 240 oracle-side factual criterion verdicts (variance_decomposition/bayes_crosscheck/bayes_oracle_factual_tost/per_pattern/*/oracle_total); ~2900 = ~1440 oracle-side + ~1432 base-side (sum of per_pattern/*/base_total), the correct pooled-across-both-conditions total (fixed 2026-07-28, adversarial review round 21: the prose and the store's own method note previously both said only ~1440, which is the oracle side alone, not the pooled count the Beta-Binomial posterior actually integrates).",
+   "values": [
+    1440,
+    2900
+   ]
+  },
+  "self-referential": {
+   "note": "Counts produced by the reconciliation harness itself, quoted in the Reproducibility section: 916/920 = reconcile_tables.py full-scope (all tables/*.tex) backed/total; 430 = used-scope (tables input by main.tex) cell count; 87 = reconcile_prose.py anchored-statistic count. Updated 2026-07-29: round-9 dedup first cut the count 87->86 (see prior note), then a grad-student review caught a real data bug -- the p.42 decontamination table's P4-vs-P9 row had 0.34 (the abstract's rounded DECONTAMINATED estimate) sitting in the FULL-SET column instead of the true full-set value 0.382 (matching the abstract's 0.38, Table 3, and Section 5.4) -- fixed, and the table-row anchor widened to validate both the full-set and clean-slice cells together, which brought the count back to 87 and would have caught this exact bug had it existed when the anchor was first written. If reconcile_tables full-scope output changes, update the prose AND these values.",
+   "values": [
+    87,
+    430,
+    916,
+    920
+   ]
+  }
+ }
+}

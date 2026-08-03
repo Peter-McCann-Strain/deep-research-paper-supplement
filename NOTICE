@@ -15,6 +15,7 @@ release while preserving their benchmark task shape. Their metadata carries a
 repository.
 
 Excluded material: generated reports, raw judge verdict forests, local API/search
-caches, paper drafts, LaTeX sources, private notes, model weights, checkpoints,
-and local/GPU historical implementation modules are intentionally not part of
-the public GitHub release.
+caches, paper drafts, private/submission LaTeX sources, private notes, model
+weights, checkpoints, and local dependency trees are intentionally not part of
+the public GitHub release. The final scrubbed manuscript source under
+`paper_rebuild/` is included only to support the public paper-artifact rebuild.
